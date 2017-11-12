@@ -1,10 +1,11 @@
 # Description:
-  A delightful chore manager that allows you to give out points for chores completed for every member of your family (android)
+  A delightful chore manager that allows you to give out points for chores completed for every member of your family.
+  Currently available on android.
 
 ## Screenshots:
   Main Activity:
 
-  ![Alt text](https://i.imgur.com/Pp279bn.png "Main Activity")
+  ![Alt text](https://i.imgur.com/Pp279bn.png "Main Activity" =250x250)
 
 ## Contributors:
   Michel Balamou
