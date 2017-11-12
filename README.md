@@ -5,7 +5,7 @@
 ## Screenshots:
   Main Activity:
 
-  <img src="https://i.imgur.com/Pp279bn.png" width="10%"/>
+  <img src="https://i.imgur.com/2VFk8Cq.png" width="20%"/>
 
 ## Contributors:
   Michel Balamou
