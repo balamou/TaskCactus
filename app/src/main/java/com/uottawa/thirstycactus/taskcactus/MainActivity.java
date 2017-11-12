@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
+import com.uottawa.thirstycactus.taskcactus.fragments.TaskFragment;
+import com.uottawa.thirstycactus.taskcactus.fragments.UsersFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -24,20 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Initializes 3 main fragments (UserFragment, CalendarFragment and TaskFragment)
+     * and appends them to the viewPager.
+     *
+     * @param viewPager
+     */
     private void setUpViewPager(ViewPager viewPager)
     {
-        adapter=new SectionsStatePagerAdapter(getSupportFragmentManager());
+        adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 
-        UsersFragment usr=new UsersFragment();
-        CalendarFragment cal=new CalendarFragment();
-        TaskFragment task=new TaskFragment();
+        // Initialize the fragments
+        UsersFragment usr = new UsersFragment();
+        CalendarFragment cal = new CalendarFragment();
+        TaskFragment task = new TaskFragment();
 
-        cal.setTaskFragment(task);
+        cal.setTaskFragment(task); // send an instance of the taskFragment to calendarFragment
 
         adapter.addFragment(usr, "Users");
         adapter.addFragment(cal, "Calendar");
         adapter.addFragment(task, "Task");
-
 
 
         viewPager.setAdapter(adapter);
@@ -81,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
     {
         setViewPager("Task");
     }
-
-
 
 
 }

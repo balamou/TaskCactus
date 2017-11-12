@@ -1,4 +1,4 @@
-package com.uottawa.thirstycactus.taskcactus;
+package com.uottawa.thirstycactus.taskcactus.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import static com.uottawa.thirstycactus.taskcactus.R.id.textDate;
+import com.uottawa.thirstycactus.taskcactus.R;
+
+import static android.R.attr.y;
 
 
 /**
@@ -26,23 +28,31 @@ public class TaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task_fragment, container, false);
-        textDate = (TextView)view.findViewById(R.id.textDate);
+        textDate = view.findViewById(R.id.textDate);
 
 
         return view;
     }
 
-    public void setDate(int i, int i1, int i2)
+    /**
+     * Sets the date.
+     * The date is used to show the tasks on that particular day.
+     *
+     * @param year
+     * @param month
+     * @param day
+     * */
+    public void setDate(int year, int month, int day)
     {
-        textDate.setText(getMonth(i1) + " " +i2 + ", " + i);
+        textDate.setText(getMonth(month) + " " + day + ", " + year);
     }
 
 
     /**
      * Convert int month into a string representation.
      *
-     * @param m
-     * @return
+     * @param m integer value of the month
+     * @return name of the month
      */
     private String getMonth(int m)
     {

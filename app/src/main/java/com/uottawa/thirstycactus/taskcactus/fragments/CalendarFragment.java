@@ -1,4 +1,4 @@
-package com.uottawa.thirstycactus.taskcactus;
+package com.uottawa.thirstycactus.taskcactus.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+
+import com.uottawa.thirstycactus.taskcactus.MainActivity;
+import com.uottawa.thirstycactus.taskcactus.R;
 
 /**
  * Created by michelbalamou on 10/22/17.
@@ -20,15 +23,6 @@ public class CalendarFragment extends Fragment {
     private static final String TAG = "CalendarFragment";
     private TaskFragment taskFragment;
 
-    /**
-     *  Sets a TaskFragment to associate with a CalendarFragment
-     *
-     * @param taskFragment
-     */
-    public void setTaskFragment(TaskFragment taskFragment)
-    {
-        this.taskFragment=taskFragment;
-    }
 
     @Nullable
     @Override
@@ -51,5 +45,16 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
+
+    /**
+     *  Sets a TaskFragment to associate with a CalendarFragment
+     *
+     * @param taskFragment
+     */
+    public void setTaskFragment(TaskFragment taskFragment)
+    {
+        this.taskFragment=taskFragment;
+    }
+
 
 }
