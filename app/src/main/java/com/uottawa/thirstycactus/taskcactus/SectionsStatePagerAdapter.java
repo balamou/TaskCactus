@@ -60,4 +60,10 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter
     {
         return fragmentList.size();
     }
+
+    @Override
+    public CharSequence getPageTitle(int position)
+    {
+        return fragmentListTitle.get(position);
+    }
 }

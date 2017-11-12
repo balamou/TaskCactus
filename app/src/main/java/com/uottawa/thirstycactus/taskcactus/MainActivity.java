@@ -1,10 +1,10 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.TaskFragment;
@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(mViewPager);
 
+
+        TabLayout tabLayout=(TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        getSupportActionBar().setElevation(0); // Remove shadow under action bar
     }
 
     /**
@@ -65,31 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (num!=-1)
             mViewPager.setCurrentItem(num);
-    }
-
-
-    /**
-     * Switches view to Users
-     */
-    public void switchUser(View view)
-    {
-        setViewPager("Users");
-    }
-
-    /**
-     * Switches view to Calendar
-     */
-    public void switchCalendar(View view)
-    {
-        setViewPager("Calendar");
-    }
-
-    /**
-     * Switches view to Tasks
-     */
-    public void switchTask(View view)
-    {
-        setViewPager("Task");
     }
 
 

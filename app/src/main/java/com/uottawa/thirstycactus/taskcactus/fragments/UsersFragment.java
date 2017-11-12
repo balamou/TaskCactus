@@ -13,12 +13,8 @@ import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.AddTask;
 import com.uottawa.thirstycactus.taskcactus.EditUser;
-import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
-
-import static android.R.id.message;
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * Created by michelbalamou on 11/2/17.
