@@ -22,6 +22,7 @@ import com.uottawa.thirstycactus.taskcactus.R;
 public class CalendarFragment extends Fragment {
     private static final String TAG = "CalendarFragment";
     private TaskFragment taskFragment;
+    CalendarView calendarView;
 
 
     @Nullable
@@ -31,15 +32,18 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.calendar_fragment, container, false);
 
 
-        CalendarView calendarView=(CalendarView)view.findViewById(R.id.calendarView);
+        calendarView = view.findViewById(R.id.calendarView);
+
+        // Action when selecting a date on the calendar
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                //Toast.makeText(getActivity(), "Going to task", Toast.LENGTH_LONG).show();
-
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2)
+            {
                 MainActivity act=(MainActivity)getActivity();
                 taskFragment.setDate(i, i1, i2);
                 act.setViewPager("Task");
+
+                //Toast.makeText(getActivity(), "Going to task", Toast.LENGTH_LONG).show();
             }
         });
 

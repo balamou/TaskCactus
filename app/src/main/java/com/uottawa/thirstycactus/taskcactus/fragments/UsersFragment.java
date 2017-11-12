@@ -1,15 +1,22 @@
 package com.uottawa.thirstycactus.taskcactus.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.uottawa.thirstycactus.taskcactus.EditUser;
+import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
+
+import static android.R.id.message;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * Created by michelbalamou on 11/2/17.
@@ -19,9 +26,15 @@ import com.uottawa.thirstycactus.taskcactus.UserListview;
 
 public class UsersFragment extends Fragment {
 
+    // Temporary data: TO BE CHANGED BY PETER ++++
     private ListView userList;
-    private String[] username = {"Michel Balamou", "Nate Adams", "Peter Nguyen"};
-    private int[] chores = {5, 4, 2};
+    private String[] username = {"Michel Balamou", "Nathanael Adams", "Peter Nguyen", "Julie Tourrilhes"};
+
+    private String[] firstname = {"Michel", "Nathanael", "Peter", "Julie"};
+    private String[] lastname = {"Balamou", "Adams", "Nguyen", "Tourrilhes"};
+
+    private int[] chores = {5, 4, 2, 4};
+    // Temporary data: TO BE CHANGED BY PETER ----
 
 
     @Nullable
@@ -34,6 +47,19 @@ public class UsersFragment extends Fragment {
         UserListview usr = new UserListview(getActivity(), username, chores);
         userList.setAdapter(usr);
 
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Start a new activity with user information and statistics
+                // as well as the user editor activity
+                Intent intent = new Intent(getActivity(), EditUser.class);
+
+                intent.putExtra("F_NAME", firstname[i]);
+                intent.putExtra("L_NAME", lastname[i]);
+
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
