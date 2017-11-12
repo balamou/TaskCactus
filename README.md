@@ -1,4 +1,4 @@
-#TASK CACTUS
+# TASK CACTUS
   A delightful chore manager that allows you to give out points for chores completed for every member of your family.
   Currently available on android.
 
@@ -9,10 +9,10 @@
 
 
 ## Contributors:
-  Michel Balamou
+  :bowtie: Michel Balamou
 
-  Peter Nguyen
+  :cactus: Peter Nguyen
 
-  Nathanael Adams
+  :trollface: Nathanael Adams
 
-  Julie Tourrilhes
+  :information_desk_person: Julie Tourrilhes
