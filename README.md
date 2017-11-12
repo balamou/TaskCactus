@@ -5,7 +5,7 @@
 ## Screenshots:
   Main Activity:
 
-  ![Alt text](https://i.imgur.com/Pp279bn.png "Main Activity" =250x250)
+  ![Alt text](https://i.imgur.com/Pp279bn.png =250x250)
 
 ## Contributors:
   Michel Balamou
