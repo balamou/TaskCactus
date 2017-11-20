@@ -4,7 +4,7 @@
 
 ## Screenshots:
 
-  <img src="https://i.imgur.com/QZ5XNXE.png" width="20%"/> <img src="https://i.imgur.com/MAsbZtd.png" width="20%"/> <img src="https://i.imgur.com/lKipZ1h.png" width="20%"/>
+  <img src="https://i.imgur.com/oQxynVh.png" width="20%"/> <img src="https://i.imgur.com/MAsbZtd.png" width="20%"/> <img src="https://i.imgur.com/MAsbZtd.png" width="20%"/>
 
 
 ## TODO

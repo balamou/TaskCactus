@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         CalendarFragment cal = new CalendarFragment();
         TaskFragment task = new TaskFragment();
 
-        cal.setTaskFragment(task); // send an instance of the taskFragment to calendarFragment
-
         adapter.addFragment(usr, "Users");
         adapter.addFragment(cal, "Calendar");
         adapter.addFragment(task, "Task");

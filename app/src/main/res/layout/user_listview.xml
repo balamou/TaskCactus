@@ -42,7 +42,8 @@
                 android:id="@+id/numchoresText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="chores to do:" />
+                android:text="chores to do:"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 

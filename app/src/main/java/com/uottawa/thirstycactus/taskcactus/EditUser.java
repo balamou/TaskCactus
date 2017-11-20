@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
+
 
 public class EditUser extends AppCompatActivity {
 
-    private EditText fnameEdit;
-    private EditText lnameEdit;
+    private TextView nameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +19,10 @@ public class EditUser extends AppCompatActivity {
         Intent intent = getIntent();
 
 
-        fnameEdit = (EditText)findViewById(R.id.fnameEdit);
-        lnameEdit = (EditText)findViewById(R.id.lnameEdit);
+        nameText = (TextView)findViewById(R.id.nameText);
 
-
-        fnameEdit.setText(intent.getStringExtra("F_NAME"));
-        lnameEdit.setText(intent.getStringExtra("L_NAME"));
+        String fullName = intent.getStringExtra("F_NAME") + " " + intent.getStringExtra("L_NAME");
+        nameText.setText(fullName);
     }
 
     /**
