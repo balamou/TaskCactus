@@ -83,6 +83,8 @@ public class DataSingleton
 
             michel.assignTask(peter, new_tasks.get(1));
             michel.assignTask(nate, new_tasks.get(0));
+            michel.assignTask(nate, default_tasks.get(1));
+
             // Placeholder data ---
         }
 

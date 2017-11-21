@@ -3,9 +3,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.uottawa.thirstycactus.taskcactus.R.id.totalPoints;
-
-
 /**
  * Created by Peter Nguyen on 11/20/17.
  */
