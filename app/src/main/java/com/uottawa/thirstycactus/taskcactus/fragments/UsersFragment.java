@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.uottawa.thirstycactus.taskcactus.AddUser;
 import com.uottawa.thirstycactus.taskcactus.EditUser;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
@@ -26,6 +28,8 @@ public class UsersFragment extends Fragment
     // ATTRIBUTES
 
     private ListView userList;
+    private Button addUser;
+
     private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
@@ -41,6 +45,7 @@ public class UsersFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.users_fragment, container, false);
 
+        // ++++
         userList = view.findViewById(R.id.userList);
         UserListview usr = new UserListview(getActivity(), dataSingleton.getUsers());
         userList.setAdapter(usr);
@@ -58,8 +63,28 @@ public class UsersFragment extends Fragment
             }
         });
 
+        addUser = view.findViewById(R.id.addUserBtn);
+        addUser.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                onAddUser(v);
+            }
+        });
+        // ----
+
+
+
         return view;
     }
 
+    /**
+     *  Event that occurs when cliking on Add User
+     */
+    public void onAddUser(View view)
+    {
+        Intent intent = new Intent(getActivity(), AddUser.class);
+        startActivity(intent);
+    }
 }
 

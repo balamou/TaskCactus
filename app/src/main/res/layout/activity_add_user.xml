@@ -32,30 +32,14 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.08" />
+            android:layout_weight="0.18" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/nameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Name"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                tools:layout_editor_absoluteX="26dp"
-                tools:layout_editor_absoluteY="102dp" />
-
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,36 +49,59 @@
             android:padding="10dp"
             android:weightSum="1">
 
-            <TextView
-                android:id="@+id/numOfTasks"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Total number of tasks:"
-                android:textSize="18sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/numOfTasks"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:text="First name:"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/firstNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="enter first name"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2" />
 
-            <TextView
-                android:id="@+id/tasksDone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tasks done:"
-                android:textSize="18sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tasksDone"
+                    android:layout_width="133dp"
+                    android:layout_height="wrap_content"
+                    android:text="Last name:"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/lastNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="enter last name"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2" />
-
-            <TextView
-                android:id="@+id/totalPoints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total points: "
-                android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -129,18 +136,12 @@
                 android:text="Cancel" />
 
             <Button
-                android:id="@+id/btnEdit"
+                android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Edit" />
-
-            <Button
-                android:id="@+id/btnTask"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Assign Task" />
+                android:onClick="onSave"
+                android:text="Save" />
 
         </LinearLayout>
 
