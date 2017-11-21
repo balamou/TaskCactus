@@ -48,12 +48,11 @@ public class UsersFragment extends Fragment
         userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 // Start a new activity with user information and statistics
-                // as well as the user editor activity
                 Intent intent = new Intent(getActivity(), EditUser.class);
 
-                intent.putExtra("F_NAME", dataSingleton.getUsers().get(i).getFirstName());
-                intent.putExtra("L_NAME", dataSingleton.getUsers().get(i).getLastName());
+                intent.putExtra("USER_ID", i);
 
                 startActivity(intent);
             }

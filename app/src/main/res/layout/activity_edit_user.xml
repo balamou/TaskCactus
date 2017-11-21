@@ -62,48 +62,57 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.09" />
+            android:layout_weight="0.1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.12"
-            android:gravity="center"
+            android:layout_weight="0.24"
             android:orientation="vertical"
             android:padding="10dp"
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/numOfChores"
+                android:id="@+id/numOfTasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Total number of chores:"
-                android:textAlignment="viewStart"
+                android:text="Total number of tasks:"
                 android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.62" />
+                android:layout_weight="0.2" />
 
             <TextView
-                android:id="@+id/choresDone"
+                android:id="@+id/tasksDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chores done:"
-                android:textAlignment="viewStart"
+                android:text="Tasks done:"
                 android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.62" />
+                android:layout_weight="0.2" />
 
             <TextView
                 android:id="@+id/totalPoints"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Total points: "
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2" />
+
+            <TextView
+                android:id="@+id/birthDayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Birthday:"
                 android:textSize="18sp" />
 
         </LinearLayout>

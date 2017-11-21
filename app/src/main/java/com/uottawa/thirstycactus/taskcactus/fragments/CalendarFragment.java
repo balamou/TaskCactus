@@ -11,6 +11,7 @@ import android.widget.CalendarView;
 
 import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
 /**
  * Created by michelbalamou on 10/22/17.
@@ -19,20 +20,24 @@ import com.uottawa.thirstycactus.taskcactus.R;
  *
  */
 
-public class CalendarFragment extends Fragment {
-    private static final String TAG = "CalendarFragment";
+public class CalendarFragment extends Fragment
+{
+    // ATTRIBUTES
 
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
+
+    // =============================================================================================
+
+    // METHODS
+
+    // =============================================================================================
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.calendar_fragment, container, false);
-
 
         return view;
     }
-
-
-
 }
