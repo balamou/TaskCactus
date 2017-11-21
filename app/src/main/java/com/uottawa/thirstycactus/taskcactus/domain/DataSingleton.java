@@ -111,7 +111,7 @@ public class DataSingleton
 
     // =============================================================================================
 
-    // GETTERS
+    // GETTERS: returns full lists
 
     // =============================================================================================
 
@@ -125,6 +125,31 @@ public class DataSingleton
     }
 
     /**
+     * Returns the list of default/premade tasks
+     */
+    public List<Task> getDefaultTasks()
+    {
+        loadData();
+        return default_tasks;
+    }
+
+    /**
+     * Returns the list of new tasks
+     */
+    public List<Task> getNewTasks()
+    {
+        loadData();
+        return new_tasks;
+    }
+
+    // =============================================================================================
+
+    // GETTERS: returns specific entries in each lists
+
+    // =============================================================================================
+
+
+    /**
      * Returns a list with all the user's last names
      *
      */
@@ -136,6 +161,7 @@ public class DataSingleton
 
         for (int i=0; i<people.size(); i++)
         {
+            // Add the full name to each entry
             result[i] = people.get(i).getFullName();
         }
 
@@ -144,7 +170,7 @@ public class DataSingleton
 
 
     /**
-     *
+     * Returns the number of tasks left to do, each in the order the users were added.
      */
     public int[] getTasksToDo()
     {
@@ -154,11 +180,14 @@ public class DataSingleton
 
         for (int i=0; i<people.size(); i++)
         {
+            // the result for each user is
+            // TotalTasks - TasksCompleted
             result[i] = people.get(i).totalTasks() - people.get(i).tasksCompleted();
         }
 
         return result;
     }
+
 
 
 

@@ -23,19 +23,27 @@ import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
 public class UsersFragment extends Fragment
 {
+    // ATTRIBUTES
 
     private ListView userList;
     private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
+
+    // =============================================================================================
+
+    // METHODS
+
+    // =============================================================================================
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.users_fragment, container, false);
 
-
         userList = view.findViewById(R.id.userList);
-        UserListview usr = new UserListview(getActivity(), dataSingleton.getNameList(), dataSingleton.getTasksToDo());
+        UserListview usr = new UserListview(getActivity(), dataSingleton.getUsers());
         userList.setAdapter(usr);
 
         userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

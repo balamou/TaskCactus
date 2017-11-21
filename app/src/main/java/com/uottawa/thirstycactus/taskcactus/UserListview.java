@@ -9,25 +9,32 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.domain.Person;
+
+import java.util.List;
+
 
 /**
  * Created by michelbalamou on 11/11/17.
  */
 
-public class UserListview extends ArrayAdapter<String> {
+public class UserListview extends ArrayAdapter
+{
+    // ATTRIBUTES
 
-    private String[] username;
-    private int[] chores;
     private LayoutInflater mInflater;
 
-    public UserListview(Activity context, String[] username, int[] chores)
+    private List<Person> users;
+
+
+    // CONSTRUCTOR
+
+    public UserListview(Activity context, List<Person> users)
     {
-        super(context, R.layout.user_listview, username);
-
-        this.username = username;
-        this.chores = chores;
-
+        super(context, R.layout.user_listview, users);
         mInflater = LayoutInflater.from(context);
+
+        this.users = users;
     }
 
 
@@ -49,12 +56,20 @@ public class UserListview extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
-        viewHolder.name.setText(username[position]);
-        viewHolder.num.setText("Chores to do: " + Integer.toString(chores[position]));
+        // SET UP OUTPUT INFORMATION +++
+        viewHolder.name.setText(users.get(position).getFullName());
+        int choresLeft = users.get(position).totalTasks() - users.get(position).tasksCompleted();
+        viewHolder.num.setText("Chores to do: " + choresLeft);
+        // SET UP OUTPUT INFORMATION +++
 
         return convertView;
     }
+
+    // =============================================================================================
+
+    // VIEW HOLDER: this class stores all the graphical elements that are displayed in one row
+
+    // =============================================================================================
 
     class ViewHolder
     {

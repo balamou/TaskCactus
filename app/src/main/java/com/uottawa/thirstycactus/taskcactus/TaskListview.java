@@ -9,23 +9,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.domain.Task;
+
+import java.util.List;
+
 
 /**
  * Created by michelbalamou on 11/11/17.
  */
 
-public class TaskListview extends ArrayAdapter<String> {
+public class TaskListview extends ArrayAdapter
+{
+    // ATTRIBUTES
 
-    private String[] taskname;
     private LayoutInflater mInflater;
 
-    public TaskListview(Activity context, String[] taskname)
+    private List<Task> def_tasks;
+
+    // CONSTRUCTOR
+
+    public TaskListview(Activity context, List<Task> tasks)
     {
-        super(context, R.layout.user_listview, taskname);
-
-        this.taskname = taskname;
-
+        super(context, R.layout.user_listview, tasks);
         mInflater = LayoutInflater.from(context);
+
+        def_tasks = tasks;
     }
 
 
@@ -35,10 +43,10 @@ public class TaskListview extends ArrayAdapter<String> {
     {
         ViewHolder viewHolder;
 
-        if (convertView==null)
+        if (convertView == null)
         {
-            convertView=mInflater.inflate(R.layout.task_listview, null);
-            viewHolder= new ViewHolder(convertView);
+            convertView = mInflater.inflate(R.layout.task_listview, null);
+            viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
         }
@@ -47,10 +55,19 @@ public class TaskListview extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tasknameText.setText(taskname[position]);
+        // SET UP OUTPUT INFORMATION +++
+        viewHolder.tasknameText.setText(def_tasks.get(position).getName());
+        // SET UP OUTPUT INFORMATION ---
 
         return convertView;
     }
+
+
+    // =============================================================================================
+
+    // VIEW HOLDER: this class stores all the graphical elements that are displayed in one row
+
+    // =============================================================================================
 
     class ViewHolder
     {
