@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
 
@@ -28,6 +29,7 @@ public class UserListview extends ArrayAdapter
     private LayoutInflater mInflater;
 
     private List<Person> users;
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
     // CONSTRUCTOR
@@ -68,8 +70,10 @@ public class UserListview extends ArrayAdapter
         Task nextTask = person.getNextTask();
         String status = nextTask == null ? "All tasks completed" : "Next task: " + person.getNextTask().getName();
 
+        // Checks if person is currently logged in
+        boolean loggedIn = dataSingleton.getLoggedPerson() == person;
 
-        viewHolder.fullnameText.setText(users.get(position).getFullName());
+        viewHolder.fullnameText.setText(users.get(position).getFullName() + (loggedIn ? " (me)" : ""));
         viewHolder.tasksLeftText.setText("Tasks to do: " + tasksLeft);
         viewHolder.nextTaskText.setText(status);
 

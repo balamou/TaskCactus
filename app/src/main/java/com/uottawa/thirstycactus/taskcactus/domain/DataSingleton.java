@@ -23,6 +23,7 @@ public class DataSingleton
     private List<Person> people;
     private List<Resource> resources;
 
+    private Person loggedPerson;
     // CONSTRUCTOR
     /**
      * Set to private to avoid multiple instantiations
@@ -67,6 +68,8 @@ public class DataSingleton
 
             Person peter = new Person("Peter", "Nguyen", null);
             Person nate = new Person("Nate", "Adams", null);
+
+            loggedPerson = michel;
 
             people.add(michel);
             people.add(peter);
@@ -150,6 +153,51 @@ public class DataSingleton
     {
         loadData();
         return resources;
+    }
+
+    /**
+     * Returns the currently logged in person
+     */
+    public Person getLoggedPerson()
+    {
+        return loggedPerson;
+    }
+
+    /**
+     * Login as parent. A 4 digit PIN is required for authentication.
+     *
+     * @param parent to log on as
+     * @param PIN the 4 digit password required for login
+     * @throws IllegalArgumentException if the PIN is not valid
+     */
+    public void login(Parent parent, String PIN) throws IllegalArgumentException
+    {
+        if (parent.getHashedPIN().equals(PIN))
+        {
+            loggedPerson = parent;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid PIN.");
+        }
+    }
+
+    /**
+     * Login as person. No password required.
+     *
+     * @param person to log on as
+     * @throws IllegalArgumentException if attempting to login as parent
+     */
+    public void login(Person person) throws IllegalArgumentException
+    {
+        if (!(person instanceof Parent))
+        {
+            loggedPerson = person;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Attempt to login as parent without providing 4 digit PIN.");
+        }
     }
 
 }
