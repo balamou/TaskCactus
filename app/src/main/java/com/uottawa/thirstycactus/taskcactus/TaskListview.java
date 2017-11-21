@@ -14,18 +14,16 @@ import android.widget.TextView;
  * Created by michelbalamou on 11/11/17.
  */
 
-public class UserListview extends ArrayAdapter<String> {
+public class TaskListview extends ArrayAdapter<String> {
 
-    private String[] username;
-    private int[] chores;
+    private String[] taskname;
     private LayoutInflater mInflater;
 
-    public UserListview(Activity context, String[] username, int[] chores)
+    public TaskListview(Activity context, String[] taskname)
     {
-        super(context, R.layout.user_listview, username);
+        super(context, R.layout.user_listview, taskname);
 
-        this.username = username;
-        this.chores = chores;
+        this.taskname = taskname;
 
         mInflater = LayoutInflater.from(context);
     }
@@ -39,7 +37,7 @@ public class UserListview extends ArrayAdapter<String> {
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.user_listview, null);
+            convertView=mInflater.inflate(R.layout.task_listview, null);
             viewHolder= new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
@@ -49,22 +47,18 @@ public class UserListview extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
-        viewHolder.name.setText(username[position]);
-        viewHolder.num.setText("Chores to do: " + Integer.toString(chores[position]));
+        viewHolder.tasknameText.setText(taskname[position]);
 
         return convertView;
     }
 
     class ViewHolder
     {
-        TextView name;
-        TextView num;
+        TextView tasknameText;
 
         ViewHolder(View v)
         {
-            name = v.findViewById(R.id.nameText);
-            num =  v.findViewById(R.id.numchoresText);
+            tasknameText = v.findViewById(R.id.taskNameText);
         }
     }
 }

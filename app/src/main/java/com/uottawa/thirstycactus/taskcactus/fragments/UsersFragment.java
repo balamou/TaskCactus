@@ -30,7 +30,6 @@ public class UsersFragment extends Fragment {
     // Temporary data: TO BE CHANGED BY PETER ++++
     private ListView userList;
     private String[] username = {"Michel Balamou", "Nathanael Adams", "Peter Nguyen", "Julie Tourrilhes"};
-
     private String[] firstname = {"Michel", "Nathanael", "Peter", "Julie"};
     private String[] lastname = {"Balamou", "Adams", "Nguyen", "Tourrilhes"};
 
