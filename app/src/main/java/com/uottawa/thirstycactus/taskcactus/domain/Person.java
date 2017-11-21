@@ -3,6 +3,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.uottawa.thirstycactus.taskcactus.R.id.totalPoints;
+
 
 /**
  * Created by Peter Nguyen on 11/20/17.
@@ -118,6 +120,31 @@ public class Person {
 
         return totalPoints;
     }
+
+    /**
+     * Returns the total number of tasks
+     */
+    public int totalTasks()
+    {
+        return tasks.size();
+    }
+
+    /**
+     * Returns the number of tasks marked as completed
+     */
+    public int tasksCompleted()
+    {
+        int total = 0;
+
+        for (Task t: tasks)
+        {
+            if (t.getDone())
+                total++; // increments only is task set as completed
+        }
+
+        return total;
+    }
+
 
     /**
      * Returns the full name of the user.
