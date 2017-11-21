@@ -25,7 +25,6 @@ import com.uottawa.thirstycactus.taskcactus.UserListview;
 public class UsersFragment extends Fragment {
 
 
-    private TextView addTaskText;
 
     // Temporary data: TO BE CHANGED BY PETER ++++
     private ListView userList;
@@ -56,17 +55,6 @@ public class UsersFragment extends Fragment {
 
                 intent.putExtra("F_NAME", firstname[i]);
                 intent.putExtra("L_NAME", lastname[i]);
-
-                startActivity(intent);
-            }
-        });
-
-
-        addTaskText = view.findViewById(R.id.addTaskText);
-        addTaskText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddTask.class);
 
                 startActivity(intent);
             }

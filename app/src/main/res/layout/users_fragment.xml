@@ -13,16 +13,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/addTaskText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Add task"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
         </LinearLayout>
 
         <ListView
