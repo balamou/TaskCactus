@@ -19,24 +19,81 @@ public class Person {
     // ASSOCIATIONS
 
     private List<Task> tasks; // all tasks of the current person; [*] multiplicity
+    private List<Parent> parents; // list of parents; [0..2] multiplicity
 
     // CONSTRUCTORS
 
-    Person(String firstName, String lastName, Date birthDate)
+    public Person(String firstName, String lastName, Date birthDate)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
 
-        this.tasks = new LinkedList<Task>();
+        this.tasks = new LinkedList<>();
+        this.parents = new LinkedList<>();
     }
 
-    Person(String firstName, String lastName)
+    public Person(String firstName, String lastName)
     {
         // Minimum required attributes for Person class
         this(firstName, lastName, null);
     }
 
+
+
+
+    // =============================================================================================
+
+    // BIDIRECTIONAL LINKS
+
+    // =============================================================================================
+
+
+    /**
+     * Assigns the user a task
+     *
+     *  Set as protected to allow only the package access it,
+     *  so the user doesn't accidentally use this method.
+     */
+    protected void assignTask(Task t)
+    {
+        tasks.add(t);
+    }
+
+    /**
+     * Removes task t from the user
+     *
+     *  Set as protected to allow only the package access it,
+     *  so the user doesn't accidentally use this method.
+     */
+    protected void removeTask(Task t)
+    {
+        tasks.remove(t);
+    }
+
+    /**
+     * Adds parent to the list
+     */
+    public void addParent(Parent p)
+    {
+        parents.add(p);
+        p.addChild(this);
+    }
+
+    /**
+     * Removed parent from the list
+     */
+    public void removeParent(Parent p)
+    {
+        parents.remove(p);
+        p.removeChild(this);
+    }
+
+    // =============================================================================================
+
+    // GETTERS/SETTERS
+
+    // =============================================================================================
 
     /**
      * Returns points gained by user.
@@ -57,25 +114,6 @@ public class Person {
         return totalPoints;
     }
 
-
-    /**
-     * Assigns the user a task
-     */
-    public void assignTask(Task t)
-    {
-        tasks.add(t);
-    }
-
-    /**
-     * Removes task t from the user;
-     */
-    public void removeTask(Task t)
-    {
-        tasks.remove(t);
-    }
-
-
-    // GETTERS/SETTERS
 
     /**
      * Returns the full name of the user.

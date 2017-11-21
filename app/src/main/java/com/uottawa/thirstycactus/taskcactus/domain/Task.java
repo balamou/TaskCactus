@@ -38,7 +38,7 @@ public class Task {
         this.notes = notes;
         this.deadline = deadline;
 
-        resources = new LinkedList<Resource>();
+        resources = new LinkedList<>();
     }
 
     public Task(String name, String desc, int points, Date deadline)
@@ -47,6 +47,14 @@ public class Task {
         this(name, desc, points, deadline, false, "");
     }
 
+
+
+    // =============================================================================================
+
+    // BIDIRECTIONAL LINKS
+
+    // =============================================================================================
+
     /**
      * Assigns a task to a person
      *
@@ -54,14 +62,33 @@ public class Task {
      */
     public void assignTask(Person person)
     {
-        assignedPerson = person;
-        person.assignTask(this);
+        if (assignedPerson!=null)
+        {
+            // checks if the task is currently assigned
+            // if it is it removes the link from that person
+            removePerson();
+        }
+        else
+        {
+            // makes a unidirectional link with person
+            assignedPerson = person;
+
+            // makes a unidirectional link back to task
+            if (person!=null)
+                person.assignTask(this);
+        }
     }
 
+    /**
+     * Removes task from person currently responsible for the task.
+     *
+     */
     public void removePerson()
     {
-        assignedPerson = null;
-        assignedPerson.removeTask(this);
+        if (assignedPerson != null) {
+            assignedPerson.removeTask(this);
+            assignedPerson = null;
+        }
     }
 
 
@@ -88,8 +115,12 @@ public class Task {
     }
 
 
+    // =============================================================================================
 
     // GETTERS/SETTERS
+
+    // =============================================================================================
+
 
     public void setName(String name)
     {
