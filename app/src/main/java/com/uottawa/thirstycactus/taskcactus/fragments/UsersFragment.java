@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.uottawa.thirstycactus.taskcactus.AddTask;
 import com.uottawa.thirstycactus.taskcactus.EditUser;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
 /**
  * Created by michelbalamou on 11/2/17.
@@ -22,18 +21,11 @@ import com.uottawa.thirstycactus.taskcactus.UserListview;
  * This class represents the view with the USER list.
  */
 
-public class UsersFragment extends Fragment {
+public class UsersFragment extends Fragment
+{
 
-
-
-    // Temporary data: TO BE CHANGED BY PETER ++++
     private ListView userList;
-    private String[] username = {"Michel Balamou", "Nathanael Adams", "Peter Nguyen", "Julie Tourrilhes"};
-    private String[] firstname = {"Michel", "Nathanael", "Peter", "Julie"};
-    private String[] lastname = {"Balamou", "Adams", "Nguyen", "Tourrilhes"};
-
-    private int[] chores = {5, 4, 2, 4};
-    // Temporary data: TO BE CHANGED BY PETER ----
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
     @Nullable
@@ -43,7 +35,7 @@ public class UsersFragment extends Fragment {
 
 
         userList = view.findViewById(R.id.userList);
-        UserListview usr = new UserListview(getActivity(), username, chores);
+        UserListview usr = new UserListview(getActivity(), dataSingleton.getNameList(), dataSingleton.getTasksToDo());
         userList.setAdapter(usr);
 
         userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -53,8 +45,8 @@ public class UsersFragment extends Fragment {
                 // as well as the user editor activity
                 Intent intent = new Intent(getActivity(), EditUser.class);
 
-                intent.putExtra("F_NAME", firstname[i]);
-                intent.putExtra("L_NAME", lastname[i]);
+                intent.putExtra("F_NAME", dataSingleton.getUsers().get(i).getFirstName());
+                intent.putExtra("L_NAME", dataSingleton.getUsers().get(i).getLastName());
 
                 startActivity(intent);
             }
@@ -62,7 +54,6 @@ public class UsersFragment extends Fragment {
 
         return view;
     }
-
 
 }
 

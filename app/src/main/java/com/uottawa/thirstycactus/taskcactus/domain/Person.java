@@ -142,7 +142,6 @@ public class Person {
         return total;
     }
 
-
     /**
      * Returns the full name of the user.
      * First name, space then last name.
@@ -151,6 +150,18 @@ public class Person {
     {
         return firstName + " " + lastName;
     }
+
+    /**
+     * Returns the list of all tasks assigned to the Person
+     */
+    public List<Task> getTasks()
+    {
+        return tasks;
+    }
+
+
+
+
 
     public void setFirstName(String firstName)
     {

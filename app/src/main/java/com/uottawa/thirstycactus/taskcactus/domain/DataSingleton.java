@@ -85,6 +85,7 @@ public class DataSingleton
             michel.assignTask(nate, new_tasks.get(0));
             michel.assignTask(nate, default_tasks.get(1));
 
+            nate.getTasks().get(1).setDone(true);
             // Placeholder data ---
         }
 
@@ -122,5 +123,44 @@ public class DataSingleton
         loadData();
         return people;
     }
+
+    /**
+     * Returns a list with all the user's last names
+     *
+     */
+    public String[] getNameList()
+    {
+        loadData();
+
+        String[] result = new String[people.size()];
+
+        for (int i=0; i<people.size(); i++)
+        {
+            result[i] = people.get(i).getFullName();
+        }
+
+        return result;
+    }
+
+
+    /**
+     *
+     */
+    public int[] getTasksToDo()
+    {
+        loadData();
+
+        int[] result = new int[people.size()];
+
+        for (int i=0; i<people.size(); i++)
+        {
+            result[i] = people.get(i).totalTasks() - people.get(i).tasksCompleted();
+        }
+
+        return result;
+    }
+
+
+
 
 }
