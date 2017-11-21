@@ -11,23 +11,38 @@ public class Parent extends Person {
 
     // ATTRIBUTES
 
-    private int priorityLevel; // priority level of the parent
-    private String hashedPIN; // 4 digit PIN password
-
+    private int priorityLevel;        // priority level of the parent
+    private String hashedPIN;         // 4 digit PIN password
 
     // ASSOCIATIONS
-    private List<Person> children; // children the parent has; [*] multiplicity
+
+    private List<Person> children;    // children the parent has; the parent can add/remove tasks; [*] multiplicity
+    private List<Resource> resources; // parents have exclusive rights to add resources; [*] multiplicity
+
 
     // CONSTRUCTOR
 
-    public Parent(String firstName, String lastName, Date birthDate, int priorityLevel, String hashedPIN)
+    /**
+     * Constructor of Parent class
+     *
+     * @param firstName
+     * @param lastName
+     * @param birthDate
+     *
+     * @param priorityLevel
+     * @param hashedPIN
+     *
+     * @throws IllegalArgumentException if the hashedPIN is not a valid 4 digit PIN
+     */
+    public Parent(String firstName, String lastName, Date birthDate, int priorityLevel, String hashedPIN) throws IllegalArgumentException
     {
         super(firstName, lastName, birthDate);
 
         this.priorityLevel = priorityLevel;
-        this.hashedPIN = hashedPIN;
+        setHashedPIN(hashedPIN); // used in setter to specify restrictions on the hashPIN
 
-        this.children = new LinkedList<Person>();
+        this.children = new LinkedList<>();
+        this.resources = new LinkedList<>();
     }
 
 
@@ -41,8 +56,9 @@ public class Parent extends Person {
     /**
      * Adds a child to the list of children
      *
-     *  Set as protected to allow only the package access it,
-     *  so the user doesn't accidentally use this method.
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
      *
      * @param child
      */
@@ -53,16 +69,44 @@ public class Parent extends Person {
 
 
     /**
-     * Removes a child to the list of children
+     * Removes a child to the list of children.
      *
-     *  Set as protected to allow only the package access it,
-     *  so the user doesn't accidentally use this method.
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
      *
      * @param child
      */
     protected void removeChild(Person child)
     {
         children.remove(child);
+    }
+
+
+    /**
+     * Adds a resource to the list of resources
+     *
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
+     * @param resource
+     */
+    protected void linkResource(Resource resource)
+    {
+        resources.add(resource);
+    }
+
+    /**
+     * Removes a resource to the list of resources
+     *
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
+     * @param resource
+     */
+    protected void unlinkResource(Resource resource)
+    {
+        resources.remove(resource);
     }
 
 
@@ -97,10 +141,34 @@ public class Parent extends Person {
 
     // =============================================================================================
 
-    // GETTERS/SETTERS
+    // GETTERS/SETTERS (some comments omitted due to self explanatory nature)
 
     // =============================================================================================
 
+    /**
+     * Sets the 4 digit password required to login as a parent.
+     * Currently stored as PLAIN TEXT.
+     * ** Might implement hashing and salting later.
+     *
+     * @param hashedPIN 4 digit password
+     * @throws IllegalArgumentException if the PIN is not 4 characters long
+     */
+    public void setHashedPIN(String hashedPIN) throws IllegalArgumentException
+    {
+        if (hashedPIN.length() == 4) // check if the PIN is 4 characters long
+        {
+            this.hashedPIN = hashedPIN;
+        }
+        else
+        {
+            throw new IllegalArgumentException("The PIN has to be exactly 4 digits.");
+        }
+    }
+
+    public String getHashedPIN()
+    {
+        return hashedPIN;
+    }
 
     public void setPriorityLevel(int priorityLevel)
     {
@@ -112,13 +180,4 @@ public class Parent extends Person {
         return priorityLevel;
     }
 
-    public void setHashedPIN(String hashedPIN)
-    {
-        this.hashedPIN = hashedPIN;
-    }
-
-    public String getHashedPIN()
-    {
-        return hashedPIN;
-    }
 }

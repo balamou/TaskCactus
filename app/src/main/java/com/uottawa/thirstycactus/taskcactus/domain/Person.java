@@ -12,14 +12,15 @@ public class Person {
 
     // ATTRIBUTES
 
-    private String firstName;
-    private String lastName;
-    private Date birthDate;
+    private String firstName;     // first name
+    private String lastName;      // last name
+    private Date birthDate;       // date of birth (*optional [0..1])
 
     // ASSOCIATIONS
 
-    private List<Task> tasks; // all tasks of the current person; [*] multiplicity
+    private List<Task> tasks;     // all tasks of the current person; [*] multiplicity
     private List<Parent> parents; // list of parents; [0..2] multiplicity
+
 
     // CONSTRUCTORS
 
@@ -52,8 +53,9 @@ public class Person {
     /**
      * Assigns the user a task
      *
-     *  Set as protected to allow only the package access it,
-     *  so the user doesn't accidentally use this method.
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
      */
     protected void assignTask(Task t)
     {
@@ -63,8 +65,9 @@ public class Person {
     /**
      * Removes task t from the user
      *
-     *  Set as protected to allow only the package access it,
-     *  so the user doesn't accidentally use this method.
+     * UNIDIRECTIONAL:
+     *  - set as protected to allow only the package access it
+     *  - so the user doesn't accidentally use this method
      */
     protected void removeTask(Task t)
     {
@@ -73,6 +76,7 @@ public class Person {
 
     /**
      * Adds parent to the list
+     * Creates a BIDIRECTIONAL link between Person and Parent.
      */
     public void addParent(Parent p)
     {
@@ -82,6 +86,7 @@ public class Person {
 
     /**
      * Removed parent from the list
+     * Removes the BIDIRECTIONAL link between Person and Parent.
      */
     public void removeParent(Parent p)
     {
@@ -91,7 +96,7 @@ public class Person {
 
     // =============================================================================================
 
-    // GETTERS/SETTERS
+    // GETTERS/SETTERS (some comments omitted due to self explanatory nature)
 
     // =============================================================================================
 
@@ -113,7 +118,6 @@ public class Person {
 
         return totalPoints;
     }
-
 
     /**
      * Returns the full name of the user.

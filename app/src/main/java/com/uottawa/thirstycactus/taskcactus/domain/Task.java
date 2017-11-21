@@ -57,6 +57,7 @@ public class Task {
 
     /**
      * Assigns a task to a person
+     * Creates a BIDIRECTIONAL link between Task and Person.
      *
      * @param person person to complete the task
      */
@@ -81,11 +82,12 @@ public class Task {
 
     /**
      * Removes task from person currently responsible for the task.
-     *
+     * Removes the BIDIRECTIONAL link between Task and Person.
      */
     public void removePerson()
     {
-        if (assignedPerson != null) {
+        if (assignedPerson != null)
+        {
             assignedPerson.removeTask(this);
             assignedPerson = null;
         }
@@ -95,29 +97,33 @@ public class Task {
     /**
      * Allocate a resource.
      * Adds the resource to the list of resources.
+     * Creates a BIDIRECTIONAL link between Task and Resource.
      *
      * @param r resource allocated
      */
     public void allocateResource(Resource r)
     {
         resources.add(r);
+        r.useInTask(this);
     }
 
     /**
      * Deallocate a resource.
      * Removes the resource to the list of resources.
+     * Removes the BIDIRECTIONAL link between Task and Resource.
      *
      * @param r resource deallocated
      */
     public void deallocateResource(Resource r)
     {
         resources.remove(r);
+        r.removeFromTask(this);
     }
 
 
     // =============================================================================================
 
-    // GETTERS/SETTERS
+    // GETTERS/SETTERS (comments omitted due to self explanatory nature)
 
     // =============================================================================================
 
