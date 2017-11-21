@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
+import com.uottawa.thirstycactus.taskcactus.domain.Task;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class UserListview extends ArrayAdapter
         this.users = users;
     }
 
+    // METHODS
 
     @NonNull
     @Override
@@ -56,11 +60,20 @@ public class UserListview extends ArrayAdapter
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        // SET UP OUTPUT INFORMATION +++
-        viewHolder.name.setText(users.get(position).getFullName());
-        int choresLeft = users.get(position).totalTasks() - users.get(position).tasksCompleted();
-        viewHolder.num.setText("Chores to do: " + choresLeft);
-        // SET UP OUTPUT INFORMATION +++
+        // SET UP OUTPUT INFORMATION ++++++++++++++++++
+        Person person = users.get(position);
+        int tasksLeft = person.totalTasks() - person.tasksCompleted();
+
+        // checks if the user completed all tasks and the name of the next task, if such exists
+        Task nextTask = person.getNextTask();
+        String status = nextTask == null ? "All tasks completed" : "Next task: " + person.getNextTask().getName();
+
+
+        viewHolder.fullnameText.setText(users.get(position).getFullName());
+        viewHolder.tasksLeftText.setText("Tasks to do: " + tasksLeft);
+        viewHolder.nextTaskText.setText(status);
+
+        // SET UP OUTPUT INFORMATION ------------------
 
         return convertView;
     }
@@ -73,13 +86,15 @@ public class UserListview extends ArrayAdapter
 
     class ViewHolder
     {
-        TextView name;
-        TextView num;
+        TextView fullnameText;
+        TextView tasksLeftText;
+        TextView nextTaskText;
 
         ViewHolder(View v)
         {
-            name = v.findViewById(R.id.nameText);
-            num =  v.findViewById(R.id.numchoresText);
+            fullnameText = v.findViewById(R.id.fullnameText);
+            tasksLeftText =  v.findViewById(R.id.tasksLeftText);
+            nextTaskText = v.findViewById(R.id.nextTaskText);
         }
     }
 }

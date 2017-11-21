@@ -78,8 +78,8 @@ public class DataSingleton
             default_tasks.add(new Task("Recycle", "", 5, null));
 
 
-            new_tasks.add(new Task("Clean basement", "", 2, getTime(2017, 11, 10)));
-            new_tasks.add(new Task("Finish app", "", 5, getTime(2017, 11, 10)));
+            new_tasks.add(new Task("Clean basement", "", 2, getDate(2017, 11, 10)));
+            new_tasks.add(new Task("Finish app", "", 5, getDate(2017, 11, 15)));
 
             michel.assignTask(peter, new_tasks.get(1));
             michel.assignTask(nate, new_tasks.get(0));
@@ -98,7 +98,7 @@ public class DataSingleton
      * The reason for using this is because the Date constructor has been depreciated and
      * this is the new accepted way of making a date due to Internalization issues.
      */
-    private Date getTime(int year, int month, int day)
+    private Date getDate(int year, int month, int day)
     {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);

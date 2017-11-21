@@ -160,6 +160,49 @@ public class Person {
     }
 
 
+    /**
+     * Returns the next task that is due (earliest by date), but not yet completed.
+     * Returns null if there is no next task.
+     *
+     *  -- Better implementation would be using iterators
+     *  -- AN EVEN BETTER implementation would be using HEAPS & PRIORITY QUEUES
+     *
+     *  -- ^ left out due to time concerns
+     */
+    public Task getNextTask()
+    {
+        if (tasks.size() == 0) return null; // no next task
+
+
+
+        Task earliestTask = null;
+        boolean found = false;
+
+        for (int i = 0; i<tasks.size(); i++)
+        {
+            // Checks if the current task is not completed yet
+            if (!tasks.get(i).getDone())
+            {
+                if (!found)
+                {
+                    earliestTask = tasks.get(i); // this will point to the first task that is not yet completed in the list
+                    found = true;
+                }
+                else
+                {
+                    Date currentTask = tasks.get(i).getDeadline();
+
+                    // Checks if the earliest task so far is due later than the current task;
+                    // if it is, then the current task becomes the earliest task
+                    if (earliestTask.getDeadline().compareTo(currentTask) > 0)
+                        earliestTask = tasks.get(i);
+                }
+            }
+        }
+
+        return earliestTask;
+    }
+
 
 
 

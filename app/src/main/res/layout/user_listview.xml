@@ -30,19 +30,26 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/nameText"
+                android:id="@+id/fullnameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:text="Username"
+                android:text="Fullname"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/numchoresText"
+                android:id="@+id/tasksLeftText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="chores to do:"
+                android:text="Tasks to do:"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/nextTaskText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next Task:"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
