@@ -6,16 +6,20 @@ import java.util.Date;
 
 /**
  * Created by Peter Nguyen on 11/20/17.
+ *
+ * General purpose task class.
  */
 
 public class Task {
 
-    private String name;
-    private String desc;  // Task description
-    private int points;   // Points received for the task
-    private boolean done; // Flag to check if task is completed
-    private String notes; // Additional notes
-    private Date deadline;
+    // ATTRIBUTES
+
+    private String name;   // Name of the task
+    private String desc;   // Task description
+    private int points;    // Points received for the task
+    private boolean done;  // Flag to check if task is completed
+    private String notes;  // Additional notes
+    private Date deadline; // Deadline of the task
 
     //ASSOCIATIONS
 
@@ -23,7 +27,8 @@ public class Task {
     private List<Resource> resources; // allocated resources; [*] multiplicity
 
 
-    //CONSTRUCTOR
+    //CONSTRUCTORS
+
     public Task(String name, String desc, int points, Date deadline, boolean done, String notes)
     {
         this.name = name;
@@ -42,9 +47,21 @@ public class Task {
         this(name, desc, points, deadline, false, "");
     }
 
+    /**
+     * Assigns a task to a person
+     *
+     * @param person person to complete the task
+     */
     public void assignTask(Person person)
     {
         assignedPerson = person;
+        person.assignTask(this);
+    }
+
+    public void removePerson()
+    {
+        assignedPerson = null;
+        assignedPerson.removeTask(this);
     }
 
 
@@ -56,7 +73,7 @@ public class Task {
      */
     public void allocateResource(Resource r)
     {
-        resources.add(resources.size(), r);
+        resources.add(r);
     }
 
     /**
@@ -70,7 +87,10 @@ public class Task {
         resources.remove(r);
     }
 
-    //EDIT TASK
+
+
+    // GETTERS/SETTERS
+
     public void setName(String name)
     {
         this.name = name;
