@@ -116,15 +116,6 @@ public class DataSingleton
     // =============================================================================================
 
     /**
-     * Returns the list of users from the database.
-     */
-    public List<Person> getUsers()
-    {
-        loadData();
-        return people;
-    }
-
-    /**
      * Returns the list of default/premade tasks
      */
     public List<Task> getDefaultTasks()
@@ -142,54 +133,23 @@ public class DataSingleton
         return new_tasks;
     }
 
-    // =============================================================================================
-
-    // GETTERS: returns specific entries in each lists
-
-    // =============================================================================================
-
-
     /**
-     * Returns a list with all the user's last names
-     *
+     * Returns the list of users from the database.
      */
-    public String[] getNameList()
+    public List<Person> getUsers()
     {
         loadData();
-
-        String[] result = new String[people.size()];
-
-        for (int i=0; i<people.size(); i++)
-        {
-            // Add the full name to each entry
-            result[i] = people.get(i).getFullName();
-        }
-
-        return result;
+        return people;
     }
 
 
     /**
-     * Returns the number of tasks left to do, each in the order the users were added.
+     * Returns the list of resources from the database.
      */
-    public int[] getTasksToDo()
+    public List<Resource> getResources()
     {
         loadData();
-
-        int[] result = new int[people.size()];
-
-        for (int i=0; i<people.size(); i++)
-        {
-            // the result for each user is
-            // TotalTasks - TasksCompleted
-            result[i] = people.get(i).totalTasks() - people.get(i).tasksCompleted();
-        }
-
-        return result;
+        return resources;
     }
-
-
-
-
 
 }

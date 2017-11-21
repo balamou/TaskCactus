@@ -29,7 +29,6 @@ public class UsersFragment extends Fragment
     private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
-
     // =============================================================================================
 
     // METHODS
