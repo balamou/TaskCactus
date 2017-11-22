@@ -55,10 +55,11 @@ public class UsersFragment extends Fragment
         refreshView.setAdapter(usr);
 
         // THIS METHOD IS EXECUTED EVERY TIME AN ITEM IS CLICKED IN THE LIST VIEW
-        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
                 // Start a new activity with user information and statistics
                 Intent intent = new Intent(getActivity(), EditUser.class);
 

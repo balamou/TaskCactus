@@ -3,12 +3,16 @@ package com.uottawa.thirstycactus.taskcactus;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
 
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddTask extends AppCompatActivity
@@ -48,11 +52,33 @@ public class AddTask extends AppCompatActivity
         {
             Task task = dataSingleton.getTasks().get(task_id);
 
-            nameEdit.setText(task.getName());
-            descEdit.setText(task.getName());
-            noteEdit.setText(task.getName());
-            pointsEdit.setText(task.getName());
-            dateEdit.setText(task.getDeadline().toString());
+            if (task!=null)
+            {
+                nameEdit.setText(task.getName());
+                descEdit.setText(task.getDesc());
+                noteEdit.setText(task.getNotes());
+                pointsEdit.setText(Integer.toString(task.getPoints()));
+
+                // CHECK IF DEADLINE IS SET
+                Date deadline = task.getDeadline();
+                if (deadline!=null)
+                {
+                    // Convert Date to String +++
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                    String due;
+                    try
+                    {
+                        due = dateFormat.format(deadline);
+                    }
+                    catch (Exception e)
+                    {
+                        due = "No date set";
+                    }
+                    // Convert Date to String ---
+
+                    dateEdit.setText(due);
+                }
+            }
         }
     }
 
@@ -79,7 +105,21 @@ public class AddTask extends AppCompatActivity
         String note = noteEdit.getText().toString();
         String points = pointsEdit.getText().toString();
         String date = dateEdit.getText().toString();
-        Date due = null;
+
+        // Convert string to date +++
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date due;
+        try
+        {
+            due = dateFormat.parse(date, new ParsePosition(0));
+        }
+        catch (Exception e)
+        {
+            due = null;
+        }
+        // Convert string to date ---
+
+
         int p = 5;
 
         // Check if the points is a valid number

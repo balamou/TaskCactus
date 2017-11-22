@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
@@ -57,6 +58,9 @@ public class TaskListview extends ArrayAdapter
 
         // SET UP OUTPUT INFORMATION +++
         viewHolder.tasknameText.setText(def_tasks.get(position).getName());
+
+        if (def_tasks.get(position).getType() == "NEW") // hide icon if the task is not default
+            viewHolder.taskImage.setVisibility(View.GONE);
         // SET UP OUTPUT INFORMATION ---
 
         return convertView;
@@ -72,10 +76,12 @@ public class TaskListview extends ArrayAdapter
     class ViewHolder
     {
         TextView tasknameText;
+        ImageView taskImage;
 
         ViewHolder(View v)
         {
             tasknameText = v.findViewById(R.id.taskNameText);
+            taskImage = v.findViewById(R.id.taskImage);
         }
     }
 }

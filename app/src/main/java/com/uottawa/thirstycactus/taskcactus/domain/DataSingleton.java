@@ -171,6 +171,7 @@ public class DataSingleton
      */
     public void login(Parent parent, String PIN) throws IllegalArgumentException
     {
+        loadData();
         if (parent.getHashedPIN().equals(PIN))
         {
             loggedPerson = parent;
@@ -189,6 +190,7 @@ public class DataSingleton
      */
     public void login(Person person) throws IllegalArgumentException
     {
+        loadData();
         if (!(person instanceof Parent))
         {
             loggedPerson = person;
