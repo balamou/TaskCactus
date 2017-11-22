@@ -1,5 +1,7 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,20 +20,20 @@ public class DataSingleton
 
 
     // ASSOCIATIONS
-    private List<Task> default_tasks; // Default tasks, they cannot be removed nor added
-    private List<Task> new_tasks;
+    private List<Task> tasks;
     private List<Person> people;
     private List<Resource> resources;
 
     private Person loggedPerson;
+
+
     // CONSTRUCTOR
     /**
      * Set to private to avoid multiple instantiations
      */
     private DataSingleton()
     {
-        default_tasks = new LinkedList<>();
-        new_tasks = new LinkedList<>();
+        tasks = new LinkedList<>();
         people = new LinkedList<>();
         resources = new LinkedList<>();
     }
@@ -76,17 +78,21 @@ public class DataSingleton
             people.add(nate);
 
 
-            default_tasks.add(new Task("Wash dishes", "", 2, null));
-            default_tasks.add(new Task("Clean room", "", 4, null));
-            default_tasks.add(new Task("Recycle", "", 5, null));
+            tasks.add(new Task("Wash dishes", "", 2, null, "DEFAULT"));
+            tasks.add(new Task("Clean room", "", 4, null, "DEFAULT"));
+            tasks.add(new Task("Recycle", "", 5, null, "DEFAULT"));
 
 
-            new_tasks.add(new Task("Clean basement", "", 2, getDate(2017, 11, 10)));
-            new_tasks.add(new Task("Finish app", "", 5, getDate(2017, 11, 15)));
+            Date d1 = getDate(2017, 11, 10); // 10 NOV 2017
+            Date d2 = getDate(2017, 11, 15); // 15 NOV 2017
 
-            michel.assignTask(peter, new_tasks.get(1));
-            michel.assignTask(nate, new_tasks.get(0));
-            michel.assignTask(nate, default_tasks.get(1));
+            tasks.add(new Task("Clean basement", "", 2, d1));
+            tasks.add(new Task("Finish app", "", 5, d2));
+
+            michel.assignTask(peter, tasks.get(0));
+            michel.assignTask(nate, tasks.get(3));
+            michel.assignTask(nate, tasks.get(4));
+
 
             nate.getTasks().get(1).setDone(true);
             // Placeholder data ---
@@ -114,27 +120,19 @@ public class DataSingleton
 
     // =============================================================================================
 
-    // GETTERS: returns full lists
+    // GETTERS: returns full lists; loads data before hand if it wasn't loaded
 
     // =============================================================================================
 
     /**
      * Returns the list of default/premade tasks
      */
-    public List<Task> getDefaultTasks()
+    public List<Task> getTasks()
     {
         loadData();
-        return default_tasks;
+        return tasks;
     }
 
-    /**
-     * Returns the list of new tasks
-     */
-    public List<Task> getNewTasks()
-    {
-        loadData();
-        return new_tasks;
-    }
 
     /**
      * Returns the list of users from the database.
@@ -160,6 +158,7 @@ public class DataSingleton
      */
     public Person getLoggedPerson()
     {
+        loadData();
         return loggedPerson;
     }
 

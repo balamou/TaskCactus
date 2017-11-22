@@ -26,6 +26,7 @@ public class TaskFragment extends Fragment
     //ATTRIBUTES
 
     private ListView taskList;
+    private TaskListview taskListview;
     private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
@@ -43,8 +44,8 @@ public class TaskFragment extends Fragment
         View view = inflater.inflate(R.layout.task_fragment, container, false);
 
         taskList = view.findViewById(R.id.tasksList);
-        TaskListview task = new TaskListview(getActivity(), dataSingleton.getDefaultTasks());
-        taskList.setAdapter(task);
+        taskListview = new TaskListview(getActivity(), dataSingleton.getTasks());
+        taskList.setAdapter(taskListview);
 
         taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

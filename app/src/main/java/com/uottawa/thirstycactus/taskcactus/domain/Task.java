@@ -21,6 +21,8 @@ public class Task {
     private String notes;  // Additional notes
     private Date deadline; // Deadline of the task
 
+    private String type; // defines the type of task; can be DEFAULT or NEW
+
     //ASSOCIATIONS
 
     private Person assignedPerson; // person the task is assigned to; [0..1] multiplicity
@@ -29,7 +31,7 @@ public class Task {
 
     //CONSTRUCTORS
 
-    public Task(String name, String desc, int points, Date deadline, boolean done, String notes)
+    public Task(String name, String desc, int points, Date deadline, boolean done, String notes, String type)
     {
         this.name = name;
         this.desc = desc;
@@ -37,16 +39,22 @@ public class Task {
         this.done = done;
         this.notes = notes;
         this.deadline = deadline;
+        this.type = type;
 
         resources = new LinkedList<>();
     }
 
+    public Task(String name, String desc, int points, Date deadline, String type)
+    {
+        this(name, desc, points, deadline, false, "", type);
+    }
+
+    // DEFAULT TYPE OF A TASK IS NEW
     public Task(String name, String desc, int points, Date deadline)
     {
         // minimum arguments required for the Task class
-        this(name, desc, points, deadline, false, "");
+        this(name, desc, points, deadline, false, "", "NEW");
     }
-
 
 
     // =============================================================================================
@@ -127,7 +135,6 @@ public class Task {
 
     // =============================================================================================
 
-
     public void setName(String name)
     {
         this.name = name;
@@ -188,4 +195,8 @@ public class Task {
         return deadline;
     }
 
+    public String getType()
+    {
+        return type;
+    }
 }

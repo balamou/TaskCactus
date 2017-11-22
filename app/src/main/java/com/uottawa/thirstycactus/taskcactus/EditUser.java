@@ -62,8 +62,8 @@ public class EditUser extends AppCompatActivity
         // FILL INFORMATION
         nameText.setText(user.getFullName());
 
-        numOfTasks.setText("Total number of tasks: " + user.tasksCompleted());
-        tasksDone.setText("Tasks done: " + user.totalTasks());
+        numOfTasks.setText("Total number of tasks: " + user.totalTasks());
+        tasksDone.setText("Tasks done: " + user.tasksCompleted());
         totalPoints.setText("Total points: " + user.getPoints());
 
         Date birthday =  user.getBirthDate();
