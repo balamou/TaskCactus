@@ -8,6 +8,7 @@ public class ViewSingleton
 {
     private static ViewSingleton instance;
     private UserListview usr;
+    private TaskListview taskListview;
 
     // ASSOCIATIONS
 
@@ -36,10 +37,19 @@ public class ViewSingleton
         return instance;
     }
 
-
     public void setAdapter(UserListview usr)
     {
         this.usr = usr;
+    }
+
+    public void setTaskListview(TaskListview taskListview)
+    {
+        this.taskListview = taskListview;
+    }
+
+    public void refreshTasks()
+    {
+        taskListview.notifyDataSetChanged();
     }
 
     public void refresh()
