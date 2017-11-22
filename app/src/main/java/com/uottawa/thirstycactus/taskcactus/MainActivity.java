@@ -10,11 +10,25 @@ import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.TaskFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.UsersFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
+    // ATTRIBUTES
 
     private static final String TAG = "MainActivity";
     private SectionsStatePagerAdapter adapter;
     private ViewPager mViewPager;
+
+    private UsersFragment usr;
+    private CalendarFragment cal;
+    private TaskFragment task;
+
+
+    // =============================================================================================
+
+    // METHODS
+
+    // =============================================================================================
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 
         // Initialize the fragments
-        UsersFragment usr = new UsersFragment();
-        CalendarFragment cal = new CalendarFragment();
-        TaskFragment task = new TaskFragment();
+        usr = new UsersFragment();
+        cal = new CalendarFragment();
+        task = new TaskFragment();
 
         adapter.addFragment(usr, "Users");
         adapter.addFragment(cal, "Calendar");
@@ -55,20 +69,5 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
     }
-
-
-    /**
-     * Switches to the fragment with the according title
-     *
-     * @param title the title of the fragment
-     */
-    public void setViewPager(String title)
-    {
-        int num=adapter.getFragmentNum(title);
-
-        if (num!=-1)
-            mViewPager.setCurrentItem(num);
-    }
-
 
 }

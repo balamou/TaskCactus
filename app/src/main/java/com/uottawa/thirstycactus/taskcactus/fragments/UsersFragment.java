@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.uottawa.thirstycactus.taskcactus.AddUser;
 import com.uottawa.thirstycactus.taskcactus.EditUser;
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
@@ -29,8 +30,10 @@ public class UsersFragment extends Fragment
 
     private ListView userList;
     private Button addUser;
+    private UserListview usr;
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
+    private ViewSingleton refreshView = ViewSingleton.getInstance();
 
 
     // =============================================================================================
@@ -47,9 +50,11 @@ public class UsersFragment extends Fragment
 
         // ++++
         userList = view.findViewById(R.id.userList);
-        UserListview usr = new UserListview(getActivity(), dataSingleton.getUsers());
+        usr = new UserListview(getActivity(), dataSingleton.getUsers());
         userList.setAdapter(usr);
+        refreshView.setAdapter(usr);
 
+        // THIS METHOD IS EXECUTED EVERY TIME AN ITEM IS CLICKED IN THE LIST VIEW
         userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -73,8 +78,6 @@ public class UsersFragment extends Fragment
         });
         // ----
 
-
-
         return view;
     }
 
@@ -86,5 +89,7 @@ public class UsersFragment extends Fragment
         Intent intent = new Intent(getActivity(), AddUser.class);
         startActivity(intent);
     }
+
+
 }
 

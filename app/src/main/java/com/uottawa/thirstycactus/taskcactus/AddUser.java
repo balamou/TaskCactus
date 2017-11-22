@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Person;
+
+import java.util.List;
+
 /**
  * Created by Nathanael Adams on 11/21/17.
  *
@@ -16,6 +21,8 @@ public class AddUser extends AppCompatActivity
 
     private EditText firstNameEdit;
     private EditText lastNameEdit;
+
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
     // =============================================================================================
 
@@ -50,6 +57,22 @@ public class AddUser extends AppCompatActivity
      */
     public void onSave(View view)
     {
+        List<Person> users = dataSingleton.getUsers();
+        String firstName = firstNameEdit.getText().toString();
+        String lastName = lastNameEdit.getText().toString();
 
+        // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
+        if (firstName!=null && !firstName.isEmpty() && lastName!=null && !lastName.isEmpty())
+        {
+            Person newUser = new Person(firstName, lastName);
+
+            users.add(newUser);
+
+            ViewSingleton.getInstance().refresh();
+
+            this.finish();
+        }
     }
+
+
 }
