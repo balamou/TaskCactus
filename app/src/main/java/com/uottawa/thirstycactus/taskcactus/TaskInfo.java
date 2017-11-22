@@ -80,8 +80,13 @@ public class TaskInfo extends AppCompatActivity
      */
     public void onDelete(View view)
     {
+        Task task = dataSingleton.getTasks().get(task_id);
+        task.removePerson();
         dataSingleton.getTasks().remove(task_id);
+
         ViewSingleton.getInstance().refreshTasks();
+        ViewSingleton.getInstance().refresh();
+
         this.finish();
     }
 
