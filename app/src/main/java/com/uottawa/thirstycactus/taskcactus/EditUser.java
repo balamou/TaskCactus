@@ -78,4 +78,14 @@ public class EditUser extends AppCompatActivity
         this.finish();
     }
 
+    /**
+     * Button to edit user
+     */
+    public void onEdit(View view)
+    {
+        Intent intent = new Intent(this, AddUser.class);
+        intent.putExtra("USER_ID", user_id);
+        startActivity(intent);
+    }
+
 }

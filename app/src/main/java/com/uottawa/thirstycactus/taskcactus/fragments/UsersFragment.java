@@ -72,7 +72,8 @@ public class UsersFragment extends Fragment
         addUser.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 onAddUser(v);
             }
         });
@@ -87,6 +88,7 @@ public class UsersFragment extends Fragment
     public void onAddUser(View view)
     {
         Intent intent = new Intent(getActivity(), AddUser.class);
+        intent.putExtra("USER_ID", -1);
         startActivity(intent);
     }
 

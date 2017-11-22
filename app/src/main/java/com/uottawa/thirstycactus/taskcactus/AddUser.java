@@ -1,5 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ public class AddUser extends AppCompatActivity
     private EditText lastNameEdit;
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
+    private int user_id;
 
     // =============================================================================================
 
@@ -40,7 +42,17 @@ public class AddUser extends AppCompatActivity
         firstNameEdit = (EditText) findViewById(R.id.firstNameEdit);
         lastNameEdit = (EditText) findViewById(R.id.lastNameEdit);
 
-        //
+        // CAPTURE THE FLAG SENT FROM PREVIOUS ACTIVITY
+        Intent intent = getIntent();
+        user_id = intent.getIntExtra("USER_ID", -2);
+
+        if (user_id>=0) // FLAG: EDIT CURRENT USER
+        {
+            Person user = dataSingleton.getUsers().get(user_id);
+
+            firstNameEdit.setText(user.getFirstName());
+            lastNameEdit.setText(user.getLastName());
+        }
     }
 
     /**
@@ -64,9 +76,17 @@ public class AddUser extends AppCompatActivity
         // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
         if (firstName!=null && !firstName.isEmpty() && lastName!=null && !lastName.isEmpty())
         {
-            Person newUser = new Person(firstName, lastName);
+            if (user_id == -1) // FLAG ADD NEW USER
+            {
+                Person newUser = new Person(firstName, lastName);
 
-            users.add(newUser);
+                users.add(newUser);
+            }
+            else if(user_id>=0)// MODIFY AN EXISTING USER
+            {
+                users.get(user_id).setFirstName(firstName);
+                users.get(user_id).setLastName(lastName);
+            }
 
             ViewSingleton.getInstance().refresh();
 
