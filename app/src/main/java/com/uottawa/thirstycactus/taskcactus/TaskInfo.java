@@ -57,14 +57,6 @@ public class TaskInfo extends AppCompatActivity
 
 
     /**
-     * Closes the current activity and returns to main activity
-     */
-    public void onCancel(View view)
-    {
-        this.finish();
-    }
-
-    /**
      * Opens activity to edit task
      */
     public void onEdit(View view)

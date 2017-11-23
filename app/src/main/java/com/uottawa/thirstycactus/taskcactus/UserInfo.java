@@ -84,14 +84,6 @@ public class UserInfo extends AppCompatActivity
     }
 
     /**
-     * Exits the current activity
-     */
-    public void onCancel(View view)
-    {
-        this.finish();
-    }
-
-    /**
      * Button to edit user
      */
     public void onEdit(View view)

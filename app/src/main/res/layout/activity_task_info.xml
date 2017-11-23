@@ -28,14 +28,6 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/cancelBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="onCancel"
-                    android:text="Cancel" />
-
-                <Button
                     android:id="@+id/editBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
