@@ -12,10 +12,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.uottawa.thirstycactus.taskcactus.AddTask;
-import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.TaskInfo;
-import com.uottawa.thirstycactus.taskcactus.TaskListview;
+import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 

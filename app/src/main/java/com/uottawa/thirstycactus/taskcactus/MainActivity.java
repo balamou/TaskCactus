@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.uottawa.thirstycactus.taskcactus.adapters.SectionsStatePagerAdapter;
 import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.TaskFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.UsersFragment;

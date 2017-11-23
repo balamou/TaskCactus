@@ -1,4 +1,4 @@
-package com.uottawa.thirstycactus.taskcactus;
+package com.uottawa.thirstycactus.taskcactus.adapters;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;

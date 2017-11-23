@@ -15,7 +15,7 @@ import com.uottawa.thirstycactus.taskcactus.AddUser;
 import com.uottawa.thirstycactus.taskcactus.UserInfo;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
-import com.uottawa.thirstycactus.taskcactus.UserListview;
+import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
 /**

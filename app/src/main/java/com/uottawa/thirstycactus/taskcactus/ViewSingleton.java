@@ -1,5 +1,8 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
+import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
+
 /**
  * Created by Nate Adams on 11/21/17.
  */
