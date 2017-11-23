@@ -47,7 +47,10 @@ public class TaskInfo extends AppCompatActivity
         {
             Task task = dataSingleton.getTasks().get(task_id);
             taskNameText.setText(task.getName());
-            taskDescText.setText(task.getDesc());
+
+            String description = task.getDesc();
+
+            taskDescText.setText(description.isEmpty() ? "----" : description);
             taskPointsText.setText(Integer.toString(task.getPoints()));
         }
     }

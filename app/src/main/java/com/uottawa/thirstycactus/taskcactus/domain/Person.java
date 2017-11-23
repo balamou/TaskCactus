@@ -222,7 +222,10 @@ public class Person {
             }
         }
 
-        return earliestTask.getTask();
+        if (earliestTask!=null)
+            return earliestTask.getTask();
+
+        return null;
     }
 
 
