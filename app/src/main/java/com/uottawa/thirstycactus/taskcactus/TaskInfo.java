@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.adapters.TaskInfoAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
@@ -23,6 +25,8 @@ public class TaskInfo extends AppCompatActivity
     private TextView taskNameText;
     private TextView taskDescText;
     private TextView taskPointsText;
+
+    private ListView usersListView;
 
 
     // CONSTRUCTOR
@@ -42,14 +46,21 @@ public class TaskInfo extends AppCompatActivity
         Intent intent = getIntent();
         task_id = intent.getIntExtra("TASK_ID", -2);
 
-        // SET INFORMATION INTO TEXTVIEWs
         if (task_id>=0)
         {
+            // FETCH TASK
             Task task = dataSingleton.getTasks().get(task_id);
-            taskNameText.setText(task.getName());
 
+            // INITIALIZE LISTVIEW
+            usersListView = (ListView) findViewById(R.id.usersListView);
+            TaskInfoAdapter taskInfoAdapter = new TaskInfoAdapter(this, task.getTaskDates());
+            usersListView.setAdapter(taskInfoAdapter);
+
+
+            // SET INFORMATION INTO TEXTVIEWs
             String description = task.getDesc();
 
+            taskNameText.setText(task.getName());
             taskDescText.setText(description.isEmpty() ? "----" : description);
             taskPointsText.setText(Integer.toString(task.getPoints()));
         }

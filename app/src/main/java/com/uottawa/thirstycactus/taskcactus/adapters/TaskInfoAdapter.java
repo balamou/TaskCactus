@@ -18,10 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by michelbalamou on 11/22/17.
+ * Created by michelbalamou on 11/23/17.
  */
 
-public class UserInfoAdapter extends ArrayAdapter
+public class TaskInfoAdapter extends ArrayAdapter
 {
     // ATTRIBUTES
 
@@ -32,7 +32,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
     // CONSTRUCTOR
 
-    public UserInfoAdapter(Activity context, List<TaskDate> taskDates)
+    public TaskInfoAdapter(Activity context, List<TaskDate> taskDates)
     {
         super(context, R.layout.user_listview, taskDates);
         mInflater = LayoutInflater.from(context);
@@ -50,7 +50,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.userinfo_listview, null);
+            convertView=mInflater.inflate(R.layout.taskinfo_listview, null);
             viewHolder= new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
@@ -66,7 +66,7 @@ public class UserInfoAdapter extends ArrayAdapter
         String readableDate = dateFormat.format(task.getDate());
 
 
-        viewHolder.taskNameText.setText(task.getTask().getName());
+        viewHolder.personNameText.setText(task.getPerson().getFullName());
         viewHolder.taskDateText.setText(readableDate);
 
         viewHolder.removeButton.setTag(position);
@@ -75,7 +75,7 @@ public class UserInfoAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-                int pos= (int)view.getTag();
+                int pos = (int)view.getTag();
                 removeItem(pos);
             }
         });
@@ -106,13 +106,13 @@ public class UserInfoAdapter extends ArrayAdapter
 
     class ViewHolder
     {
-        TextView taskNameText;
+        TextView personNameText;
         TextView taskDateText;
         Button removeButton;
 
         ViewHolder(View v)
         {
-            taskNameText = v.findViewById(R.id.taskNameText);
+            personNameText = v.findViewById(R.id.personNameText);
             taskDateText =  v.findViewById(R.id.taskDateText);
             removeButton =  v.findViewById(R.id.removeBtn);
         }
