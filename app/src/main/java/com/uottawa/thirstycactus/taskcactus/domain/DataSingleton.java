@@ -64,7 +64,8 @@ public class DataSingleton
         if (!load)
         {
             // Placeholder data +++
-            Parent michel = new Parent("Michel", "Balamou", null, 1, "1234");
+            Date d = getDate(1997, 1, 6);
+            Parent michel = new Parent("Michel", "Balamou", d, 1, "1234");
 
             Person peter = new Person("Peter", "Nguyen", null);
             Person nate = new Person("Nate", "Adams", null);
@@ -84,8 +85,8 @@ public class DataSingleton
             tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
 
 
-            Date d1 = getDate(2017, 11, 10); // 10 NOV 2017
-            Date d2 = getDate(2017, 11, 15); // 15 NOV 2017
+            Date d1 = getDate(2017, 10, 30); // 10 NOV 2017
+            Date d2 = getDate(2017, 11, 2); // 15 NOV 2017
 
             tasks.add(new Task("Clean basement", "", 2));
             tasks.add(new Task("Finish app", "", 5));

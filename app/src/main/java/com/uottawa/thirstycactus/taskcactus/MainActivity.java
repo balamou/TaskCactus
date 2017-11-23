@@ -19,17 +19,12 @@ public class MainActivity extends AppCompatActivity
     private SectionsStatePagerAdapter adapter;
     private ViewPager mViewPager;
 
-    private UsersFragment usr;
-    private CalendarFragment cal;
-    private TaskFragment task;
-
 
     // =============================================================================================
 
     // METHODS
 
     // =============================================================================================
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +35,6 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(mViewPager);
-
 
         TabLayout tabLayout=(TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -58,15 +52,9 @@ public class MainActivity extends AppCompatActivity
     {
         adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
 
-        // Initialize the fragments
-        usr = new UsersFragment();
-        cal = new CalendarFragment();
-        task = new TaskFragment();
-
-        adapter.addFragment(usr, "Users");
-        adapter.addFragment(cal, "Calendar");
-        adapter.addFragment(task, "Task");
-
+        adapter.addFragment(new UsersFragment(), "Users");
+        adapter.addFragment(new CalendarFragment(), "Calendar");
+        adapter.addFragment(new TaskFragment(), "Task");
 
         viewPager.setAdapter(adapter);
     }

@@ -79,8 +79,7 @@ public class UserInfo extends AppCompatActivity
         tasksCompleted.setText(Integer.toString(user.tasksCompleted()));
         totalPoints.setText(Integer.toString(user.getPoints()));
 
-        Date birthday = user.getBirthDate();
-        birthDayText.setText(birthday == null ? "Not set" : birthday.toString());
+        birthDayText.setText(user.getReadableBirthday());
     }
 
     /**

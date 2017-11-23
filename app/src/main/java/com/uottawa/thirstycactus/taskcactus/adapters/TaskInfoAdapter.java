@@ -62,12 +62,9 @@ public class TaskInfoAdapter extends ArrayAdapter
 
         // SET UP OUTPUT INFORMATION ++++++++++++++++++
         TaskDate task = taskDates.get(position);
-        DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        String readableDate = dateFormat.format(task.getDate());
-
 
         viewHolder.personNameText.setText(task.getPerson().getFullName());
-        viewHolder.taskDateText.setText(readableDate);
+        viewHolder.taskDateText.setText(task.getReadableDate());
 
         viewHolder.removeButton.setTag(position);
         viewHolder.removeButton.setOnClickListener(new View.OnClickListener()

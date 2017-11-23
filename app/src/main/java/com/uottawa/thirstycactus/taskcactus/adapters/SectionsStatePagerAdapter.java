@@ -34,21 +34,6 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter
         fragmentListTitle.add(title);
     }
 
-    /**
-     * Returns a fragment with the title
-     *
-     * @param title the title of the fragment
-     * @return returns the number of the fragment, returns -1 if the fragment with the title not found
-    */
-    public int getFragmentNum(String title)
-    {
-        for (int i = 0; i< fragmentList.size(); i++)
-            if (fragmentListTitle.get(i).equals(title))
-                return i;
-
-        return -1;
-    }
-
     @Override
     public Fragment getItem(int position)
     {

@@ -1,5 +1,7 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -63,7 +65,6 @@ public class TaskDate
 
     // =============================================================================================
 
-
     public Date getDate()
     {
         return date;
@@ -74,6 +75,17 @@ public class TaskDate
         this.date = date;
     }
 
+    /**
+     * Returns due date in a human readible format
+     * Ex: November 10, 2001
+     */
+    public String getReadableDate()
+    {
+        if (date==null) return "Not set";
+
+        DateFormat dateFormat = new SimpleDateFormat("MMM dd");
+        return dateFormat.format(date);
+    }
 
     public Person getPerson()
     {

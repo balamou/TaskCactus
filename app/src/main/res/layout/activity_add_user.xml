@@ -29,11 +29,6 @@
             app:srcCompat="@mipmap/ic_launcher"
             tools:layout_editor_absoluteY="16dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.18" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +39,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.24"
             android:orientation="vertical"
             android:padding="10dp"
             android:weightSum="1">
@@ -56,25 +50,22 @@
 
                 <TextView
                     android:id="@+id/numOfTasks"
-                    android:layout_width="135dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="First name:"
+                    android:layout_weight="0.3"
+                    android:text="First name"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/firstNameEdit"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:ems="10"
                     android:hint="enter first name"
                     android:inputType="textPersonName" />
             </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,44 +74,49 @@
 
                 <TextView
                     android:id="@+id/tasksDone"
-                    android:layout_width="133dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Last name:"
+                    android:layout_weight="0.3"
+                    android:text="Last name"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/lastNameEdit"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
                     android:ems="10"
                     android:hint="enter last name"
                     android:inputType="textPersonName" />
             </LinearLayout>
 
-            <Space
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2" />
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Birthday"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/birthDayText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Birthday:"
-                android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/birthDayEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:ems="10"
+                    android:hint="MM/dd/yyyy"
+                    android:inputType="date" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.18" />
 
         <LinearLayout
             android:layout_width="wrap_content"

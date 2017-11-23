@@ -1,4 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -261,4 +263,16 @@ public class Person {
         return birthDate;
     }
 
+
+    /**
+     * Returns date of birth in a human readible format
+     * Ex: November 10, 2001
+     */
+    public String getReadableBirthday()
+    {
+        if (birthDate==null) return "Not set";
+
+        DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+        return dateFormat.format(birthDate);
+    }
 }
