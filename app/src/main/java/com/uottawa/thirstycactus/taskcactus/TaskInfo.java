@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
+import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import org.w3c.dom.Text;
 
@@ -21,7 +22,6 @@ public class TaskInfo extends AppCompatActivity
 
     private TextView taskNameText;
     private TextView taskDescText;
-    private TextView taskNotesText;
     private TextView taskPointsText;
 
 
@@ -36,7 +36,6 @@ public class TaskInfo extends AppCompatActivity
         // INITIALIZE GRAPHICAL ELEMENTS
         taskNameText = (TextView) findViewById(R.id.taskNameText);
         taskDescText = (TextView) findViewById(R.id.taskDescText);
-        taskNotesText = (TextView) findViewById(R.id.taskNotesText);
         taskPointsText = (TextView) findViewById(R.id.taskPointsText);
 
         // GET TASK ID
@@ -49,7 +48,6 @@ public class TaskInfo extends AppCompatActivity
             Task task = dataSingleton.getTasks().get(task_id);
             taskNameText.setText(task.getName());
             taskDescText.setText(task.getDesc());
-            taskNotesText.setText(task.getNotes());
             taskPointsText.setText(Integer.toString(task.getPoints()));
         }
     }
@@ -80,9 +78,7 @@ public class TaskInfo extends AppCompatActivity
      */
     public void onDelete(View view)
     {
-        Task task = dataSingleton.getTasks().get(task_id);
-        task.removePerson();
-        dataSingleton.getTasks().remove(task_id);
+        dataSingleton.deleteTask(task_id);
 
         ViewSingleton.getInstance().refreshTasks();
         ViewSingleton.getInstance().refresh();

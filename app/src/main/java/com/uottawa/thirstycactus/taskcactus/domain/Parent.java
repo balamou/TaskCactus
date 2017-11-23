@@ -116,9 +116,9 @@ public class Parent extends Person {
      * @param person pointer to person
      * @param task task to be assigned
      */
-    public void assignTask(Person person, Task task)
+    public void assignTask(Person person, Task task, Date date, boolean completed, String notes)
     {
-        task.assignTask(person); // creates a bidirectional link from Task to person
+        person.assignTask(task, date, completed, notes); // creates a bidirectional link from Task to person
     }
 
     /**
@@ -127,13 +127,13 @@ public class Parent extends Person {
      * @param fullName name of the person to be assigned
      * @param task task to be assigned
      */
-    public void assignTask(String fullName, Task task)
+    public void assignTask(String fullName, Task task, Date date, boolean completed, String notes)
     {
         for (Person p : children)
         {
             if (p.getFirstName().equals(fullName))
             {
-                task.assignTask(p); // creates a bidirectional link from Task to person
+                p.assignTask(task, date, completed, notes); // creates a bidirectional link from Task to person
                 return ;
             }
         }

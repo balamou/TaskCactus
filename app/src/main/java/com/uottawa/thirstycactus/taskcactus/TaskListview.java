@@ -25,7 +25,7 @@ public class TaskListview extends ArrayAdapter
 
     private LayoutInflater mInflater;
 
-    private List<Task> def_tasks;
+    private List<Task> tasks;
 
     // CONSTRUCTOR
 
@@ -34,7 +34,7 @@ public class TaskListview extends ArrayAdapter
         super(context, R.layout.user_listview, tasks);
         mInflater = LayoutInflater.from(context);
 
-        def_tasks = tasks;
+        this.tasks = tasks;
     }
 
 
@@ -57,9 +57,9 @@ public class TaskListview extends ArrayAdapter
         }
 
         // SET UP OUTPUT INFORMATION +++
-        viewHolder.tasknameText.setText(def_tasks.get(position).getName());
+        viewHolder.tasknameText.setText(tasks.get(position).getName());
 
-        if (def_tasks.get(position).getType() == "NEW") // hide icon if the task is not default
+        if (tasks.get(position).getType() == "NEW") // hide icon if the task is not default
             viewHolder.taskImage.setVisibility(View.GONE);
         // SET UP OUTPUT INFORMATION ---
 

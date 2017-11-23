@@ -71,6 +71,9 @@ public class DataSingleton
             Person peter = new Person("Peter", "Nguyen", null);
             Person nate = new Person("Nate", "Adams", null);
 
+            peter.addParent(michel);
+            nate.addParent(michel);
+
             loggedPerson = michel;
 
             people.add(michel);
@@ -78,23 +81,25 @@ public class DataSingleton
             people.add(nate);
 
 
-            tasks.add(new Task("Wash dishes", "", 2, null, "DEFAULT"));
-            tasks.add(new Task("Clean room", "", 4, null, "DEFAULT"));
-            tasks.add(new Task("Recycle", "", 5, null, "DEFAULT"));
+            tasks.add(new Task("Wash dishes", "", 2, "DEFAULT"));
+            tasks.add(new Task("Clean room", "", 4, "DEFAULT"));
+            tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
 
 
             Date d1 = getDate(2017, 11, 10); // 10 NOV 2017
             Date d2 = getDate(2017, 11, 15); // 15 NOV 2017
 
-            tasks.add(new Task("Clean basement", "", 2, d1));
-            tasks.add(new Task("Finish app", "", 5, d2));
-
-            michel.assignTask(peter, tasks.get(0));
-            michel.assignTask(nate, tasks.get(3));
-            michel.assignTask(nate, tasks.get(4));
+            tasks.add(new Task("Clean basement", "", 2));
+            tasks.add(new Task("Finish app", "", 5));
 
 
-            nate.getTasks().get(1).setDone(true);
+
+            michel.assignTask(peter, tasks.get(0), d1, false, "");
+            michel.assignTask(nate, tasks.get(3), d1, false, "");
+            michel.assignTask(nate, tasks.get(4), d2, false, "");
+
+
+            nate.getTaskDates().get(1).setCompleted(true);
             // Placeholder data ---
         }
 
@@ -124,6 +129,8 @@ public class DataSingleton
 
     // =============================================================================================
 
+
+
     /**
      * Returns the list of default/premade tasks
      */
@@ -152,6 +159,19 @@ public class DataSingleton
         loadData();
         return resources;
     }
+
+    // =============================================================================================
+
+    // METHODS
+
+    // =============================================================================================
+
+    public void deleteTask(int index)
+    {
+        tasks.get(index).prepareToDelete();
+        tasks.remove(index);
+    }
+
 
     /**
      * Returns the currently logged in person

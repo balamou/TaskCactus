@@ -17,43 +17,35 @@ public class Task {
     private String name;   // Name of the task
     private String desc;   // Task description
     private int points;    // Points received for the task
-    private boolean done;  // Flag to check if task is completed
-    private String notes;  // Additional notes
-    private Date deadline; // Deadline of the task
 
     private String type; // defines the type of task; can be DEFAULT or NEW
 
     //ASSOCIATIONS
 
-    private Person assignedPerson; // person the task is assigned to; [0..1] multiplicity
+    //private Person assignedPerson; // person the task is assigned to; [0..1] multiplicity
+    private List<TaskDate> taskDates; // association class liked to Person; [*] multiplicity
     private List<Resource> resources; // allocated resources; [*] multiplicity
 
 
     //CONSTRUCTORS
 
-    public Task(String name, String desc, int points, Date deadline, boolean done, String notes, String type)
+    public Task(String name, String desc, int points, String type)
     {
         this.name = name;
         this.desc = desc;
         this.points = points;
-        this.done = done;
-        this.notes = notes;
-        this.deadline = deadline;
         this.type = type;
 
+        taskDates = new LinkedList<>();
         resources = new LinkedList<>();
     }
 
-    public Task(String name, String desc, int points, Date deadline, String type)
-    {
-        this(name, desc, points, deadline, false, "", type);
-    }
 
     // DEFAULT TYPE OF A TASK IS NEW
-    public Task(String name, String desc, int points, Date deadline)
+    public Task(String name, String desc, int points)
     {
         // minimum arguments required for the Task class
-        this(name, desc, points, deadline, false, "", "NEW");
+        this(name, desc, points, "NEW");
     }
 
 
@@ -64,43 +56,21 @@ public class Task {
     // =============================================================================================
 
     /**
-     * Assigns a task to a person
-     * Creates a BIDIRECTIONAL link between Task and Person.
-     *
-     * @param person person to complete the task
+     * Links a taskDate to Task (UNIDIRECTIONAL)
      */
-    public void assignTask(Person person)
+    protected void linkTaskDate(TaskDate taskDate)
     {
-        if (assignedPerson!=null)
-        {
-            // checks if the task is currently assigned
-            // if it is it removes the link from that person
-            removePerson();
-        }
-        else
-        {
-            // makes a unidirectional link with person
-            assignedPerson = person;
-
-            // makes a unidirectional link back to task
-            if (person!=null)
-                person.assignTask(this);
-        }
+        taskDates.add(taskDate);
     }
+
 
     /**
-     * Removes task from person currently responsible for the task.
-     * Removes the BIDIRECTIONAL link between Task and Person.
+     * Unlinks a taskDate to Task (UNIDIRECTIONAL)
      */
-    public void removePerson()
+    protected void unlinkTaskDate(TaskDate taskDate)
     {
-        if (assignedPerson != null)
-        {
-            assignedPerson.removeTask(this);
-            assignedPerson = null;
-        }
+        taskDates.remove(taskDate);
     }
-
 
     /**
      * Allocate a resource.
@@ -128,12 +98,34 @@ public class Task {
         r.removeFromTask(this);
     }
 
+    /**
+     * Removes all existing association classes;
+     * This allows the Task instance to be deleted wihout causing problems.
+     */
+    public void prepareToDelete()
+    {
+        for (TaskDate t : taskDates)
+            t.removeLink();
+
+        taskDates = null; // remove reference for Garbage Collector
+    }
+
 
     // =============================================================================================
 
     // GETTERS/SETTERS (comments omitted due to self explanatory nature)
 
     // =============================================================================================
+
+    public List<Resource> getResources()
+    {
+        return resources;
+    }
+
+    public List<TaskDate> getTaskDates()
+    {
+        return taskDates;
+    }
 
     public void setName(String name)
     {
@@ -163,36 +155,6 @@ public class Task {
     public int getPoints()
     {
         return points;
-    }
-
-    public void setDone(boolean done)
-    {
-        this.done = done;
-    }
-
-    public boolean getDone()
-    {
-        return done;
-    }
-
-    public void setNotes(String notes)
-    {
-        this.notes = notes;
-    }
-
-    public String getNotes()
-    {
-        return notes;
-    }
-
-    public void setDeadline(Date deadline)
-    {
-        this.deadline = deadline;
-    }
-
-    public Date getDeadline()
-    {
-        return deadline;
     }
 
     public String getType()

@@ -3,6 +3,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 /**
  * Created by Peter Nguyen on 11/20/17.
  */
@@ -17,7 +19,8 @@ public class Person {
 
     // ASSOCIATIONS
 
-    private List<Task> tasks;     // all tasks of the current person; [*] multiplicity
+    //private List<Task> tasks;
+    private List<TaskDate> taskDates; // association class liked to Task; [*] multiplicity
     private List<Parent> parents; // list of parents; [0..2] multiplicity
 
 
@@ -29,8 +32,8 @@ public class Person {
         this.lastName = lastName;
         this.birthDate = birthDate;
 
-        this.tasks = new LinkedList<>();
         this.parents = new LinkedList<>();
+        this.taskDates = new LinkedList<>();
     }
 
     public Person(String firstName, String lastName)
@@ -50,27 +53,45 @@ public class Person {
 
 
     /**
-     * Assigns the user a task
-     *
-     * UNIDIRECTIONAL:
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
+     * Assigns the user a task; Makes a bidirectional link between Person and Task, through the
+     * association class TaskDate
      */
-    protected void assignTask(Task t)
+    public void assignTask(Task task, Date date, boolean completed, String notes)
     {
-        tasks.add(t);
+        new TaskDate(this, task, date, completed, notes);
     }
 
     /**
-     * Removes task t from the user
+     *  UNIDIRECTIONAL link to TASKDATE
+     */
+    protected void linkTaskDate(TaskDate taskDate)
+    {
+        taskDates.add(taskDate);
+    }
+
+    protected void unlinkTaskDate(TaskDate taskDate)
+    {
+        taskDates.remove(taskDate);
+    }
+
+    /**
+     * Removes the taskDate associated to Task from the user
      *
-     * UNIDIRECTIONAL:
      *  - set as protected to allow only the package access it
      *  - so the user doesn't accidentally use this method
      */
-    protected void removeTask(Task t)
+    protected void removeTask(Task task)
     {
-        tasks.remove(t);
+        for (TaskDate t : taskDates)
+        {
+            if (t.getTask() == task)
+            {
+                task.unlinkTaskDate(t);
+                taskDates.remove(t);
+                break;
+            }
+        }
+
     }
 
     /**
@@ -109,10 +130,10 @@ public class Person {
     {
         int totalPoints = 0;
 
-        for (Task t: tasks)
+        for (TaskDate t: taskDates)
         {
-            if (t.getDone())
-                totalPoints += t.getPoints();
+            if (t.getCompleted())
+                totalPoints += t.getTask().getPoints();
         }
 
         return totalPoints;
@@ -123,7 +144,7 @@ public class Person {
      */
     public int totalTasks()
     {
-        return tasks.size();
+        return taskDates.size();
     }
 
     /**
@@ -133,9 +154,9 @@ public class Person {
     {
         int total = 0;
 
-        for (Task t: tasks)
+        for (TaskDate t: taskDates)
         {
-            if (t.getDone())
+            if (t.getCompleted())
                 total++; // increments only is task set as completed
         }
 
@@ -154,9 +175,9 @@ public class Person {
     /**
      * Returns the list of all tasks assigned to the Person
      */
-    public List<Task> getTasks()
+    public List<TaskDate> getTaskDates()
     {
-        return tasks;
+        return taskDates;
     }
 
 
@@ -171,36 +192,37 @@ public class Person {
      */
     public Task getNextTask()
     {
-        if (tasks.size() == 0) return null; // no next task
+        if (taskDates.size() == 0) return null; // no next task
 
 
-
-        Task earliestTask = null;
+        TaskDate earliestTask = null;
         boolean found = false;
 
-        for (int i = 0; i<tasks.size(); i++)
+        // CIRCLES through every association instance of TaskDate to find which is the earliest
+        // non completed task
+        for (TaskDate t : taskDates)
         {
             // Checks if the current task is not completed yet
-            if (!tasks.get(i).getDone())
+            if (!t.getCompleted())
             {
                 if (!found)
                 {
-                    earliestTask = tasks.get(i); // this will point to the first task that is not yet completed in the list
+                    earliestTask = t; // this will point to the first task that is not yet completed in the list
                     found = true;
                 }
                 else
                 {
-                    Date currentTask = tasks.get(i).getDeadline();
+                    Date currentTask = t.getDate();
 
                     // Checks if the earliest task so far is due later than the current task;
                     // if it is, then the current task becomes the earliest task
-                    if (earliestTask.getDeadline().compareTo(currentTask) > 0)
-                        earliestTask = tasks.get(i);
+                    if (earliestTask.getDate().compareTo(currentTask) > 0)
+                        earliestTask = t;
                 }
             }
         }
 
-        return earliestTask;
+        return earliestTask.getTask();
     }
 
 
