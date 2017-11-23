@@ -16,11 +16,12 @@ import java.util.Date;
  *
  */
 
-public class EditUser extends AppCompatActivity
+public class UserInfo extends AppCompatActivity
 {
     // ATTRIBUTES
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
+
     private int user_id; // id of the user; the order the user appears in the global user list
     private Person user; // pointer to the user with the id
 
@@ -28,8 +29,8 @@ public class EditUser extends AppCompatActivity
     // GRAPHICAL ATTRIBUTES
 
     private TextView nameText;
-    private TextView numOfTasks;
-    private TextView tasksDone;
+    private TextView allocatedTasks;
+    private TextView tasksCompleted;
     private TextView totalPoints;
     private TextView birthDayText;
 
@@ -44,7 +45,7 @@ public class EditUser extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
+        setContentView(R.layout.activity_user_info);
 
         // RECEIVE DATA FROM PREVIOUS ACTIVITY
         Intent intent = getIntent();
@@ -53,21 +54,21 @@ public class EditUser extends AppCompatActivity
         user = dataSingleton.getUsers().get(user_id);
 
         // SET UP ALL GRAPHICAL OBJECTS
-        nameText = (TextView)findViewById(R.id.nameText);
-        numOfTasks = (TextView)findViewById(R.id.numOfTasks);
-        tasksDone = (TextView)findViewById(R.id.tasksDone);
-        totalPoints = (TextView)findViewById(R.id.totalPoints);
-        birthDayText = (TextView)findViewById(R.id.birthDayText);
+        nameText = (TextView) findViewById(R.id.nameText);
+        allocatedTasks = (TextView) findViewById(R.id.allocatedTasksText);
+        tasksCompleted = (TextView) findViewById(R.id.tasksCompleted);
+        totalPoints = (TextView) findViewById(R.id.totalPoints);
+        birthDayText = (TextView) findViewById(R.id.birthDayText);
 
         // FILL INFORMATION
         nameText.setText(user.getFullName());
 
-        numOfTasks.setText("Total number of tasks: " + user.totalTasks());
-        tasksDone.setText("Tasks done: " + user.tasksCompleted());
-        totalPoints.setText("Total points: " + user.getPoints());
+        allocatedTasks.setText(Integer.toString(user.totalTasks()));
+        tasksCompleted.setText(Integer.toString(user.tasksCompleted()));
+        totalPoints.setText(Integer.toString(user.getPoints()));
 
-        Date birthday =  user.getBirthDate();
-        birthDayText.setText("Birthday: " + (birthday == null ? "Not set" : birthday));
+        Date birthday = user.getBirthDate();
+        birthDayText.setText(birthday == null ? "Not set" : birthday.toString());
     }
 
     /**

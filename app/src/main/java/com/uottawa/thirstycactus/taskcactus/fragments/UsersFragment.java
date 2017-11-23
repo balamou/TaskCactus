@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.uottawa.thirstycactus.taskcactus.AddUser;
-import com.uottawa.thirstycactus.taskcactus.EditUser;
+import com.uottawa.thirstycactus.taskcactus.UserInfo;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.UserListview;
@@ -61,7 +61,7 @@ public class UsersFragment extends Fragment
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
                 // Start a new activity with user information and statistics
-                Intent intent = new Intent(getActivity(), EditUser.class);
+                Intent intent = new Intent(getActivity(), UserInfo.class);
 
                 intent.putExtra("USER_ID", i);
 
