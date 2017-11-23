@@ -89,12 +89,15 @@ public class DataSingleton
 
             tasks.add(new Task("Clean basement", "", 2));
             tasks.add(new Task("Finish app", "", 5));
+            tasks.add(new Task("Wash car", "", 5));
 
 
 
             michel.assignTask(peter, tasks.get(0), d1, false, "");
+
             michel.assignTask(nate, tasks.get(3), d1, false, "");
             michel.assignTask(nate, tasks.get(4), d2, false, "");
+            michel.assignTask(nate, tasks.get(5), d2, false, "");
 
 
             nate.getTaskDates().get(1).setCompleted(true);

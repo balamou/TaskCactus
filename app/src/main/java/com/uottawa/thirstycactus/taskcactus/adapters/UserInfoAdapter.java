@@ -3,10 +3,12 @@ package com.uottawa.thirstycactus.taskcactus.adapters;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.R;
@@ -15,7 +17,6 @@ import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by michelbalamou on 11/22/17.
@@ -44,7 +45,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
         ViewHolder viewHolder;
 
@@ -69,12 +70,34 @@ public class UserInfoAdapter extends ArrayAdapter
         viewHolder.taskNameText.setText(task.getTask().getName());
         viewHolder.taskDateText.setText(readableDate);
 
+        viewHolder.removeButton.setTag(position);
+        viewHolder.removeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                int pos= (int)view.getTag();
+                removeItem(pos);
+            }
+        });
 
         // SET UP OUTPUT INFORMATION ------------------
 
         return convertView;
     }
 
+    public int getCount()
+    {
+        return taskDates.size();
+    }
+
+    private void removeItem(int pos)
+    {
+        taskDates.get(pos).removeLink();
+        remove(pos); // built in remove method
+
+        notifyDataSetChanged();
+    }
 
     // =============================================================================================
 
@@ -86,11 +109,13 @@ public class UserInfoAdapter extends ArrayAdapter
     {
         TextView taskNameText;
         TextView taskDateText;
+        Button removeButton;
 
         ViewHolder(View v)
         {
             taskNameText = v.findViewById(R.id.taskNameText);
             taskDateText =  v.findViewById(R.id.taskDateText);
+            removeButton =  v.findViewById(R.id.removeBtn);
         }
     }
 }
