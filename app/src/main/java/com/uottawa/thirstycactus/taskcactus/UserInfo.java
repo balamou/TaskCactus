@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.adapters.UserInfoAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 
@@ -29,11 +31,14 @@ public class UserInfo extends AppCompatActivity
     // GRAPHICAL ATTRIBUTES
 
     private TextView nameText;
+
     private TextView allocatedTasks;
     private TextView tasksCompleted;
     private TextView totalPoints;
     private TextView birthDayText;
 
+    private ListView tasksListView;
+    private UserInfoAdapter userInfo;
 
     // =============================================================================================
 
@@ -47,11 +52,18 @@ public class UserInfo extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
+
+
         // RECEIVE DATA FROM PREVIOUS ACTIVITY
         Intent intent = getIntent();
 
         user_id = intent.getIntExtra("USER_ID", 0);
         user = dataSingleton.getUsers().get(user_id);
+
+        // SETUP LIST VIEW
+        tasksListView = (ListView)findViewById(R.id.tasksListView);
+        userInfo = new UserInfoAdapter(this, user.getTaskDates());
+        tasksListView.setAdapter(userInfo);
 
         // SET UP ALL GRAPHICAL OBJECTS
         nameText = (TextView) findViewById(R.id.nameText);

@@ -1,7 +1,5 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
