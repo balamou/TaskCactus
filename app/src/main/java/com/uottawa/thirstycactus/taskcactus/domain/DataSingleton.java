@@ -131,8 +131,6 @@ public class DataSingleton
 
     // =============================================================================================
 
-
-
     /**
      * Returns the list of default/premade tasks
      */
@@ -168,6 +166,40 @@ public class DataSingleton
 
     // =============================================================================================
 
+    /**
+     * Returns the list of all TaskDates
+     */
+    public List<TaskDate> getAllAssociations()
+    {
+        List<TaskDate> taskDates = new LinkedList<>();
+        for (Person p: people)
+        {
+            if(p.getTaskDates()!=null)
+                taskDates.addAll(p.getTaskDates()); // appends all TaskDates from person to the end of the List
+        }
+        return taskDates;
+    }
+
+    /**
+     * Returns the list of all TaskDates from that date
+     */
+    public List<TaskDate> getTasksFromDay(Date date)
+    {
+        List<TaskDate> taskDates = new LinkedList<>();
+        for (Person p: people)
+        {
+            for(TaskDate t : p.getTaskDates())
+            {
+                if (t.getDate().equals(date))
+                    taskDates.add(t);
+            }
+        }
+        return taskDates;
+    }
+
+    /**
+     * Delete task from the list at index
+     */
     public void deleteTask(int index)
     {
         tasks.get(index).prepareToDelete();
