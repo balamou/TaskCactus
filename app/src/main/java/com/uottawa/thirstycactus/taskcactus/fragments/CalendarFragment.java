@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.ExpandableListAdapter;
+import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
@@ -45,6 +48,9 @@ public class CalendarFragment extends Fragment
     private Button nextWeekBtn;
     private Button prevWeekBtn;
     private TextView monthText;
+
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter listAdapter;
 
     // =============================================================================================
 
@@ -128,8 +134,21 @@ public class CalendarFragment extends Fragment
             i++;
         }
 
+        // EXPENDABLE LIST VIEW
+        expandableListView = view.findViewById(R.id.expandableListView);
+        listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(), currentDate);
+        expandableListView.setAdapter(listAdapter);
+
+        int count = listAdapter.getGroupCount();
+        for (int j = 0; j < count; j++){
+            expandableListView.expandGroup(j);
+        }
+
+
         return view;
     }
+
+
 
     /**
      * When going to next week
@@ -209,6 +228,9 @@ public class CalendarFragment extends Fragment
 
         selectedDate = selectedWeek[pos];
 
+
+        listAdapter.setDate(selectedDate);
+        listAdapter.notifyDataSetChanged();
         //monthText.setText(selectedDate.toString());
 
     }

@@ -85,8 +85,8 @@ public class DataSingleton
             tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
 
 
-            Date d1 = getDate(2017, 10, 30); // 10 NOV 2017
-            Date d2 = getDate(2017, 11, 2); // 15 NOV 2017
+            Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
+            Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
 
             tasks.add(new Task("Clean basement", "", 2));
             tasks.add(new Task("Finish app", "", 5));

@@ -1,4 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
+import android.widget.ListAdapter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -275,4 +277,24 @@ public class Person {
         DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         return dateFormat.format(birthDate);
     }
+
+    /**
+     * Returns all taskDates associated to that date;
+     * Only Year, Month and Day comparisons; The time is ommited
+     */
+    public List<TaskDate> getTaskDates(Date date)
+    {
+        List<TaskDate> result = new LinkedList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dates = sdf.format(date);
+
+        for (TaskDate t: taskDates)
+        {
+            if (dates.equals(sdf.format(t.getDate())))
+                result.add(t);
+        }
+
+        return result;
+    }
+
 }
