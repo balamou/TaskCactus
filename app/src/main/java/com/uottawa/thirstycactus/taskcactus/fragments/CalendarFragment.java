@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.ExpandableListAdapter;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Person;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,6 +53,10 @@ public class CalendarFragment extends Fragment
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter listAdapter;
+
+
+    private LinearLayout layout1;
+    private LinearLayout layout2;
 
     // =============================================================================================
 
@@ -142,6 +148,9 @@ public class CalendarFragment extends Fragment
 
         monthText = view.findViewById(R.id.monthText);
         todayBtn = view.findViewById(R.id.todayBtn);
+
+        layout1 = view.findViewById(R.id.layout1);
+        layout2 = view.findViewById(R.id.layout2);
     }
 
 
@@ -235,10 +244,27 @@ public class CalendarFragment extends Fragment
         monthText.setText(simpleDateFormat.format(date));
 
 
-        listAdapter.setPeople(dataSingleton.getUsers(date));
+        List<Person> users = dataSingleton.getUsers(date); // users that have a task on that day
+
+        if (users.isEmpty()) // if nobody has a task on that day
+        {
+            layout1.setVisibility(View.GONE);
+            layout2.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            layout1.setVisibility(View.VISIBLE);
+            layout2.setVisibility(View.GONE);
+        }
+
+        listAdapter.setPeople(users);
         // Notify the list view that the date has been changed
         listAdapter.setDate(date);
         listAdapter.notifyDataSetChanged();
+
+        // Expands all views
+        for (int j = 0; j < listAdapter.getGroupCount(); j++)
+            expandableListView.expandGroup(j);
     }
 
     /**
