@@ -170,7 +170,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onPrevWeek"
-                android:text="--" />
+                android:text="&lt;" />
+
+            <Button
+                android:id="@+id/todayBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="today" />
 
             <Button
                 android:id="@+id/nextWeekBtn"
@@ -178,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onNextWeek"
-                android:text="--" />
+                android:text="&gt;" />
         </LinearLayout>
 
         <ExpandableListView

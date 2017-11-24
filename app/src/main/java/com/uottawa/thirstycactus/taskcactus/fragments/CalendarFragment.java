@@ -12,7 +12,6 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.ExpandableListAdapter;
-import com.uottawa.thirstycactus.taskcactus.MainActivity;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 
@@ -39,15 +38,16 @@ public class CalendarFragment extends Fragment
     private Date currentDate;
 
     private Date[] selectedWeek = new Date[7];
-    private Date selectedDate;
     private Calendar calendar = Calendar.getInstance();
 
     // GRAPHICAL ITEMS
     private List<Button> buttons;
 
+    private TextView monthText;
+
     private Button nextWeekBtn;
     private Button prevWeekBtn;
-    private TextView monthText;
+    private Button todayBtn;
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter listAdapter;
@@ -64,8 +64,69 @@ public class CalendarFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.calendar_fragment, container, false);
 
+        initGUI(view);
 
-        // POPULATE BUTTONS
+        // CALCULATE DATE & WEEK ===================================================================
+        currentDate = new Date();
+        int index = dayOfWeek(currentDate);
+
+        setButtonText(currentDate);
+        buttons.get(index).setTextColor(Color.parseColor("#ff0000")); // set current date as RED
+
+        // show Today's date
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("MMMM, dd");
+        monthText.setText(simpleDateformat.format(currentDate));
+
+        // ASSIGN ACTIONS ==========================================================================
+
+        nextWeekBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChangeWeek(7);
+            }
+        });
+
+        prevWeekBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChangeWeek(-7);
+            }
+        });
+
+        todayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onToday();
+            }
+        });
+
+        // SET THE SAME LISTENER TO ALL BUTTONS
+        int i = 0;
+        for (Button b : buttons)
+        {
+            b.setTag(i);
+            b.setOnClickListener(onChangeDate);
+            i++;
+        }
+
+        // EXPENDABLE LIST VIEW
+        expandableListView = view.findViewById(R.id.expandableListView);
+        listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(), currentDate);
+        expandableListView.setAdapter(listAdapter);
+
+        // Expands all views
+        for (int j = 0; j < listAdapter.getGroupCount(); j++)
+            expandableListView.expandGroup(j);
+
+
+        return view;
+    }
+
+    /**
+     * Links all the graphical object to references
+     */
+    private void initGUI(View view)
+    {
         buttons = new LinkedList<>();
 
         buttons.add((Button)view.findViewById(R.id.sundayBtn));
@@ -80,105 +141,112 @@ public class CalendarFragment extends Fragment
         prevWeekBtn = view.findViewById(R.id.prevWeekBtn);
 
         monthText = view.findViewById(R.id.monthText);
+        todayBtn = view.findViewById(R.id.todayBtn);
+    }
 
 
-        // CALCULATE DATE & WEEK ===================================================================
-        currentDate = new Date();
-        selectedDate = currentDate;
-        String[] days = getDaysOfWeek(currentDate);
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("MMMM");
+    // =============================================================================================
 
+    // ACTION METHODS
 
-        for (int i=0; i<7; i++)
-            buttons.get(i).setText(days[i]); // set days displayed on buttons
+    // =============================================================================================
 
-        calendar.setTime(currentDate);
-        int index = calendar.get(Calendar.DAY_OF_WEEK);
-        buttons.get(index-1).setTextColor(Color.parseColor("#ff0000")); // set current date as RED
-
-
-        monthText.setText(simpleDateformat.format(currentDate)); // set month
-
-        // ASSIGN ACTIONS ==========================================================================
-
-        nextWeekBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onNextWeek();
-            }
-        });
-
-        prevWeekBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onPrevWeek();
-            }
-        });
-
-        // CREATE A LISTENER
-        View.OnClickListener listener = new View.OnClickListener()
+    /**
+     * Event that occurs after selecting a different date
+     */
+    private  View.OnClickListener onChangeDate = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View view)
         {
-            @Override
-            public void onClick(View view)
-            {
-                onChangeDate((int)view.getTag());
-            }
-        };
+            int pos = (int)view.getTag();
+            currentDate = selectedWeek[pos]; // change date
+            setButtonRED(pos); // change button Color
+            refreshGUI(currentDate); // refresh GUI
+        }
+    };
 
-        // SET THE SAME LISTENER TO ALL BUTTONS
-        int i = 0;
+
+    /**
+     * Buttons that change the week;
+     *
+     * @param increment if +7 then moving to next week; if -7 then moving to previous week
+     */
+    public void onChangeWeek(int increment)
+    {
+        currentDate = addDays(currentDate, increment); // Increment/decrement date
+        setButtonText(currentDate); // change Button Text
+        refreshGUI(currentDate); // refresh GUI
+    }
+
+    /**
+     * Move back to today's date
+     */
+    public void onToday()
+    {
+        currentDate = new Date(); // change date
+        setButtonText(currentDate); // change Button Text
+        setButtonRED(dayOfWeek(currentDate)); // change button Color
+        refreshGUI(currentDate); // refresh GUI
+    }
+
+
+    // =============================================================================================
+
+    // HELPER METHODS
+
+    // =============================================================================================
+
+    /**
+     * Sets all buttons as black except one
+     *
+     * @param pos position of the button in the list/ Day of the week
+     */
+    private void setButtonRED(int pos)
+    {
+        // Change color
         for (Button b : buttons)
-        {
-            b.setTag(i);
-            b.setOnClickListener(listener);
-            i++;
-        }
+            b.setTextColor(Color.parseColor("#000000")); // set all buttons as Black
 
-        // EXPENDABLE LIST VIEW
-        expandableListView = view.findViewById(R.id.expandableListView);
-        listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(), currentDate);
-        expandableListView.setAdapter(listAdapter);
-
-        int count = listAdapter.getGroupCount();
-        for (int j = 0; j < count; j++){
-            expandableListView.expandGroup(j);
-        }
-
-
-        return view;
+        buttons.get(pos).setTextColor(Color.parseColor("#ff0000")); // set selected button as RED
     }
-
-
 
     /**
-     * When going to next week
+     * Updates the text of each button to the current week
+     *
+     * @param date date that points at the week
      */
-    public void onNextWeek()
+    private void setButtonText(Date date)
     {
-        currentDate = addDays(currentDate, 7);
-        String[] days = getDaysOfWeek(currentDate);
+        String[] days = getDaysOfWeek(date);
 
+        // set days displayed on buttons
         for (int i=0; i<7; i++)
-        {
             buttons.get(i).setText(days[i]);
-        }
     }
-
 
     /**
-     * When going to last week
+     * Changes the date displayed and refeshes the list view
      */
-    public void onPrevWeek()
+    public void refreshGUI(Date date)
     {
-        currentDate = addDays(currentDate, -7);
-        String[] days = getDaysOfWeek(currentDate);
+        // Show the date in the top
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM, dd");
+        monthText.setText(simpleDateFormat.format(date));
 
-        for (int i=0; i<7; i++)
-        {
-            buttons.get(i).setText(days[i]);
-        }
+        // Notify the list view that the date has been changed
+        listAdapter.setDate(date);
+        listAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Checks what day of the week is 'date'
+     */
+    public int dayOfWeek(Date date)
+    {
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK)-1;
+    }
 
     /**
      * Returns an array with every day of this week
@@ -214,24 +282,4 @@ public class CalendarFragment extends Fragment
         return calendar.getTime();
     }
 
-    /**
-     * Event that occurs after selecting a different date
-     */
-    public void onChangeDate(int pos)
-    {
-        // Change color
-        for (Button b : buttons)
-            b.setTextColor(Color.parseColor("#000000")); // set all buttons as Black
-
-        buttons.get(pos).setTextColor(Color.parseColor("#ff0000")); // set selected button as RED
-
-
-        selectedDate = selectedWeek[pos];
-
-
-        listAdapter.setDate(selectedDate);
-        listAdapter.notifyDataSetChanged();
-        //monthText.setText(selectedDate.toString());
-
-    }
 }
