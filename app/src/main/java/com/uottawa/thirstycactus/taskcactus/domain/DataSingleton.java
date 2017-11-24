@@ -25,6 +25,7 @@ public class DataSingleton
     private Person loggedPerson;
 
 
+
     // CONSTRUCTOR
     /**
      * Set to private to avoid multiple instantiations
@@ -93,7 +94,6 @@ public class DataSingleton
             tasks.add(new Task("Wash car", "", 5));
 
 
-
             michel.assignTask(peter, tasks.get(0), d1, false, "");
 
             michel.assignTask(nate, tasks.get(3), d1, false, "");
@@ -102,6 +102,7 @@ public class DataSingleton
 
 
             nate.getTaskDates().get(1).setCompleted(true);
+
             // Placeholder data ---
         }
 
@@ -253,6 +254,23 @@ public class DataSingleton
         {
             throw new IllegalArgumentException("Attempt to login as parent without providing 4 digit PIN.");
         }
+    }
+
+
+    /**
+     * Returns a list of people who have a task on that day
+     */
+    public List<Person> getUsers(Date date)
+    {
+        List<Person> result = new LinkedList<>();
+
+        for (Person p : people)
+        {
+            if (!p.getTaskDates(date).isEmpty())
+                result.add(p);
+        }
+
+        return result;
     }
 
 }

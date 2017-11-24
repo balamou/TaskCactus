@@ -1,8 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +34,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
         this.context = context;
         this.people = people;
         this.date = date;
+    }
+
+
+    public void setPeople(List<Person> people)
+    {
+        this.people = people;
     }
 
     public void setDate(Date date)

@@ -111,7 +111,7 @@ public class CalendarFragment extends Fragment
 
         // EXPENDABLE LIST VIEW
         expandableListView = view.findViewById(R.id.expandableListView);
-        listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(), currentDate);
+        listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(currentDate), currentDate);
         expandableListView.setAdapter(listAdapter);
 
         // Expands all views
@@ -234,6 +234,8 @@ public class CalendarFragment extends Fragment
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM, dd");
         monthText.setText(simpleDateFormat.format(date));
 
+
+        listAdapter.setPeople(dataSingleton.getUsers(date));
         // Notify the list view that the date has been changed
         listAdapter.setDate(date);
         listAdapter.notifyDataSetChanged();
