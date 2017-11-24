@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/monthText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -97,52 +97,66 @@
 
             <Button
                 android:id="@+id/sundayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="19" />
+                android:text="19"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/mondayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="20" />
+                android:text="20"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/tuesdayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="21" />
+                android:text="21"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/wednesdayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="22" />
+                android:text="22"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/thursdayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="23" />
+                android:text="23"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/fridayBtn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="24" />
+                android:text="24"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/saturdayBrn"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="25" />
+                android:text="25"
+                android:textColor="@android:color/black" />
         </LinearLayout>
 
         <LinearLayout
