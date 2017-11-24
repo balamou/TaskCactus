@@ -41,10 +41,21 @@ public class TaskInfo extends AppCompatActivity
         taskNameText = (TextView) findViewById(R.id.taskNameText);
         taskDescText = (TextView) findViewById(R.id.taskDescText);
         taskPointsText = (TextView) findViewById(R.id.taskPointsText);
+        usersListView = (ListView) findViewById(R.id.usersListView);
+
+        ViewSingleton.getInstance().setTaskInfo(this);
 
         // GET TASK ID
         Intent intent = getIntent();
         task_id = intent.getIntExtra("TASK_ID", -2);
+
+        update(task_id);
+    }
+
+
+    public void update(int id)
+    {
+        task_id = id;
 
         if (task_id>=0)
         {
@@ -52,10 +63,8 @@ public class TaskInfo extends AppCompatActivity
             Task task = dataSingleton.getTasks().get(task_id);
 
             // INITIALIZE LISTVIEW
-            usersListView = (ListView) findViewById(R.id.usersListView);
             TaskInfoAdapter taskInfoAdapter = new TaskInfoAdapter(this, task.getTaskDates());
             usersListView.setAdapter(taskInfoAdapter);
-
 
             // SET INFORMATION INTO TEXTVIEWs
             String description = task.getDesc();
@@ -65,7 +74,6 @@ public class TaskInfo extends AppCompatActivity
             taskPointsText.setText(Integer.toString(task.getPoints()));
         }
     }
-
 
     /**
      * Opens activity to edit task

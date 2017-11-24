@@ -9,12 +9,11 @@ import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
 
 public class ViewSingleton
 {
+    // ATTRIBUTES
     private static ViewSingleton instance;
     private UserListview usr;
     private TaskListview taskListview;
-
-    // ASSOCIATIONS
-
+    private TaskInfo taskInfo;
 
     // CONSTRUCTOR
     /**
@@ -58,6 +57,17 @@ public class ViewSingleton
     public void refresh()
     {
         usr.notifyDataSetChanged();
+    }
+
+    public void setTaskInfo(TaskInfo taskInfo)
+    {
+        this.taskInfo = taskInfo;
+    }
+
+    public void update(int id)
+    {
+        if (taskInfo!=null)
+            taskInfo.update(id);
     }
 
 }

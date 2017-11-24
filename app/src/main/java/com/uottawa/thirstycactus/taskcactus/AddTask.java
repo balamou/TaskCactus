@@ -99,6 +99,8 @@ public class AddTask extends AppCompatActivity
             task.setName(name);
             task.setDesc(desc);
             task.setPoints(p);
+
+            ViewSingleton.getInstance().update(task_id);
         }
 
         ViewSingleton.getInstance().refreshTasks();
