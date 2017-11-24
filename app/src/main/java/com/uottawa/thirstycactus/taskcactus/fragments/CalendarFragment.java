@@ -1,5 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +12,14 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.ExpandableListAdapter;
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.TaskInfo;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
+import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,6 +28,7 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.widget.ExpandableListView.OnChildClickListener;
 
 /**
  * Created by michelbalamou on 10/22/17.
@@ -119,6 +124,7 @@ public class CalendarFragment extends Fragment
         expandableListView = view.findViewById(R.id.expandableListView);
         listAdapter = new ExpandableListAdapter(getActivity(), dataSingleton.getUsers(currentDate), currentDate);
         expandableListView.setAdapter(listAdapter);
+        expandableListView.setOnChildClickListener(myListItemClicked);
 
         // Expands all views
         for (int j = 0; j < listAdapter.getGroupCount(); j++)
@@ -160,10 +166,29 @@ public class CalendarFragment extends Fragment
 
     // =============================================================================================
 
+    //our child listener
+    private OnChildClickListener myListItemClicked =  new OnChildClickListener() {
+
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+
+            Person person =  dataSingleton.getUsers(currentDate).get(groupPosition);
+            TaskDate taskDate =  person.getTaskDates(currentDate).get(childPosition);
+
+            int index = dataSingleton.getTasks().indexOf(taskDate.getTask());
+
+            Intent intent = new Intent(getActivity(), TaskInfo.class);
+            intent.putExtra("TASK_ID", index); // ID of the task
+            startActivity(intent);
+
+            return false;
+        }
+    };
+
     /**
      * Event that occurs after selecting a different date
      */
-    private  View.OnClickListener onChangeDate = new View.OnClickListener()
+    private View.OnClickListener onChangeDate = new View.OnClickListener()
     {
         @Override
         public void onClick(View view)
