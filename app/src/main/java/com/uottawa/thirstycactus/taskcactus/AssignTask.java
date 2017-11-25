@@ -148,6 +148,9 @@ public class AssignTask extends AppCompatActivity
 
             p.assignTask(t, date, false, note);
 
+            Toast.makeText(getApplicationContext(), t.getName() + " assigned to " + p.getFullName(), Toast.LENGTH_SHORT).show();
+
+
             this.finish();
         }
         catch(Exception e)
