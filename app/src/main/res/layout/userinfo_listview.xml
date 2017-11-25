@@ -10,8 +10,8 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/taskNameText"
+        <CheckBox
+            android:id="@+id/taskCheckBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"

@@ -21,6 +21,8 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:weightSum="1">
 
             <LinearLayout
