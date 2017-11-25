@@ -100,4 +100,14 @@ public class UserInfo extends AppCompatActivity
         startActivity(intent);
     }
 
+
+    /**
+     * Button that leads to assignement of tasks view
+     */
+    public void onAssignTask(View view)
+    {
+        Intent intent = new Intent(this, AssignTask.class);
+        intent.putExtra("USER_ID", user_id);
+        startActivity(intent);
+    }
 }

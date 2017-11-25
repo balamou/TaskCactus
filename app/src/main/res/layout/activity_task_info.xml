@@ -36,6 +36,14 @@
                     android:text="EDIT" />
 
                 <Button
+                    android:id="@+id/assignBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onAssign"
+                    android:text="Assign" />
+
+                <Button
                     android:id="@+id/deleteBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

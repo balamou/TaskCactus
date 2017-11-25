@@ -101,4 +101,15 @@ public class TaskInfo extends AppCompatActivity
     }
 
 
+    /**
+     * Button that leads to assignement of tasks view
+     */
+    public void onAssignTask(View view)
+    {
+        Intent intent = new Intent(this, AssignTask.class);
+        intent.putExtra("TASK_ID", task_id);
+        startActivity(intent);
+    }
+
+
 }
