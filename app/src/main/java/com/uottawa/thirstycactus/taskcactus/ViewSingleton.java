@@ -13,7 +13,9 @@ public class ViewSingleton
     private static ViewSingleton instance;
     private UserListview usr;
     private TaskListview taskListview;
+
     private TaskInfo taskInfo;
+    private UserInfo userInfo;
 
     // CONSTRUCTOR
     /**
@@ -70,4 +72,15 @@ public class ViewSingleton
             taskInfo.update(id);
     }
 
+
+    public void setUserInfo(UserInfo userInfo)
+    {
+        this.userInfo = userInfo;
+    }
+
+    public void updateUserInfo()
+    {
+        if (userInfo!=null)
+            userInfo.update();
+    }
 }

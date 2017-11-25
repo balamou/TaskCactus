@@ -53,7 +53,6 @@ public class UserInfo extends AppCompatActivity
         setContentView(R.layout.activity_user_info);
 
 
-
         // RECEIVE DATA FROM PREVIOUS ACTIVITY
         Intent intent = getIntent();
 
@@ -73,6 +72,15 @@ public class UserInfo extends AppCompatActivity
         birthDayText = (TextView) findViewById(R.id.birthDayText);
 
         // FILL INFORMATION
+        ViewSingleton.getInstance().setUserInfo(this);
+        update();
+    }
+
+    /**
+     * Updates the information displayed about the user
+     */
+    public void update()
+    {
         nameText.setText(user.getFullName());
 
         allocatedTasks.setText(Integer.toString(user.totalTasks()));

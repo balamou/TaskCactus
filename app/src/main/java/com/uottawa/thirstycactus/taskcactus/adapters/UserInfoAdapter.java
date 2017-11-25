@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import java.text.DateFormat;
@@ -83,6 +84,7 @@ public class UserInfoAdapter extends ArrayAdapter
                 int pos = (int)view.getTag();
                 CheckBox b = (CheckBox) view;
                 taskDates.get(pos).setCompleted(b.isChecked());
+                ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
             }
         });
 
@@ -96,6 +98,7 @@ public class UserInfoAdapter extends ArrayAdapter
             {
                 int pos = (int)view.getTag();
                 removeItem(pos);
+                ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
             }
         });
 
