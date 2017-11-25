@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Parent;
@@ -155,20 +156,56 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
         List<Person> users = dataSingleton.getUsers();
         String firstName = firstNameEdit.getText().toString();
         String lastName = lastNameEdit.getText().toString();
+        String birthDay = birthDayEdit.getText().toString();
+        String password = passwordText.getText().toString();
+
+        // CONVERT STRING TO DATE
+        Date birth = null;
+        if (!birthDay.isEmpty())
+        {
+            try
+            {
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                birth = format.parse(birthDay);
+            }
+            catch (Exception e)
+            {
+                // INVALID DATE FORMAT
+            }
+        }
+
 
         // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
         if (firstName!=null && !firstName.isEmpty() && lastName!=null && !lastName.isEmpty())
         {
             if (user_id == -1) // FLAG: ADD NEW USER
             {
-                Person newUser = new Person(firstName, lastName);
+                Person newUser;
+
+                if (accountSpinner.getSelectedItem().equals("Parent")) // ADD A PARENT
+                {
+                    newUser = new Parent(firstName, lastName, birth, 0, password);
+                }
+                else
+                {
+                    newUser = new Person(firstName, lastName); // ADD A CHILD
+
+                    // CHANGE BIRTHDAY IF NOT EMPTY
+                    if (birth!=null) newUser.setBirthDate(birth);
+                }
 
                 users.add(newUser);
+                Toast.makeText(getApplicationContext(), "User " +  newUser.getFullName() + " added", Toast.LENGTH_SHORT).show();
             }
             else if(user_id>=0)// MODIFY AN EXISTING USER
             {
                 users.get(user_id).setFirstName(firstName);
                 users.get(user_id).setLastName(lastName);
+
+                if (birth!=null) // CHANGE BIRTHDAY IF NOT EMPTY
+                    users.get(user_id).setBirthDate(birth);
+
+                Toast.makeText(getApplicationContext(), "User " +  users.get(user_id).getFullName() + " edited", Toast.LENGTH_SHORT).show();
             }
 
             ViewSingleton.getInstance().refresh();
