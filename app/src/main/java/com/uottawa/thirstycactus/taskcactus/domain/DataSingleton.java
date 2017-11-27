@@ -99,6 +99,7 @@ public class DataSingleton
 
             resources.add(new Resource("Sponge", "For washing dishes"));
             resources.add(new Resource("Car", "To clean the car"));
+            resources.add(new Resource("Fork", "For forking stuff"));
 
             tasks.get(0).allocateResource(resources.get(0));
             tasks.get(5).allocateResource(resources.get(1));

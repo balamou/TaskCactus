@@ -132,8 +132,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -148,13 +147,13 @@
                 <ListView
                     android:id="@+id/resourcesListView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="none" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -169,7 +168,8 @@
                 <ListView
                     android:id="@+id/usersListView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="none" />
             </LinearLayout>
 
         </LinearLayout>

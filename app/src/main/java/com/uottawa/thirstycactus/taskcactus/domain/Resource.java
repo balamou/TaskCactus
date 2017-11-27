@@ -119,4 +119,8 @@ public class Resource {
         this.desc = desc;
     }
 
+    public List<Task> getTasks()
+    {
+        return tasks;
+    }
 }
