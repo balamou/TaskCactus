@@ -88,6 +88,8 @@ public class UserInfo extends AppCompatActivity
         totalPoints.setText(Integer.toString(user.getPoints()));
 
         birthDayText.setText(user.getReadableBirthday());
+
+        userInfo.notifyDataSetChanged();
     }
 
     /**

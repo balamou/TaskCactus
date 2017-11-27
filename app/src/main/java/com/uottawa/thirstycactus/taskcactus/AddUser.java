@@ -205,6 +205,7 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
                 if (birth!=null) // CHANGE BIRTHDAY IF NOT EMPTY
                     users.get(user_id).setBirthDate(birth);
 
+                ViewSingleton.getInstance().updateUserInfo();
                 Toast.makeText(getApplicationContext(), "Changes to " +  users.get(user_id).getFullName() + " saved", Toast.LENGTH_SHORT).show();
             }
 

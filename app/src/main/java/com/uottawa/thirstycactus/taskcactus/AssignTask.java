@@ -182,9 +182,9 @@ public class AssignTask extends AppCompatActivity
                 return ;
             }
 
-            // ASSING TASK TO USER
+            // ASSIGN TASK TO USER
             Person p = dataSingleton.getUsers().get(user_id);
-            Task t = null;
+            Task t;
 
 
             if (newTask)
@@ -220,7 +220,7 @@ public class AssignTask extends AppCompatActivity
 
             Toast.makeText(getApplicationContext(), t.getName() + " assigned to " + p.getFullName(), Toast.LENGTH_SHORT).show();
 
-
+            ViewSingleton.getInstance().updateUserInfo();
             this.finish();
         }
         catch(Exception e)
