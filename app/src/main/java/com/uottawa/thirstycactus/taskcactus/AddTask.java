@@ -135,6 +135,13 @@ public class AddTask extends AppCompatActivity
         String desc = descEdit.getText().toString();
         String points = pointsEdit.getText().toString();
 
+
+        if (name.isEmpty())
+        {
+            Toast.makeText(getApplicationContext(), "Please enter a task name", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
         int p;
 
         // Check if the points is a valid number
@@ -144,7 +151,8 @@ public class AddTask extends AppCompatActivity
         }
         catch (Exception e)
         {
-            p = 5;
+            Toast.makeText(getApplicationContext(), "Points has to be a number", Toast.LENGTH_SHORT).show();
+            return ;
         }
 
 

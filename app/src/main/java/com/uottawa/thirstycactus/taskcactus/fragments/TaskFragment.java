@@ -33,6 +33,7 @@ public class TaskFragment extends Fragment
 
     private ListView taskList;
     private TaskListview taskListview;
+
     private Button addTaskBtn;
     private Button resourcesBtn;
 

@@ -184,6 +184,12 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
 
                 if (accountSpinner.getSelectedItem().equals("Parent")) // ADD A PARENT
                 {
+                    if (password.length()<4)
+                    {
+                        Toast.makeText(getApplicationContext(), "Please enter a 4 digit password", Toast.LENGTH_SHORT).show();
+                        return ;
+                    }
+
                     newUser = new Parent(firstName, lastName, birth, 0, password);
                 }
                 else
