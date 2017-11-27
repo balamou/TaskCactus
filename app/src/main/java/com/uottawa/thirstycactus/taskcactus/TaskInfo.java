@@ -14,6 +14,8 @@ import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import org.w3c.dom.Text;
 
+import static android.R.attr.id;
+
 public class TaskInfo extends AppCompatActivity
 {
     // ATTRIBUTES
@@ -49,14 +51,15 @@ public class TaskInfo extends AppCompatActivity
         Intent intent = getIntent();
         task_id = intent.getIntExtra("TASK_ID", -2);
 
-        update(task_id);
+        update();
     }
 
 
-    public void update(int id)
+    /**
+     * Updates the fields with information about the Task
+     */
+    public void update()
     {
-        task_id = id;
-
         if (task_id>=0)
         {
             // FETCH TASK
@@ -72,6 +75,8 @@ public class TaskInfo extends AppCompatActivity
             taskNameText.setText(task.getName());
             taskDescText.setText(description.isEmpty() ? "----" : description);
             taskPointsText.setText(Integer.toString(task.getPoints()));
+
+            taskInfoAdapter.notifyDataSetChanged();
         }
     }
 

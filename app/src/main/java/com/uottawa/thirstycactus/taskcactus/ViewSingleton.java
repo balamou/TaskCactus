@@ -3,6 +3,8 @@ package com.uottawa.thirstycactus.taskcactus;
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
 
+import static android.R.attr.id;
+
 /**
  * Created by Nate Adams on 11/21/17.
  */
@@ -66,10 +68,10 @@ public class ViewSingleton
         this.taskInfo = taskInfo;
     }
 
-    public void update(int id)
+    public void updateTaskInfo()
     {
         if (taskInfo!=null)
-            taskInfo.update(id);
+            taskInfo.update();
     }
 
 

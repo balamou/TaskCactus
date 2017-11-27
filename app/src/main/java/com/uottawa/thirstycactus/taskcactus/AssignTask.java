@@ -43,6 +43,9 @@ public class AssignTask extends AppCompatActivity
 
     private boolean newTask = false;
 
+    private boolean fromUserInfo;
+    private boolean fromTaskInfo;
+
     // =============================================================================================
 
     // METHODS
@@ -79,6 +82,9 @@ public class AssignTask extends AppCompatActivity
 
         int user_id = intent.getIntExtra("USER_ID", -1);
         int task_id = intent.getIntExtra("TASK_ID", -1);
+
+        fromUserInfo = user_id != -1;
+        fromTaskInfo = task_id != -1;
 
         usersSpinner.setSelection(user_id + 1);
         tasksSpinner.setSelection(task_id + 1);
@@ -187,7 +193,7 @@ public class AssignTask extends AppCompatActivity
             Task t;
 
 
-            if (newTask)
+            if (newTask) // CREATE NEW TASK
             {
                 String name = nameEdit.getText().toString();
                 String points = pointsEdit.getText().toString();
@@ -210,7 +216,7 @@ public class AssignTask extends AppCompatActivity
             }
             else
             {
-                t = dataSingleton.getTasks().get(task_id);
+                t = dataSingleton.getTasks().get(task_id); // USE SELECTED TASK
             }
 
             Date date = simpleDateFormat.parse(dateEdit.getText().toString());
@@ -220,7 +226,15 @@ public class AssignTask extends AppCompatActivity
 
             Toast.makeText(getApplicationContext(), t.getName() + " assigned to " + p.getFullName(), Toast.LENGTH_SHORT).show();
 
-            ViewSingleton.getInstance().updateUserInfo();
+            // CHECK which activity opened this activity
+            // then update the corresponding fields
+            if (fromUserInfo)
+                ViewSingleton.getInstance().updateUserInfo();
+
+            if (fromTaskInfo)
+                ViewSingleton.getInstance().updateTaskInfo();
+
+
             this.finish();
         }
         catch(Exception e)
