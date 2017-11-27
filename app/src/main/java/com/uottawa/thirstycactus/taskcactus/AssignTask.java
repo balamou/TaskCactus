@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +32,17 @@ public class AssignTask extends AppCompatActivity
     private EditText dateEdit;
     private EditText notesEdit;
 
+    // ADD A NEW TASK
+
+    private EditText nameEdit;
+    private EditText descEdit;
+    private EditText pointsEdit;
+
+    private LinearLayout newTaskLayout;
+    private Button createTaskBtn;
+
+    private boolean newTask = false;
+
     // =============================================================================================
 
     // METHODS
@@ -49,6 +62,15 @@ public class AssignTask extends AppCompatActivity
 
         dateEdit = (EditText) findViewById(R.id.dateEdit);
         notesEdit = (EditText) findViewById(R.id.notesEdit);
+
+
+        nameEdit = (EditText) findViewById(R.id.nameEdit);
+        descEdit = (EditText) findViewById(R.id.descEdit);
+        pointsEdit = (EditText) findViewById(R.id.pointsEdit);
+
+        newTaskLayout = (LinearLayout) findViewById(R.id.newTaskLayout);
+
+        createTaskBtn = (Button) findViewById(R.id.createTaskBtn);
 
         // POPULATE INFORMATION
         populateSpinners(); // fill spinners with tasks and users
@@ -104,6 +126,27 @@ public class AssignTask extends AppCompatActivity
         tasksSpinner.setAdapter(adapter);
     }
 
+    /**
+     * Action when clicking on the plus button.
+     * Adds a new task.
+     */
+    public void onAddTask(View view)
+    {
+        if (newTask == false)
+        {
+            newTaskLayout.setVisibility(View.VISIBLE);
+            createTaskBtn.setText("-");
+            newTask = true;
+        }
+        else
+        {
+            newTaskLayout.setVisibility(View.GONE);
+            createTaskBtn.setText("+");
+            newTask = false;
+        }
+
+    }
+
 
     /**
      * Exits activity without saving
@@ -133,15 +176,42 @@ public class AssignTask extends AppCompatActivity
             }
 
             // STOP IF TASK NOT SELECTED
-            if (task_id == -1)
+            if (task_id == -1 && !newTask)
             {
                 Toast.makeText(getApplicationContext(), "Please select task", Toast.LENGTH_SHORT).show();
                 return ;
             }
 
-            // FIND USER
+            // ASSING TASK TO USER
             Person p = dataSingleton.getUsers().get(user_id);
-            Task t = dataSingleton.getTasks().get(task_id);
+            Task t = null;
+
+
+            if (newTask)
+            {
+                String name = nameEdit.getText().toString();
+                String points = pointsEdit.getText().toString();
+                String desc = descEdit.getText().toString();
+
+                int tmp;
+
+                try
+                {
+                    tmp = Integer.parseInt(points);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(), "Points must be an integer number", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
+
+                t = new Task(name, desc, tmp);
+                dataSingleton.getTasks().add(t);
+            }
+            else
+            {
+                t = dataSingleton.getTasks().get(task_id);
+            }
 
             Date date = simpleDateFormat.parse(dateEdit.getText().toString());
             String note = notesEdit.getText().toString();

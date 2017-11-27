@@ -276,7 +276,7 @@ public class CalendarFragment extends Fragment
     }
 
     /**
-     * Changes the date displayed and refeshes the list view
+     * Changes the date displayed and refreshes the list view
      */
     public void refreshGUI(Date date)
     {

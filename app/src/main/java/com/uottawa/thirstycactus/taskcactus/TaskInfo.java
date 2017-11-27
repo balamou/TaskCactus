@@ -102,7 +102,7 @@ public class TaskInfo extends AppCompatActivity
 
 
     /**
-     * Button that leads to assignement of tasks view
+     * Button that leads to assignment of tasks view
      */
     public void onAssignTask(View view)
     {
