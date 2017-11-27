@@ -93,14 +93,14 @@ public class CalendarFragment extends Fragment
         nextWeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onChangeWeek(7);
+                onChangeWeek(1);
             }
         });
 
         prevWeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onChangeWeek(-7);
+                onChangeWeek(-1);
             }
         });
 
@@ -129,6 +129,21 @@ public class CalendarFragment extends Fragment
         // Expands all views
         for (int j = 0; j < listAdapter.getGroupCount(); j++)
             expandableListView.expandGroup(j);
+
+
+        // HIDE/SHOW THE EXPENDABLE LIST
+        List<Person> users = dataSingleton.getUsers(currentDate); // users that have a task on that day
+
+        if (users.isEmpty()) // if nobody has a task on that day
+        {
+            layout1.setVisibility(View.GONE);
+            layout2.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            layout1.setVisibility(View.VISIBLE);
+            layout2.setVisibility(View.GONE);
+        }
 
 
         return view;
@@ -210,6 +225,7 @@ public class CalendarFragment extends Fragment
     {
         currentDate = addDays(currentDate, increment); // Increment/decrement date
         setButtonText(currentDate); // change Button Text
+        setButtonRED(dayOfWeek(currentDate)); // change button Color
         refreshGUI(currentDate); // refresh GUI
     }
 
