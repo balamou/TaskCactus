@@ -1,5 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,6 +26,9 @@ public class Resource {
     {
         this.name = name;
         this.desc = desc;
+
+        tasks = new LinkedList<>();
+        parents = new LinkedList<>();
     }
 
 
@@ -114,4 +118,5 @@ public class Resource {
     {
         this.desc = desc;
     }
+
 }

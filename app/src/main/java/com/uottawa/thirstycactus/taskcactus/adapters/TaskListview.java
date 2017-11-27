@@ -32,7 +32,7 @@ public class TaskListview extends ArrayAdapter
 
     public TaskListview(Activity context, List<Task> tasks)
     {
-        super(context, R.layout.user_listview, tasks);
+        super(context, R.layout.task_listview, tasks);
         mInflater = LayoutInflater.from(context);
 
         this.tasks = tasks;

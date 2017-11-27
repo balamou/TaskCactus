@@ -8,11 +8,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/addTaskBtn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Task" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addTaskBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add Task" />
+
+            <Button
+                android:id="@+id/resourcesBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="resources" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/tasksList"

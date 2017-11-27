@@ -91,8 +91,19 @@ public class DataSingleton
 
             tasks.add(new Task("Clean basement", "", 2));
             tasks.add(new Task("Finish app", "", 5));
+
             tasks.add(new Task("Wash car", "", 5));
 
+
+            //RESOURCES +++
+
+            resources.add(new Resource("Sponge", "For washing dishes"));
+            resources.add(new Resource("Car", "To clean the car"));
+
+            tasks.get(0).allocateResource(resources.get(0));
+            tasks.get(5).allocateResource(resources.get(1));
+
+            //RESOURCES ---
 
             michel.assignTask(peter, tasks.get(0), d1, false, "");
 

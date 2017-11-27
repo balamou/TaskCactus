@@ -41,7 +41,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
     public UserInfoAdapter(Activity context, List<TaskDate> taskDates)
     {
-        super(context, R.layout.user_listview, taskDates);
+        super(context, R.layout.userinfo_listview, taskDates);
         mInflater = LayoutInflater.from(context);
 
         this.taskDates = taskDates;

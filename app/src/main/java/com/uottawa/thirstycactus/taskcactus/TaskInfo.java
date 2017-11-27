@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.adapters.ResourcesAdapter;
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskInfoAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
@@ -28,7 +29,8 @@ public class TaskInfo extends AppCompatActivity
     private TextView taskDescText;
     private TextView taskPointsText;
 
-    private ListView usersListView;
+    private ListView usersListView; // list of users the task has been assigned to
+    private ListView resourcesListView; // list of allocated resources
 
 
     // CONSTRUCTOR
@@ -43,7 +45,9 @@ public class TaskInfo extends AppCompatActivity
         taskNameText = (TextView) findViewById(R.id.taskNameText);
         taskDescText = (TextView) findViewById(R.id.taskDescText);
         taskPointsText = (TextView) findViewById(R.id.taskPointsText);
+
         usersListView = (ListView) findViewById(R.id.usersListView);
+        resourcesListView = (ListView) findViewById(R.id.resourcesListView);
 
         ViewSingleton.getInstance().setTaskInfo(this);
 
@@ -65,9 +69,14 @@ public class TaskInfo extends AppCompatActivity
             // FETCH TASK
             Task task = dataSingleton.getTasks().get(task_id);
 
-            // INITIALIZE LISTVIEW
+            // INITIALIZE USER LISTVIEW
             TaskInfoAdapter taskInfoAdapter = new TaskInfoAdapter(this, task.getTaskDates());
             usersListView.setAdapter(taskInfoAdapter);
+
+            // INITIALIZE RESOURCES LISTVIEW
+            ResourcesAdapter resAdapter = new ResourcesAdapter(this, task.getResources(), task_id);
+            resourcesListView.setAdapter(resAdapter);
+
 
             // SET INFORMATION INTO TEXTVIEWs
             String description = task.getDesc();

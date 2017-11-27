@@ -11,33 +11,35 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.R;
-import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Resource;
+import com.uottawa.thirstycactus.taskcactus.domain.Task;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by michelbalamou on 11/23/17.
+ * Created by Julie on 11/27/17.
  */
 
-public class TaskInfoAdapter extends ArrayAdapter
+public class ResourcesAdapter extends ArrayAdapter
 {
     // ATTRIBUTES
 
-    private List<TaskDate> taskDates;
+    private List<Resource> taskResources;
+    private int task_id;
 
     private LayoutInflater mInflater;
 
 
     // CONSTRUCTOR
 
-    public TaskInfoAdapter(Activity context, List<TaskDate> taskDates)
+    public ResourcesAdapter(Activity context, List<Resource> taskResources, int task_id)
     {
-        super(context, R.layout.taskinfo_listview, taskDates);
+        super(context, R.layout.resources_listview, taskResources);
         mInflater = LayoutInflater.from(context);
 
-        this.taskDates = taskDates;
+        this.taskResources = taskResources;
+        this.task_id = task_id;
     }
 
     // CONSTRUCTOR
@@ -50,7 +52,7 @@ public class TaskInfoAdapter extends ArrayAdapter
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.taskinfo_listview, null);
+            convertView=mInflater.inflate(R.layout.resources_listview, null);
             viewHolder= new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
@@ -61,13 +63,13 @@ public class TaskInfoAdapter extends ArrayAdapter
         }
 
         // SET UP OUTPUT INFORMATION ++++++++++++++++++
-        TaskDate task = taskDates.get(position);
+        Resource res = taskResources.get(position);
 
-        viewHolder.personNameText.setText(task.getPerson().getFullName());
-        viewHolder.taskDateText.setText(task.getReadableDate());
+        viewHolder.resourceNameText.setText(res.getName());
+        viewHolder.descText.setText(res.getDesc());
 
-        viewHolder.removeButton.setTag(position);
-        viewHolder.removeButton.setOnClickListener(new View.OnClickListener()
+        viewHolder.deallocateBtn.setTag(position);
+        viewHolder.deallocateBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -84,12 +86,15 @@ public class TaskInfoAdapter extends ArrayAdapter
 
     public int getCount()
     {
-        return taskDates.size();
+        return taskResources.size();
     }
 
     private void removeItem(int pos)
     {
-        taskDates.get(pos).removeLink();
+        Resource res = taskResources.get(pos);
+        Task task = DataSingleton.getInstance().getTasks().get(task_id);
+        task.deallocateResource(res);
+
         remove(pos); // built in remove method
 
         notifyDataSetChanged();
@@ -103,15 +108,15 @@ public class TaskInfoAdapter extends ArrayAdapter
 
     class ViewHolder
     {
-        TextView personNameText;
-        TextView taskDateText;
-        Button removeButton;
+        TextView resourceNameText;
+        TextView descText;
+        Button deallocateBtn;
 
         ViewHolder(View v)
         {
-            personNameText = v.findViewById(R.id.personNameText);
-            taskDateText =  v.findViewById(R.id.taskDateText);
-            removeButton =  v.findViewById(R.id.removeBtn);
+            resourceNameText = v.findViewById(R.id.resourceNameText);
+            descText = v.findViewById(R.id.descText);
+            deallocateBtn =  v.findViewById(R.id.deallocateBtn);
         }
     }
 }
