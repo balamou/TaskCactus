@@ -174,7 +174,7 @@ public class AddTask extends AppCompatActivity
 
             // ALLOCATE RESOURCES/ possible deallocation of resources
             // that have the checkboxes on
-            for (int i = 0; i<checkBox.length ; i++)
+            for (int i = 0; i<checkBox.length; i++)
             {
                 if (initState[i] != checkBox[i].isChecked()) // check if the state is different
                 {

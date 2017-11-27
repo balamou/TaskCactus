@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.uottawa.thirstycactus.taskcactus.AddTask;
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.ResourcesActivity;
 import com.uottawa.thirstycactus.taskcactus.TaskInfo;
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
@@ -33,6 +34,7 @@ public class TaskFragment extends Fragment
     private ListView taskList;
     private TaskListview taskListview;
     private Button addTaskBtn;
+    private Button resourcesBtn;
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
 
@@ -53,11 +55,13 @@ public class TaskFragment extends Fragment
 
         taskList = view.findViewById(R.id.tasksList);
         addTaskBtn = view.findViewById(R.id.addTaskBtn);
+        resourcesBtn = view.findViewById(R.id.resourcesBtn);
 
-
+        // Initialize list view
         taskListview = new TaskListview(getActivity(), dataSingleton.getTasks());
         taskList.setAdapter(taskListview);
         ViewSingleton.getInstance().setTaskListview(taskListview);
+
 
         // ASSIGN ACTION ON ITEM CLICK
         taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,6 +86,16 @@ public class TaskFragment extends Fragment
             }
         });
 
+        // ASSIGN ACTION TO ADD RESOURCES BUTTON
+        resourcesBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(), ResourcesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
