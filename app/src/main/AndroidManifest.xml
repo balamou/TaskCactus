@@ -45,7 +45,6 @@
                 android:value="com.uottawa.thirstycactus.taskcactus.MainActivity" />
         </activity>
         <activity android:name=".AssignTask" />
-
         <activity
             android:name=".ResourcesActivity"
             android:parentActivityName=".MainActivity">
@@ -55,6 +54,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.uottawa.thirstycactus.taskcactus.MainActivity" />
         </activity>
+        <activity android:name=".PINActivity"></activity>
     </application>
 
 </manifest>

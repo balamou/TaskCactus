@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.adapters.UserInfoAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Parent;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 
 import java.util.Date;
@@ -111,5 +113,26 @@ public class UserInfo extends AppCompatActivity
         Intent intent = new Intent(this, AssignTask.class);
         intent.putExtra("USER_ID", user_id);
         startActivity(intent);
+    }
+
+    /**
+     * Login
+     */
+    public void onLogin(View view)
+    {
+        Person loginTo = dataSingleton.getUsers().get(user_id);
+
+        if (loginTo instanceof Parent)
+        {
+            // SHOW PASSWORD ACTIVITY
+            Intent intent = new Intent(this, PINActivity.class);
+            intent.getIntExtra("USR_ID", user_id);
+            startActivity(intent);
+        }
+        else
+        {
+            dataSingleton.login(loginTo);
+            Toast.makeText(getApplicationContext(), "Logged in as " + loginTo.getFullName(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

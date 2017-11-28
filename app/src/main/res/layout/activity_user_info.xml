@@ -51,6 +51,14 @@
                     android:layout_height="wrap_content"
                     android:text="Delete" />
 
+                <Button
+                    android:id="@+id/loginBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onLogin"
+                    android:text="login" />
+
             </LinearLayout>
 
             <ImageView
