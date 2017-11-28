@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 
 public class AssignTask extends AppCompatActivity
@@ -132,20 +135,32 @@ public class AssignTask extends AppCompatActivity
         tasksSpinner.setAdapter(adapter);
     }
 
+    // =============================================================================================
+
+    // LISTENERS
+
+    // =============================================================================================
+
+
+
     /**
      * Action when clicking on the plus button.
-     * Adds a new task.
+     * Shows the form to add a new task.
      */
     public void onAddTask(View view)
     {
+        tasksSpinner.setSelection(0);
+
         if (newTask == false)
         {
+            // SHOW THE FORM
             newTaskLayout.setVisibility(View.VISIBLE);
             createTaskBtn.setText("-");
             newTask = true;
         }
         else
         {
+            // HIDE THE FORM
             newTaskLayout.setVisibility(View.GONE);
             createTaskBtn.setText("+");
             newTask = false;
