@@ -274,6 +274,7 @@ public class DataSingleton
      */
     public List<Person> getUsers(Date date)
     {
+        loadData();
         List<Person> result = new LinkedList<>();
 
         for (Person p : people)
@@ -283,6 +284,15 @@ public class DataSingleton
         }
 
         return result;
+    }
+
+
+    /**
+     * Checked if the currently logged in person is a parent
+     */
+    public boolean isLoggedAsParent()
+    {
+        return (loggedPerson instanceof Parent);
     }
 
 }

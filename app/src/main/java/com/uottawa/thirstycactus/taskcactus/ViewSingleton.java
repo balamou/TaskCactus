@@ -1,7 +1,15 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.View;
+import android.widget.EditText;
+
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Resource;
 
 import static android.R.attr.id;
 
@@ -84,5 +92,21 @@ public class ViewSingleton
     {
         if (userInfo!=null)
             userInfo.update();
+    }
+
+    public void showPopup(Context context, String msg)
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+
+        alertDialog.setTitle("Alert");
+
+        alertDialog.setMessage(msg);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }

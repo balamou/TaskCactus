@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ public class UserInfo extends AppCompatActivity
     // ATTRIBUTES
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
+    private ViewSingleton viewSingleton = ViewSingleton.getInstance();
 
     private int user_id; // id of the user; the order the user appears in the global user list
     private Person user; // pointer to the user with the id
@@ -41,6 +43,8 @@ public class UserInfo extends AppCompatActivity
 
     private ListView tasksListView;
     private UserInfoAdapter userInfo;
+
+    private Button loginBtn;
 
     // =============================================================================================
 
@@ -72,10 +76,14 @@ public class UserInfo extends AppCompatActivity
         tasksCompleted = (TextView) findViewById(R.id.tasksCompleted);
         totalPoints = (TextView) findViewById(R.id.totalPoints);
         birthDayText = (TextView) findViewById(R.id.birthDayText);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
 
         // FILL INFORMATION
         ViewSingleton.getInstance().setUserInfo(this);
         update();
+
+        if (dataSingleton.getLoggedPerson() == user)
+            loginBtn.setVisibility(View.GONE);
     }
 
     /**
@@ -99,9 +107,18 @@ public class UserInfo extends AppCompatActivity
      */
     public void onEdit(View view)
     {
-        Intent intent = new Intent(this, AddUser.class);
-        intent.putExtra("USER_ID", user_id);
-        startActivity(intent);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            Intent intent = new Intent(this, AddUser.class);
+            intent.putExtra("USER_ID", user_id);
+            startActivity(intent);
+        }
+        else
+        {
+            // SHOW DIALOG
+            viewSingleton.showPopup(this, "Please login as a Parent to edit user");
+        }
     }
 
 
@@ -110,10 +127,39 @@ public class UserInfo extends AppCompatActivity
      */
     public void onAssignTask(View view)
     {
-        Intent intent = new Intent(this, AssignTask.class);
-        intent.putExtra("USER_ID", user_id);
-        startActivity(intent);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            Intent intent = new Intent(this, AssignTask.class);
+            intent.putExtra("USER_ID", user_id);
+            startActivity(intent);
+        }
+        else
+        {
+            // SHOW DIALOG
+            viewSingleton.showPopup(this, "Please login as a Parent to assign a task");
+        }
     }
+
+
+
+    /**
+     * Delete user
+     */
+    public void onDelete(View view)
+    {
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            // DELETE USER
+        }
+        else
+        {
+            // SHOW DIALOG
+            viewSingleton.showPopup(this, "Please login as a Parent to delete a user");
+        }
+    }
+
 
     /**
      * Login

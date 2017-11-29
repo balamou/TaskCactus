@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import java.text.DateFormat;
@@ -96,9 +97,23 @@ public class UserInfoAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-                int pos = (int)view.getTag();
-                removeItem(pos);
-                ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
+
+                // CHECK IF LOGGED IN AS PARENT
+                if (DataSingleton.getInstance().isLoggedAsParent())
+                {
+                    int pos = (int) view.getTag();
+                    String taskName = taskDates.get(pos).getTask().getName();
+
+                    removeItem(pos);
+                    ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
+
+                    Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    // SHOW DIALOG 
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove task");
+                }
             }
         });
 

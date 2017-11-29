@@ -84,15 +84,24 @@ public class UsersFragment extends Fragment
     }
 
     /**
-     *  Event that occurs when cliking on Add User
+     *  Event that occurs when clicking on Add User
      */
     public void onAddUser(View view)
     {
-        Intent intent = new Intent(getActivity(), AddUser.class);
-        intent.putExtra("USER_ID", -1);
-        startActivity(intent);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            // OPEN ACTIVITY TO ADD USER
+            Intent intent = new Intent(getActivity(), AddUser.class);
+            intent.putExtra("USER_ID", -1);
+            startActivity(intent);
+        }
+        else
+        {
+            // SHOW DIALOG
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to add a new user");
+        }
     }
-
 
 }
 
