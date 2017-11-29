@@ -74,14 +74,14 @@ public class DataSingleton
      */
     private void loadData()
     {
-        boolean load_database = true;
+        boolean load_database = false;
 
         if (!load)
         {
             if (!load_database) {
                 // Placeholder data +++
                 Date d = getDate(1997, 1, 6);
-                Parent michel = new Parent("Michel", "Balamou", d, 1, "1234");
+                Parent michel = new Parent("Michel", "Balamou", d, "1234");
 
                 Person peter = new Person("Peter", "Nguyen", null);
                 Person nate = new Person("Nate", "Adams", null);
@@ -384,7 +384,7 @@ public class DataSingleton
 
         if (userType.equals("Parent")) // ADD A PARENT
         {
-            newUser = new Parent(firstName, lastName, birth, 0, password);
+            newUser = new Parent(firstName, lastName, birth, password);
         }
         else
         {

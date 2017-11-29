@@ -11,7 +11,6 @@ public class Parent extends Person {
 
     // ATTRIBUTES
 
-    private int priorityLevel;        // priority level of the parent
     private String hashedPIN;         // 4 digit PIN password
 
     // ASSOCIATIONS
@@ -29,16 +28,14 @@ public class Parent extends Person {
      * @param lastName
      * @param birthDate
      *
-     * @param priorityLevel
      * @param hashedPIN
      *
      * @throws IllegalArgumentException if the hashedPIN is not a valid 4 digit PIN
      */
-    public Parent(String firstName, String lastName, Date birthDate, int priorityLevel, String hashedPIN) throws IllegalArgumentException
+    public Parent(String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
     {
         super(firstName, lastName, birthDate);
 
-        this.priorityLevel = priorityLevel;
         setHashedPIN(hashedPIN); // used in setter to specify restrictions on the hashPIN
 
         this.children = new LinkedList<>();
@@ -169,15 +166,4 @@ public class Parent extends Person {
     {
         return hashedPIN;
     }
-
-    public void setPriorityLevel(int priorityLevel)
-    {
-        this.priorityLevel = priorityLevel;
-    }
-
-    public int getPriorityLevel()
-    {
-        return priorityLevel;
-    }
-
 }

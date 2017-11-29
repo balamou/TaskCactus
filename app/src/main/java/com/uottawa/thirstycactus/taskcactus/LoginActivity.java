@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity
         if (!isValid(firstName, lastName, password)) return; // EXIT
 
         // ADD A PARENT +++++++
-        Person newUser = new Parent(firstName, lastName, birth, 0, password);
+        Person newUser = new Parent(firstName, lastName, birth, password);
         users.add(newUser);
         Toast.makeText(getApplicationContext(), "New user " +  newUser.getFullName() + " created", Toast.LENGTH_SHORT).show();
 
