@@ -59,6 +59,32 @@ public class TaskDate
         task = null;
     }
 
+    /**
+     * Only partially removes the link between associations due to the Iterators problems:
+     * ConcurrentModificationsException
+     */
+    public void partialRemovePerson()
+    {
+        task.unlinkTaskDate(this);
+
+        person = null;
+        task = null;
+    }
+
+
+    /**
+     * Only partially removes the link between associations due to the Iterators problems:
+     * ConcurrentModificationsException
+     */
+    public void partialRemoveTask()
+    {
+        person.unlinkTaskDate(this);
+
+        person = null;
+        task = null;
+    }
+
+
     // =============================================================================================
 
     // GETTERS/SETTERS

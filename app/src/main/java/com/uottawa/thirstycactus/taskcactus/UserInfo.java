@@ -177,7 +177,10 @@ public class UserInfo extends AppCompatActivity
 
 
         // DELETE USER
+        dataSingleton.deleteUser(user_id);
 
+        ViewSingleton.getInstance().refresh();
+        this.finish();
     }
 
 

@@ -100,12 +100,12 @@ public class Task {
 
     /**
      * Removes all existing association classes;
-     * This allows the Task instance to be deleted wihout causing problems.
+     * This allows the Task instance to be deleted without causing problems.
      */
     public void prepareToDelete()
     {
         for (TaskDate t : taskDates)
-            t.removeLink();
+            t.partialRemoveTask();
 
         taskDates = null; // remove reference for Garbage Collector
     }

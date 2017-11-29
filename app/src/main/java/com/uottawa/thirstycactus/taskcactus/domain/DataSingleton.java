@@ -211,12 +211,21 @@ public class DataSingleton
     }
 
     /**
-     * Delete task from the list at index
+     * Delete a task from the list at index
      */
     public void deleteTask(int index)
     {
         tasks.get(index).prepareToDelete();
         tasks.remove(index);
+    }
+
+    /**
+     * Delete a user from the list at index
+     */
+    public void deleteUser(int index)
+    {
+        people.get(index).prepareToDelete();
+        people.remove(index);
     }
 
 

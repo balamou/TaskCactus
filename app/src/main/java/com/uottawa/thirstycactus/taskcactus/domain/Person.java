@@ -4,9 +4,11 @@ import android.widget.ListAdapter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.id.list;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
@@ -114,8 +116,26 @@ public class Person {
      */
     public void removeParent(Parent p)
     {
-        parents.remove(p);
         p.removeChild(this);
+        parents.remove(p);
+    }
+
+    /**
+     * Removes all existing association classes;
+     * This allows the User instance to be deleted without causing problems.
+     */
+    public void prepareToDelete()
+    {
+        for (TaskDate t : taskDates)
+            t.partialRemovePerson();
+
+
+        taskDates = null; // remove reference for Garbage Collector
+
+        for (Parent p : parents)
+            p.removeChild(this);
+
+        parents = null; // remove reference for Garbage Collector
     }
 
     // =============================================================================================
