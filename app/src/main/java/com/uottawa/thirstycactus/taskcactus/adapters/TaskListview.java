@@ -58,10 +58,12 @@ public class TaskListview extends ArrayAdapter
         }
 
         // SET UP OUTPUT INFORMATION +++
-        viewHolder.tasknameText.setText(tasks.get(position).getName());
+        Task task = tasks.get(position);
 
-        if (tasks.get(position).getType() == "NEW") // hide icon if the task is not default
-            viewHolder.taskImage.setVisibility(View.GONE);
+        viewHolder.tasknameText.setText(task.getName());
+        viewHolder.descText.setText(task.getDesc());
+        viewHolder.pointsText.setText(Integer.toString(task.getPoints()));
+
         // SET UP OUTPUT INFORMATION ---
 
         return convertView;
@@ -77,12 +79,15 @@ public class TaskListview extends ArrayAdapter
     class ViewHolder
     {
         TextView tasknameText;
-        ImageView taskImage;
+        TextView descText;
+        TextView pointsText;
+
 
         ViewHolder(View v)
         {
             tasknameText = v.findViewById(R.id.taskNameText);
-            taskImage = v.findViewById(R.id.taskImage);
+            descText = v.findViewById(R.id.descText);
+            pointsText = v.findViewById(R.id.pointsText);
         }
     }
 }

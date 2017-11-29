@@ -49,6 +49,8 @@ public class AssignTask extends AppCompatActivity
     private boolean fromUserInfo;
     private boolean fromTaskInfo;
 
+    private int prevTask; // ID of previously selected task in the spinner
+
     // =============================================================================================
 
     // METHODS
@@ -149,11 +151,13 @@ public class AssignTask extends AppCompatActivity
      */
     public void onAddTask(View view)
     {
-        tasksSpinner.setSelection(0);
 
         if (newTask == false)
         {
             // SHOW THE FORM
+            prevTask = tasksSpinner.getSelectedItemPosition(); // save the previous task ID
+            tasksSpinner.setSelection(0); // select 'none'
+
             newTaskLayout.setVisibility(View.VISIBLE);
             createTaskBtn.setText("-");
             newTask = true;
@@ -161,6 +165,8 @@ public class AssignTask extends AppCompatActivity
         else
         {
             // HIDE THE FORM
+            tasksSpinner.setSelection(prevTask);
+
             newTaskLayout.setVisibility(View.GONE);
             createTaskBtn.setText("+");
             newTask = false;
