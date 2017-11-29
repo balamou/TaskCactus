@@ -153,70 +153,37 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
      */
     public void onSave(View view)
     {
-        List<Person> users = dataSingleton.getUsers();
         String firstName = firstNameEdit.getText().toString();
         String lastName = lastNameEdit.getText().toString();
         String birthDay = birthDayEdit.getText().toString();
         String password = passwordText.getText().toString();
 
-        // CONVERT STRING TO DATE
-        Date birth = null;
-        if (!birthDay.isEmpty())
+        String msg;
+        int exit_code;
+
+        if (user_id == -1) // FLAG TO ADD NEW USER
         {
-            try
-            {
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                birth = format.parse(birthDay);
-            }
-            catch (Exception e)
-            {
-                // INVALID DATE FORMAT
-            }
+            exit_code = dataSingleton.addUser((String) accountSpinner.getSelectedItem(), firstName, lastName, birthDay, password);
+
+            String[] warning = {"User " +  firstName + " " + lastName + " added", "Please enter the first name", "Please enter the last name", "Please enter a 4 digit password", "Invalid date format"};
+            msg = warning[exit_code];
+        }
+        else // FLAG TO EDIT EXISTING USER
+        {
+            exit_code = dataSingleton.updateUser(user_id, firstName, lastName, birthDay, password);
+
+            String[] warning = {"Changes to " +  firstName + " " + lastName + " saved", "Please enter the first name", "Please enter the last name", "Please enter a 4 digit password", "Invalid date format"};
+            msg = warning[exit_code];
+
+            ViewSingleton.getInstance().updateUserInfo();
         }
 
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-        // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
-        if (firstName!=null && !firstName.isEmpty() && lastName!=null && !lastName.isEmpty())
+        // SUCCESS: terminate activity & refresh list view
+        if (exit_code == 0)
         {
-            if (user_id == -1) // FLAG: ADD NEW USER
-            {
-                Person newUser;
-
-                if (accountSpinner.getSelectedItem().equals("Parent")) // ADD A PARENT
-                {
-                    if (password.length()<4)
-                    {
-                        Toast.makeText(getApplicationContext(), "Please enter a 4 digit password", Toast.LENGTH_SHORT).show();
-                        return ;
-                    }
-
-                    newUser = new Parent(firstName, lastName, birth, 0, password);
-                }
-                else
-                {
-                    newUser = new Person(firstName, lastName); // ADD A CHILD
-
-                    // CHANGE BIRTHDAY IF NOT EMPTY
-                    if (birth!=null) newUser.setBirthDate(birth);
-                }
-
-                users.add(newUser);
-                Toast.makeText(getApplicationContext(), "User " +  newUser.getFullName() + " added", Toast.LENGTH_SHORT).show();
-            }
-            else if(user_id>=0)// MODIFY AN EXISTING USER
-            {
-                users.get(user_id).setFirstName(firstName);
-                users.get(user_id).setLastName(lastName);
-
-                if (birth!=null) // CHANGE BIRTHDAY IF NOT EMPTY
-                    users.get(user_id).setBirthDate(birth);
-
-                ViewSingleton.getInstance().updateUserInfo();
-                Toast.makeText(getApplicationContext(), "Changes to " +  users.get(user_id).getFullName() + " saved", Toast.LENGTH_SHORT).show();
-            }
-
             ViewSingleton.getInstance().refresh();
-
             this.finish();
         }
     }

@@ -29,13 +29,16 @@ public class MainActivity extends AppCompatActivity
     // =============================================================================================
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Log.d(TAG, "onCreate: Started");
 
 
         // Check if there are any users in the database
+        DataSingleton.getInstance().setMainActivity(this);
+
         if (DataSingleton.getInstance().getUsers().isEmpty())
         {
             Intent intent = new Intent(this, LoginActivity.class);

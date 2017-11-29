@@ -1,9 +1,18 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import static android.R.attr.password;
+import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
 
 /**
  * Created by Peter Nguyen on 11/20/17.
@@ -24,6 +33,8 @@ public class DataSingleton
 
     private Person loggedPerson;
 
+    private Context mainActivity;
+    private MyDBHandler dbHandler;
 
 
     // CONSTRUCTOR
@@ -54,6 +65,7 @@ public class DataSingleton
         return instance;
     }
 
+
     /**
      * Loads data from the database.
      *
@@ -62,63 +74,80 @@ public class DataSingleton
      */
     private void loadData()
     {
+        boolean load_database = true;
+
         if (!load)
         {
-            // Placeholder data +++
-            Date d = getDate(1997, 1, 6);
-            Parent michel = new Parent("Michel", "Balamou", d, 1, "1234");
+            if (!load_database) {
+                // Placeholder data +++
+                Date d = getDate(1997, 1, 6);
+                Parent michel = new Parent("Michel", "Balamou", d, 1, "1234");
 
-            Person peter = new Person("Peter", "Nguyen", null);
-            Person nate = new Person("Nate", "Adams", null);
+                Person peter = new Person("Peter", "Nguyen", null);
+                Person nate = new Person("Nate", "Adams", null);
 
-            peter.addParent(michel);
-            nate.addParent(michel);
+                peter.addParent(michel);
+                nate.addParent(michel);
 
-            loggedPerson = michel;
+                loggedPerson = michel;
 
-            people.add(michel);
-            people.add(peter);
-            people.add(nate);
-
-
-            tasks.add(new Task("Wash dishes", "", 2, "DEFAULT"));
-            tasks.add(new Task("Clean room", "", 4, "DEFAULT"));
-            tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
+                people.add(michel);
+                people.add(peter);
+                people.add(nate);
 
 
-            Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
-            Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
-
-            tasks.add(new Task("Clean basement", "", 2));
-            tasks.add(new Task("Finish app", "", 5));
-
-            tasks.add(new Task("Wash car", "", 5));
+                tasks.add(new Task("Wash dishes", "", 2, "DEFAULT"));
+                tasks.add(new Task("Clean room", "", 4, "DEFAULT"));
+                tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
 
 
-            //RESOURCES +++
+                Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
+                Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
 
-            resources.add(new Resource("Sponge", "For washing dishes"));
-            resources.add(new Resource("Car", "To clean the car"));
-            resources.add(new Resource("Fork", "For forking stuff"));
+                tasks.add(new Task("Clean basement", "", 2));
+                tasks.add(new Task("Finish app", "", 5));
 
-            tasks.get(0).allocateResource(resources.get(0));
-            tasks.get(5).allocateResource(resources.get(1));
-
-            //RESOURCES ---
-
-            michel.assignTask(peter, tasks.get(0), d1, false, "");
-
-            michel.assignTask(nate, tasks.get(3), d1, false, "");
-            michel.assignTask(nate, tasks.get(4), d2, false, "");
-            michel.assignTask(nate, tasks.get(5), d2, false, "");
+                tasks.add(new Task("Wash car", "", 5));
 
 
-            nate.getTaskDates().get(1).setCompleted(true);
+                //RESOURCES +++
 
-            // Placeholder data ---
+                resources.add(new Resource("Sponge", "For washing dishes"));
+                resources.add(new Resource("Car", "To clean the car"));
+                resources.add(new Resource("Fork", "For forking stuff"));
+
+                tasks.get(0).allocateResource(resources.get(0));
+                tasks.get(5).allocateResource(resources.get(1));
+
+                //RESOURCES ---
+
+                michel.assignTask(peter, tasks.get(0), d1, false, "");
+
+                michel.assignTask(nate, tasks.get(3), d1, false, "");
+                michel.assignTask(nate, tasks.get(4), d2, false, "");
+                michel.assignTask(nate, tasks.get(5), d2, false, "");
+
+
+                nate.getTaskDates().get(1).setCompleted(true);
+
+                // Placeholder data ---
+            }
+            else
+            {
+                people = dbHandler.getAllUsers();
+            }
         }
 
         load = true;
+    }
+
+    /**
+     * Sets main activity and initialized the database;
+     */
+    public void setMainActivity(Context mainActivity)
+    {
+        this.mainActivity = mainActivity;
+        dbHandler = new MyDBHandler(mainActivity);
     }
 
     /**
@@ -304,4 +333,116 @@ public class DataSingleton
         return (loggedPerson instanceof Parent);
     }
 
+
+
+    // =============================================================================================
+
+    // DATABASE RELATED METHODS
+
+    // =============================================================================================
+
+    /**
+     * Adds a new person to the database
+     *
+     * @param userType type of account - Parent/Child
+     * @param firstName
+     * @param lastName
+     * @param birthDay birth date (optional)
+     * @param password 4 digit PIN (not required if child account)
+     *
+     * @return Exit Codes 0, 1, 2, 3, 4
+     * 0 - success
+     * 1 - first name empty
+     * 2 - last name empty
+     * 3 - password less than 4 digits
+     * 4 - invalid date format (birth date)
+     */
+    public int addUser(String userType, String firstName, String lastName, String birthDay, String password)
+    {
+        // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
+        if (firstName.isEmpty()) return 1; // Please enter the first name
+        if (lastName.isEmpty()) return 2; // Please enter the last name
+        if (userType.equals("Parent") && password.length()<4) return 3; // Please enter a 4 digit password
+
+
+        Date birth = null;
+        if (!birthDay.isEmpty())
+        {
+            try
+            {
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                birth = format.parse(birthDay);
+            }
+            catch (Exception e)
+            {
+                return 4; // Invalid date format
+            }
+        }
+
+        // ADD A NEW USER
+        Person newUser;
+
+        if (userType.equals("Parent")) // ADD A PARENT
+        {
+            newUser = new Parent(firstName, lastName, birth, 0, password);
+        }
+        else
+        {
+            newUser = new Person(firstName, lastName); // ADD A CHILD
+
+            if (birth!=null) newUser.setBirthDate(birth); // CHANGE BIRTHDAY IF NOT EMPTY
+        }
+
+        people.add(newUser);
+        return 0; // Successfully added new user
+    }
+
+    /**
+     * Updates the person in the database
+     *
+     * @param firstName
+     * @param lastName
+     * @param birthDay birth date (optional)
+     * @param password 4 digit PIN (not required if child account)
+     *
+     * @return Exit Codes 0, 1, 2, 3, 4
+     * 0 - success
+     * 1 - first name empty
+     * 2 - last name empty
+     * 3 - password less than 4 digits
+     * 4 - invalid date format (birth date)
+     */
+    public int updateUser(int user_id, String firstName, String lastName, String birthDay, String password)
+    {
+        Person person = people.get(user_id);
+
+        // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT
+        if (firstName.isEmpty()) return 1; // Please enter the first name
+        if (lastName.isEmpty()) return 2; // Please enter the last name
+        if (person instanceof Parent && password.length()<4) return 3; // Please enter a 4 digit password
+
+        Date birth = null;
+        if (!birthDay.isEmpty())
+        {
+            try
+            {
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                birth = format.parse(birthDay);
+            }
+            catch (Exception e)
+            {
+                return 4; // Invalid date format
+            }
+        }
+
+        // MODIFY AN EXISTING USER
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+
+        if (birth!=null) person.setBirthDate(birth); // Change birthday if not empty
+
+        if (person instanceof Parent) ((Parent)person).setHashedPIN(password); // Change password if account is Parent
+
+        return 0; // Successfully updated
+    }
 }
