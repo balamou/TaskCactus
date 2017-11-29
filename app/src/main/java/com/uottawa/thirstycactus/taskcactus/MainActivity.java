@@ -1,5 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.uottawa.thirstycactus.taskcactus.adapters.SectionsStatePagerAdapter;
+import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.TaskFragment;
 import com.uottawa.thirstycactus.taskcactus.fragments.UsersFragment;
@@ -31,6 +33,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Log.d(TAG, "onCreate: Started");
+
+
+        // Check if there are any users in the database
+        if (DataSingleton.getInstance().getUsers().isEmpty())
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        //------
 
 
         mViewPager = (ViewPager) findViewById(R.id.container);

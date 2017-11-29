@@ -54,7 +54,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.uottawa.thirstycactus.taskcactus.MainActivity" />
         </activity>
-        <activity android:name=".PINActivity"></activity>
+        <activity android:name=".PINActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
