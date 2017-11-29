@@ -12,9 +12,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.uottawa.thirstycactus.taskcactus.ExpandableListAdapter;
+import com.uottawa.thirstycactus.taskcactus.adapters.ExpandableListAdapter;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.TaskInfo;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;

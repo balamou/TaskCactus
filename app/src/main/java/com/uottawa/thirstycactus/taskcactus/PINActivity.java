@@ -1,9 +1,12 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,8 @@ import org.w3c.dom.Text;
 public class PINActivity extends AppCompatActivity
 {
     // ATTRIBUTES
+
+    private int usr_id;
 
     private EditText PINpassEdit;
     private TextView loginAsText;
@@ -39,11 +44,18 @@ public class PINActivity extends AppCompatActivity
 
 
         Intent intent = getIntent();
-        int usr_id = intent.getIntExtra("USR_ID", 0);
+        usr_id = intent.getIntExtra("USR_ID", -1);
+
+        if (usr_id == -1)
+        {
+            ViewSingleton.getInstance().showPopup(this, "Something unpredictable happened; USER ID was not sent (line 51 PINActivity.java)");
+            return ;
+        }
 
         Person person = DataSingleton.getInstance().getUsers().get(usr_id);
         loginAsText.setText("(" + person.getFullName() + ")");
     }
+
 
 
     /**
@@ -51,9 +63,6 @@ public class PINActivity extends AppCompatActivity
      */
     public void onLogin(View view)
     {
-        Intent intent = getIntent();
-        int usr_id = intent.getIntExtra("USR_ID", 0);
-
         String PIN = PINpassEdit.getText().toString();
         DataSingleton dataSingleton = DataSingleton.getInstance();
 

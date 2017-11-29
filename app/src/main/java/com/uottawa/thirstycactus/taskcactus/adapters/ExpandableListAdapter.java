@@ -1,4 +1,4 @@
-package com.uottawa.thirstycactus.taskcactus;
+package com.uottawa.thirstycactus.taskcactus.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
