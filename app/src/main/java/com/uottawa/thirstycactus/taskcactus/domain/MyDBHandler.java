@@ -54,7 +54,8 @@ public class MyDBHandler extends SQLiteOpenHelper
                 + COLUMN_ID + " INTEGER PRIMARY KEY,"
                 + COLUMN_FIRSTNAME  + " TEXT,"
                 + COLUMN_LASTNAME + " TEXT,"
-                + COLUMN_BIRTHDAY + " DATE"  +")";
+                + COLUMN_BIRTHDAY + " DATE,"
+                + COLUMN_PASSWORD + " TEXT"  +")";
 
         db.execSQL(CREATE_USERS_TABLE);
     }
@@ -82,8 +83,9 @@ public class MyDBHandler extends SQLiteOpenHelper
         {
             do {
                 String firstName = cursor.getString(1);
-                String lastName = cursor.getString(1);
-                String birthDate = cursor.getString(2);
+                String lastName = cursor.getString(2);
+                String birthDate = cursor.getString(3);
+                String password = cursor.getString(4);
 
 
                 SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -98,7 +100,13 @@ public class MyDBHandler extends SQLiteOpenHelper
 
                 }
 
-                Person user = new Person(firstName, lastName, date);
+                // Load user
+                Person user;
+                if (password.isEmpty())
+                    user = new Person(firstName, lastName, date); // add user
+                else
+                    user = new Parent(firstName, lastName, date, password); // add as parent if password not empty
+
                 result.add(user);
             } while (cursor.moveToNext());
         }
@@ -117,14 +125,20 @@ public class MyDBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // Convert date to String
-        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = iso8601Format.format(person.getBirthDate());
-
         // Add values to query
         values.put(COLUMN_FIRSTNAME, person.getFirstName());
         values.put(COLUMN_LASTNAME, person.getLastName());
-        values.put(COLUMN_BIRTHDAY, date);
+
+        // Convert date to String
+        if (person.getBirthDate()!=null)
+        {
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = iso8601Format.format(person.getBirthDate());
+            values.put(COLUMN_BIRTHDAY, date);
+        }
+
+        // Add password
+        if (person instanceof Parent) values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
 
         // Insert final query
         db.insert(TABLE_USERS, null, values);
@@ -141,9 +155,7 @@ public class MyDBHandler extends SQLiteOpenHelper
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Convert date to String
-        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = iso8601Format.format(person.getBirthDate());
+
 
         // INSERT NEW DATA
         ContentValues values = new ContentValues();
@@ -151,7 +163,15 @@ public class MyDBHandler extends SQLiteOpenHelper
         values.put(COLUMN_LASTNAME, person.getLastName());
 
         if (person.getBirthDate()!=null)
-            values.put(COLUMN_BIRTHDAY, iso8601Format.format(person.getBirthDate()));
+        {
+            // Convert date to String
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = iso8601Format.format(person.getBirthDate());
+            values.put(COLUMN_BIRTHDAY, date);
+        }
+
+        if (person instanceof Parent)
+            values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
 
         // updating row
         return db.update(TABLE_USERS, values, "id=" + Integer.toString(user_id), null );
@@ -168,4 +188,12 @@ public class MyDBHandler extends SQLiteOpenHelper
 
         return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
     }
+
+    public void clean()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        onCreate(db);
+    }
+
 }

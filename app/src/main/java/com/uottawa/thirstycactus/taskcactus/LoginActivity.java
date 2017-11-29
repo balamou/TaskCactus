@@ -76,64 +76,21 @@ public class LoginActivity extends AppCompatActivity
      */
     public void onSave(View view)
     {
-        List<Person> users = dataSingleton.getUsers();
         String firstName = firstNameEdit.getText().toString();
         String lastName = lastNameEdit.getText().toString();
         String birthDay = birthDayEdit.getText().toString();
         String password = passwordText.getText().toString();
 
-        // CHECKS IF THE DATA IS VALID BEFORE SUBMITTING IT +++++++++
-        Date birth = null;
-        if (!birthDay.isEmpty())
-        {
-            try
-            {
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-                birth = format.parse(birthDay);
-            }
-            catch (Exception e)
-            {
-                // INVALID DATE FORMAT
-                Toast.makeText(getApplicationContext(), "Please enter valid date", Toast.LENGTH_SHORT).show();
-            }
-        }
+        int exit_code = dataSingleton.addUser("Parent", firstName, lastName, birthDay, password);
 
-        if (!isValid(firstName, lastName, password)) return; // EXIT
+        String[] warning = {"New user " +  firstName + " " + lastName + " added", "Please enter the first name", "Please enter the last name", "Please enter a 4 digit password", "Invalid date format"};
+        String msg = warning[exit_code];
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-        // ADD A PARENT +++++++
-        Person newUser = new Parent(firstName, lastName, birth, password);
-        users.add(newUser);
-        Toast.makeText(getApplicationContext(), "New user " +  newUser.getFullName() + " created", Toast.LENGTH_SHORT).show();
-
-        this.finish();
+        if (exit_code == 0) this.finish();
     }
 
 
-    /**
-     * Checks if the information is valid and sends a toast otherwise.
-     */
-    public boolean isValid(String firstName, String lastName, String password)
-    {
 
-        if (firstName.isEmpty())
-        {
-            Toast.makeText(getApplicationContext(), "Please enter the first name", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (lastName.isEmpty())
-        {
-            Toast.makeText(getApplicationContext(), "Please enter the last name", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (password.length()<4)
-        {
-            Toast.makeText(getApplicationContext(), "Please enter a 4 digit password", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
-    }
 
 }

@@ -33,7 +33,6 @@ public class DataSingleton
 
     private Person loggedPerson;
 
-    private Context mainActivity;
     private MyDBHandler dbHandler;
 
 
@@ -74,7 +73,7 @@ public class DataSingleton
      */
     private void loadData()
     {
-        boolean load_database = false;
+        boolean load_database = true;
 
         if (!load)
         {
@@ -134,6 +133,7 @@ public class DataSingleton
             }
             else
             {
+                //dbHandler.clean();
                 people = dbHandler.getAllUsers();
             }
         }
@@ -146,7 +146,6 @@ public class DataSingleton
      */
     public void setMainActivity(Context mainActivity)
     {
-        this.mainActivity = mainActivity;
         dbHandler = new MyDBHandler(mainActivity);
     }
 
@@ -394,6 +393,7 @@ public class DataSingleton
         }
 
         people.add(newUser);
+        dbHandler.addPerson(newUser);
         return 0; // Successfully added new user
     }
 
@@ -443,6 +443,7 @@ public class DataSingleton
 
         if (person instanceof Parent) ((Parent)person).setHashedPIN(password); // Change password if account is Parent
 
+        dbHandler.updatePerson(person, user_id);
         return 0; // Successfully updated
     }
 }
