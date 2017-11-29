@@ -84,9 +84,18 @@ public class ResourcesActivity extends AppCompatActivity
      */
     public void onSave(View view)
     {
+        // CHECK IF LOGGED IN AS PARENT
+        if (!DataSingleton.getInstance().isLoggedAsParent())
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to add a new resource");
+            return ; // EXIT
+        }
+
         String name = nameEdit.getText().toString();
         String desc = descEdit.getText().toString();
 
+        // MAKES SURE THE RESOURCE NAME IS NOT EMPTY
         if (name.isEmpty())
         {
             Toast.makeText(getApplicationContext(), "Please enter a resource name", Toast.LENGTH_SHORT).show();

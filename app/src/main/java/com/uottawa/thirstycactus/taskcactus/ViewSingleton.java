@@ -98,7 +98,7 @@ public class ViewSingleton
     {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
-        alertDialog.setTitle("Alert");
+        alertDialog.setTitle("Note");
 
         alertDialog.setMessage(msg);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

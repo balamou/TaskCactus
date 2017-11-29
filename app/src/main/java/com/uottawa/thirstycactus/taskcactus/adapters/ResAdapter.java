@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
@@ -76,6 +77,15 @@ public class ResAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
+
+                // CHECK IF LOGGED IN AS PARENT
+                if (!DataSingleton.getInstance().isLoggedAsParent())
+                {
+                    // SHOW DIALOG 
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove a resource");
+                    return ; // EXIT
+                }
+
                 int pos = (int)view.getTag();
                 removeItem(pos);
             }
@@ -88,9 +98,18 @@ public class ResAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-                int pos = (int)view.getTag();
 
+                // CHECK IF LOGGED IN AS PARENT
+                if (!DataSingleton.getInstance().isLoggedAsParent())
+                {
+                    // SHOW DIALOG 
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove a resource");
+                    return ; // EXIT
+                }
+
+                int pos = (int)view.getTag();
                 showPopup(pos);
+
             }
         });
         // SET UP OUTPUT INFORMATION ------------------
