@@ -94,11 +94,18 @@ public class TaskInfo extends AppCompatActivity
      */
     public void onEdit(View view)
     {
-        Intent intent = new Intent(this, AddTask.class);
-
-        intent.putExtra("TASK_ID", task_id); // ID of the task
-
-        startActivity(intent);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            Intent intent = new Intent(this, AddTask.class);
+            intent.putExtra("TASK_ID", task_id); // ID of the task
+            startActivity(intent);
+        }
+        else
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to edit a task");
+        }
     }
 
     /**
@@ -106,12 +113,20 @@ public class TaskInfo extends AppCompatActivity
      */
     public void onDelete(View view)
     {
-        dataSingleton.deleteTask(task_id);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            dataSingleton.deleteTask(task_id);
 
-        ViewSingleton.getInstance().refreshTasks();
-        ViewSingleton.getInstance().refresh();
-
-        this.finish();
+            ViewSingleton.getInstance().refreshTasks();
+            ViewSingleton.getInstance().refresh();
+            this.finish();
+        }
+        else
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to delete a task");
+        }
     }
 
 
@@ -120,9 +135,18 @@ public class TaskInfo extends AppCompatActivity
      */
     public void onAssignTask(View view)
     {
-        Intent intent = new Intent(this, AssignTask.class);
-        intent.putExtra("TASK_ID", task_id);
-        startActivity(intent);
+        // CHECK IF LOGGED IN AS PARENT
+        if (dataSingleton.isLoggedAsParent())
+        {
+            Intent intent = new Intent(this, AssignTask.class);
+            intent.putExtra("TASK_ID", task_id);
+            startActivity(intent);
+        }
+        else
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to assign a task");
+        }
     }
 
 

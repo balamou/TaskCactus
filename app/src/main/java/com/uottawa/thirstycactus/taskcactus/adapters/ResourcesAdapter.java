@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.R;
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
@@ -74,8 +76,18 @@ public class ResourcesAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-                int pos = (int)view.getTag();
-                removeItem(pos);
+
+                // CHECK IF LOGGED IN AS PARENT
+                if (DataSingleton.getInstance().isLoggedAsParent())
+                {
+                    int pos = (int)view.getTag();
+                    removeItem(pos);
+                }
+                else
+                {
+                    // SHOW DIALOG 
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to deallocate a resource");
+                }
             }
         });
 

@@ -45,6 +45,8 @@ public class UserInfo extends AppCompatActivity
     private UserInfoAdapter userInfo;
 
     private Button loginBtn;
+    private Button deleteBtn;
+
 
     // =============================================================================================
 
@@ -77,13 +79,19 @@ public class UserInfo extends AppCompatActivity
         totalPoints = (TextView) findViewById(R.id.totalPoints);
         birthDayText = (TextView) findViewById(R.id.birthDayText);
         loginBtn = (Button) findViewById(R.id.loginBtn);
+        deleteBtn = (Button) findViewById(R.id.deleteBtn);
 
         // FILL INFORMATION
         ViewSingleton.getInstance().setUserInfo(this);
         update();
 
+        // If current user is logged in as self
         if (dataSingleton.getLoggedPerson() == user)
+        {
             loginBtn.setVisibility(View.GONE);
+            deleteBtn.setVisibility(View.GONE);
+        }
+
     }
 
     /**

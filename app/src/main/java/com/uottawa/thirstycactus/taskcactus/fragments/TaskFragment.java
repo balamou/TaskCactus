@@ -81,9 +81,18 @@ public class TaskFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getActivity(), AddTask.class);
-                intent.putExtra("TASK_ID", -1); // flag -1 means new task
-                startActivity(intent);
+                // CHECK IF LOGGED IN AS PARENT
+                if (DataSingleton.getInstance().isLoggedAsParent())
+                {
+                    Intent intent = new Intent(getActivity(), AddTask.class);
+                    intent.putExtra("TASK_ID", -1); // flag -1 means new task
+                    startActivity(intent);
+                }
+                else
+                {
+                    // SHOW DIALOG 
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to add a new user");
+                }
             }
         });
 
