@@ -653,6 +653,9 @@ public class DataSingleton
         return 0; // SUCCESS
     }
 
+    /**
+     * Remove association between Person and Task
+     */
     public void unassignTask(TaskDate taskDate)
     {
         taskDate.removeLink();
@@ -660,4 +663,11 @@ public class DataSingleton
         dbHandler.unassignTask(taskDate);
     }
 
+    /**
+     * Set taskDate as completed
+     */
+    public void setCompleted(TaskDate taskDate)
+    {
+        dbHandler.setCompleted(taskDate);
+    }
 }

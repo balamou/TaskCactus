@@ -508,8 +508,6 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_TASK_DATES, COLUMN_TASK_ID + " = " + task_id, null);
     }
 
-
-
     /**
      * @param taskDate
      */
@@ -518,5 +516,20 @@ public class MyDBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         return db.delete(TABLE_TASK_DATES, COLUMN_ID + " = " + taskDate.getID(), null);
+    }
+
+    /**
+     * @param taskDate
+     */
+    public int setCompleted(TaskDate taskDate)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // INSERT NEW DATA
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_COMPLETED, taskDate.getCompleted() ? 1 : 0);
+
+        // updating row
+        return db.update(TABLE_TASK_DATES, values, COLUMN_ID + " = " + taskDate.getID(), null);
     }
 }

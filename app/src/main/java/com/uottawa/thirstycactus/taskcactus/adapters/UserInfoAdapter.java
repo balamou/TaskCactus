@@ -3,14 +3,12 @@ package com.uottawa.thirstycactus.taskcactus.adapters;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +17,7 @@ import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-
-import static android.R.id.list;
 
 /**
  * Created by michelbalamou on 11/22/17.
@@ -69,25 +63,21 @@ public class UserInfoAdapter extends ArrayAdapter
         }
 
         // SET UP OUTPUT INFORMATION ++++++++++++++++++
-        TaskDate task = taskDates.get(position);
+        TaskDate taskDate = taskDates.get(position);
 
-        CheckBox taskCheckBox = convertView.findViewById(R.id.taskCheckBox);
-        taskCheckBox.setText(task.getTask().getName());
-        taskCheckBox.setChecked(task.getCompleted());
+        viewHolder.taskCheckBox.setText(taskDate.getTask().getName());
+        viewHolder.taskCheckBox.setChecked(taskDate.getCompleted());
 
-        taskCheckBox.setTag(position);
-        taskCheckBox.setOnClickListener(new View.OnClickListener() {
+        viewHolder.taskCheckBox.setTag(position);
+        viewHolder.taskCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                int pos = (int)view.getTag();
-                CheckBox b = (CheckBox) view;
-                taskDates.get(pos).setCompleted(b.isChecked());
-                ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
+                setChecked((int)view.getTag(), ((CheckBox) view).isChecked());
             }
         });
 
-        viewHolder.taskDateText.setText(task.getReadableDate());
+        viewHolder.taskDateText.setText(taskDate.getReadableDate());
 
         viewHolder.removeButton.setTag(position);
         viewHolder.removeButton.setOnClickListener(new View.OnClickListener()
@@ -124,6 +114,15 @@ public class UserInfoAdapter extends ArrayAdapter
     }
 
 
+    private void setChecked(int pos, boolean b)
+    {
+        taskDates.get(pos).setCompleted(b);
+
+        DataSingleton.getInstance().setCompleted(taskDates.get(pos)); // SAVE COMPLETED IN THE DATABASE
+
+        ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
+    }
+
     private void removeItem(int pos)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
@@ -137,7 +136,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
         DataSingleton.getInstance().unassignTask(taskDate); // CLEAN REMOVAL
 
-        Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Task '" + taskName + "' unassigned", Toast.LENGTH_SHORT).show();
 
         notifyDataSetChanged();
     }
