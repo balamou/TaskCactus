@@ -75,6 +75,8 @@ public class LoginActivity extends AppCompatActivity
      */
     public void onSave(View view)
     {
+        dataSingleton.setDefaults(); // SET DEFAULT TASKS & RESOURCES
+
         String firstName = firstNameEdit.getText().toString();
         String lastName = lastNameEdit.getText().toString();
         String birthDay = birthDayEdit.getText().toString();

@@ -132,8 +132,6 @@ public class DataSingleton
         tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
 
 
-        Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
-        Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
 
         tasks.add(new Task("Clean basement", "", 2));
         tasks.add(new Task("Finish app", "", 5));
@@ -151,6 +149,9 @@ public class DataSingleton
         tasks.get(5).allocateResource(resources.get(1));
 
         //RESOURCES ---
+        Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
+        Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
+
 
         michel.assignTask(peter, tasks.get(0), d1, false, "");
 
@@ -320,9 +321,27 @@ public class DataSingleton
 
     // =============================================================================================
 
-    public void resetDatabse()
+    public void resetDatabase()
     {
         dbHandler.clean();
+    }
+
+    public void setDefaults()
+    {
+        List<Task> tasks = new LinkedList<>();
+
+        // Add default tasks to the database
+        tasks.add(new Task("Wash dishes", "All the dishes", 5, "DEFAULT"));
+        tasks.add(new Task("Clean room", "Get all your clothes off the chair", 5, "DEFAULT"));
+        tasks.add(new Task("Recycle", "Good for environment", 5, "DEFAULT"));
+        tasks.add(new Task("Clean basement", "", 5, "DEFAULT"));
+
+
+        for (Task task : tasks)
+            dbHandler.addTask(task);
+
+        load = false;
+        loadData();
     }
 
     /**

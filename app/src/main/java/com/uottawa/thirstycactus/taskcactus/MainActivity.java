@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onCreate: Started");
 
 
+
         // Check if there are any users in the database
         DataSingleton.getInstance().initDatabase(this);
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(mViewPager);
 
-        TabLayout tabLayout=(TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         getSupportActionBar().setElevation(0); // Remove shadow under action bar
