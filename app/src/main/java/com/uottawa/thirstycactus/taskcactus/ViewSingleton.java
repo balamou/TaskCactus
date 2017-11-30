@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
@@ -111,6 +112,16 @@ public class ViewSingleton
                     }
                 });
         alertDialog.show();
+    }
+
+
+    public AlertDialog.Builder confirmationBox(final Context context, String msg)
+    {
+        return new AlertDialog.Builder(context)
+                .setTitle("Warning")
+                .setMessage(msg)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setNegativeButton(android.R.string.no, null);
     }
 
     public void setCalendarFragment(CalendarFragment calendarFragment)

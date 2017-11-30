@@ -178,18 +178,33 @@ public class UserInfo extends AppCompatActivity
             return ; // EXIT
         }
 
-        if (dataSingleton.getLoggedPerson() == person) // You cannot delete yourself; Login as another parent to do so
+        // You cannot delete yourself; Login as another parent to do so
+        if (dataSingleton.getLoggedPerson() == person)
         {
             viewSingleton.showPopup(this, "You cannot delete yourself. Login as another parent to do so.");
             return ; // EXIT
         }
 
+        // CONFIRMATION BOX ++++
+        AlertDialog.Builder b = ViewSingleton.getInstance().confirmationBox(this, "Are you sure you want to delete the user? ");
 
-        // DELETE USER
-        dataSingleton.deleteUser(user_id);
+        final UserInfo usr = this;
 
-        ViewSingleton.getInstance().refresh();
-        this.finish();
+        b.setPositiveButton("YES", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                String name = dataSingleton.getUsers().get(user_id).getFullName();
+                dataSingleton.deleteUser(user_id);
+
+                ViewSingleton.getInstance().refresh();
+
+                Toast.makeText(getApplicationContext(), "User " + name + " deleted", Toast.LENGTH_SHORT).show();
+                usr.finish();
+            }
+        });
+
+        b.show();
     }
 
 
