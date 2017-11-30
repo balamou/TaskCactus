@@ -91,9 +91,14 @@ public class AssignTask extends AppCompatActivity
         usersSpinner.setSelection(user_id + 1);
         tasksSpinner.setSelection(task_id + 1);
 
+        // DATE
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date now = new Date();
-        dateEdit.setText(simpleDateFormat.format(now));
+
+        long time = intent.getLongExtra("DATE", -1);
+        Date selectedDate = new Date(time);
+
+        dateEdit.setText(simpleDateFormat.format(time == -1 ? now : selectedDate));
     }
 
     /**

@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.AssignTask;
 import com.uottawa.thirstycactus.taskcactus.adapters.ExpandableListAdapter;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.TaskInfo;
@@ -62,6 +63,8 @@ public class CalendarFragment extends Fragment
     private LinearLayout layout1;
     private LinearLayout layout2;
 
+    private Button assignTaskBtn;
+
     // =============================================================================================
 
     // METHODS
@@ -107,6 +110,13 @@ public class CalendarFragment extends Fragment
             @Override
             public void onClick(View view) {
                 onToday();
+            }
+        });
+
+        assignTaskBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAssignTask();
             }
         });
 
@@ -171,6 +181,8 @@ public class CalendarFragment extends Fragment
 
         layout1 = view.findViewById(R.id.layout1);
         layout2 = view.findViewById(R.id.layout2);
+
+        assignTaskBtn = view.findViewById(R.id.assignTaskBtn);
     }
 
 
@@ -237,6 +249,13 @@ public class CalendarFragment extends Fragment
         setButtonText(currentDate); // change Button Text
         setButtonRED(dayOfWeek(currentDate)); // change button Color
         refreshGUI(currentDate); // refresh GUI
+    }
+
+    public void openAssignTask()
+    {
+        Intent intent = new Intent(getActivity(), AssignTask.class);
+        intent.putExtra("DATE", currentDate.getTime());
+        startActivity(intent);
     }
 
 
