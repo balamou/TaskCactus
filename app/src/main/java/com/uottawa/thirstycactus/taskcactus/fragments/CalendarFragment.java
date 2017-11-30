@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.AssignTask;
+import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.adapters.ExpandableListAdapter;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.TaskInfo;
@@ -158,6 +159,9 @@ public class CalendarFragment extends Fragment
         }
 
 
+        //
+        ViewSingleton.getInstance().setCalendarFragment(this);
+
         return view;
     }
 
@@ -237,7 +241,7 @@ public class CalendarFragment extends Fragment
             int pos = (int)view.getTag();
             currentDate = selectedWeek[pos]; // change date
             setButtonRED(pos); // change button Color
-            refreshGUI(currentDate); // refresh GUI
+            refreshGUI(); // refresh GUI
         }
     };
 
@@ -253,8 +257,7 @@ public class CalendarFragment extends Fragment
         currentDate = addDays(currentDate, increment); // Increment/decrement date
         setButtonText(currentDate); // change Button Text
         setButtonRED(dayOfWeek(currentDate)); // change button Color
-        setIndicator(); // Refresh indicator buttons
-        refreshGUI(currentDate); // refresh GUI
+        refreshGUI(); // refresh GUI
     }
 
     /**
@@ -265,8 +268,7 @@ public class CalendarFragment extends Fragment
         currentDate = new Date(); // change date
         setButtonText(currentDate); // change Button Text
         setButtonRED(dayOfWeek(currentDate)); // change button Color
-        setIndicator(); // Refresh indicator buttons
-        refreshGUI(currentDate); // refresh GUI
+        refreshGUI(); // refresh GUI
     }
 
     public void openAssignTask()
@@ -331,14 +333,16 @@ public class CalendarFragment extends Fragment
     /**
      * Changes the date displayed and refreshes the list view
      */
-    public void refreshGUI(Date date)
+    public void refreshGUI()
     {
         // Show the date in the top
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM, dd");
-        monthText.setText(simpleDateFormat.format(date));
+        monthText.setText(simpleDateFormat.format(currentDate));
 
 
-        List<Person> users = dataSingleton.getUsers(date); // users that have a task on that day
+        List<Person> users = dataSingleton.getUsers(currentDate); // users that have a task on that day
+
+        setIndicator(); // Refresh indicator buttons
 
         if (users.isEmpty()) // if nobody has a task on that day
         {
@@ -353,7 +357,7 @@ public class CalendarFragment extends Fragment
 
         listAdapter.setPeople(users);
         // Notify the list view that the date has been changed
-        listAdapter.setDate(date);
+        listAdapter.setDate(currentDate);
         listAdapter.notifyDataSetChanged();
 
         // Expands all views

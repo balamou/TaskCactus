@@ -212,6 +212,7 @@ public class AssignTask extends AppCompatActivity
         if (fromTaskInfo)
             ViewSingleton.getInstance().updateTaskInfo();
 
+        ViewSingleton.getInstance().updateCalendar();
 
         this.finish();
     }

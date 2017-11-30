@@ -10,6 +10,7 @@ import com.uottawa.thirstycactus.taskcactus.adapters.TaskListview;
 import com.uottawa.thirstycactus.taskcactus.adapters.UserListview;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
+import com.uottawa.thirstycactus.taskcactus.fragments.CalendarFragment;
 
 import static android.R.attr.id;
 
@@ -26,6 +27,8 @@ public class ViewSingleton
 
     private TaskInfo taskInfo;
     private UserInfo userInfo;
+
+    private CalendarFragment calendarFragment;
 
     // CONSTRUCTOR
     /**
@@ -108,5 +111,16 @@ public class ViewSingleton
                     }
                 });
         alertDialog.show();
+    }
+
+    public void setCalendarFragment(CalendarFragment calendarFragment)
+    {
+        this.calendarFragment = calendarFragment;
+    }
+
+    public void updateCalendar()
+    {
+        if (calendarFragment!=null)
+            calendarFragment.refreshGUI();
     }
 }
