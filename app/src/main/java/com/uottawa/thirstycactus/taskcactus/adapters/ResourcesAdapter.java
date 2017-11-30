@@ -91,7 +91,7 @@ public class ResourcesAdapter extends ArrayAdapter
         return taskResources.size();
     }
 
-    private void removeItem(int pos)
+    private void removeItem(int res_id)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
         {
@@ -99,7 +99,7 @@ public class ResourcesAdapter extends ArrayAdapter
             return ; // EXIT
         }
 
-        Resource res = taskResources.get(pos);
+        Resource res = taskResources.get(res_id);
         Task task = DataSingleton.getInstance().getTasks().get(task_id);
 
         DataSingleton.getInstance().deallocateResource(res, task);

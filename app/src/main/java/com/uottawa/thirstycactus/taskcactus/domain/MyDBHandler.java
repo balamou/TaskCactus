@@ -411,6 +411,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         removeTaskAssoc(task_id);
+        removeLinksToTask(task_id);
 
         return db.delete(TABLE_TASKS, COLUMN_ID + " = " + task_id, null);
     }
@@ -631,6 +632,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         removeTaskAssoc(res_id);
+        removeLinksToRes(res_id);
 
         return db.delete(TABLE_RESOURCES, COLUMN_ID + " = " + res_id, null);
     }
@@ -720,5 +722,31 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+
+
+    /**
+     * Removes all the resources associates with a task at task_id
+     *
+     * About to delete a Task
+     */
+    public int removeLinksToTask(int task_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_RES_TASK, COLUMN_TASK_ID + " = " + task_id, null);
+    }
+
+
+    /**
+     * Removes all the resources associates with a resource at res_id
+     *
+     * About to delete a Resource
+     */
+    public int removeLinksToRes(int res_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_RES_TASK, COLUMN_RESOURCE_ID + " = " + res_id, null);
+    }
 
 }
