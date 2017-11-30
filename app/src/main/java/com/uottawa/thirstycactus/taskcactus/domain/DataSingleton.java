@@ -13,6 +13,7 @@ import java.util.List;
 
 import static android.R.attr.name;
 import static android.R.attr.password;
+import static android.media.CamcorderProfile.get;
 import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
 import static com.uottawa.thirstycactus.taskcactus.R.id.descEdit;
 import static com.uottawa.thirstycactus.taskcactus.R.id.nameEdit;
@@ -252,14 +253,6 @@ public class DataSingleton
         tasks.remove(index);
     }
 
-    /**
-     * Delete a user from the list at index
-     */
-    public void deleteUser(int index)
-    {
-        people.get(index).prepareToDelete();
-        people.remove(index);
-    }
 
 
     /**
@@ -458,6 +451,28 @@ public class DataSingleton
         dbHandler.updatePerson(person); // DB~
         return 0; // Successfully updated
     }
+
+
+    /**
+     * Delete a user from the list at index
+     *
+     * @param index index of the user in the people list
+     */
+    public void deleteUser(int index)
+    {
+        Person person = people.get(index);
+        dbHandler.deletePerson(person.getID()); // DB~
+
+        people.get(index).prepareToDelete();
+        people.remove(index);
+    }
+
+
+    // =============================================================================================
+
+    // DATABASE RELATED METHODS: TASK
+
+    // =============================================================================================
 
 
     /***

@@ -156,6 +156,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         if (cursor.moveToFirst())
         {
             do {
+                int id = Integer.parseInt(cursor.getString(0));
                 String firstName = cursor.getString(1);
                 String lastName = cursor.getString(2);
                 String birthDate = cursor.getString(3);
@@ -175,8 +176,6 @@ public class MyDBHandler extends SQLiteOpenHelper
                 }
 
                 // Load user
-                int id = Integer.parseInt(cursor.getString(0));
-
                 Person user;
                 if (password==null || password.isEmpty())
                     user = new Person(id, firstName, lastName, date); // add user
@@ -248,7 +247,6 @@ public class MyDBHandler extends SQLiteOpenHelper
             values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
 
         // updating row
-        //return db.update(TABLE_USERS, values, COLUMN_ID + " = ?", new String[] { String.valueOf(person.getID()) });
         return db.update(TABLE_USERS, values, COLUMN_ID + " = " + person.getID(), null);
     }
 
@@ -258,7 +256,6 @@ public class MyDBHandler extends SQLiteOpenHelper
      */
     public int deletePerson(int user_id)
     {
-        boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
 
         return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
