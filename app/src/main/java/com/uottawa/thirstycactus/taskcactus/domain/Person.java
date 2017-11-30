@@ -27,7 +27,6 @@ public class Person {
 
     // ASSOCIATIONS
 
-    //private List<Task> tasks;
     private List<TaskDate> taskDates; // association class liked to Task; [*] multiplicity
     private List<Parent> parents; // list of parents; [0..2] multiplicity
 
@@ -75,9 +74,9 @@ public class Person {
      * Assigns the user a task; Makes a bidirectional link between Person and Task, through the
      * association class TaskDate
      */
-    public void assignTask(Task task, Date date, boolean completed, String notes)
+    public TaskDate assignTask(Task task, Date date, boolean completed, String notes)
     {
-        new TaskDate(this, task, date, completed, notes);
+        return new TaskDate(this, task, date, completed, notes);
     }
 
     /**

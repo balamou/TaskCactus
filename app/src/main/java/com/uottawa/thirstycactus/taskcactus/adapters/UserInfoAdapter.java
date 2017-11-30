@@ -72,9 +72,7 @@ public class UserInfoAdapter extends ArrayAdapter
         TaskDate task = taskDates.get(position);
 
         CheckBox taskCheckBox = convertView.findViewById(R.id.taskCheckBox);
-
         taskCheckBox.setText(task.getTask().getName());
-
         taskCheckBox.setChecked(task.getCompleted());
 
         taskCheckBox.setTag(position);
@@ -97,23 +95,7 @@ public class UserInfoAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-
-                // CHECK IF LOGGED IN AS PARENT
-                if (DataSingleton.getInstance().isLoggedAsParent())
-                {
-                    int pos = (int) view.getTag();
-                    String taskName = taskDates.get(pos).getTask().getName();
-
-                    removeItem(pos);
-                    ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
-
-                    Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    // SHOW DIALOG 
-                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove task");
-                }
+                removeItem((int)view.getTag());
             }
         });
 
@@ -144,8 +126,18 @@ public class UserInfoAdapter extends ArrayAdapter
 
     private void removeItem(int pos)
     {
-        taskDates.get(pos).removeLink();
-        remove(pos); // built in remove method
+        if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
+        {
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove task"); // SHOW DIALOG 
+            return ; // EXIT
+        }
+
+        TaskDate taskDate = taskDates.get(pos);
+        String taskName = taskDate.getTask().getName();
+
+        DataSingleton.getInstance().unassignTask(taskDate); // CLEAN REMOVAL
+
+        Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
 
         notifyDataSetChanged();
     }

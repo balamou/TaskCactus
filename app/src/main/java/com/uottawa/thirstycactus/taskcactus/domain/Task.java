@@ -23,7 +23,6 @@ public class Task {
 
     //ASSOCIATIONS
 
-    //private Person assignedPerson; // person the task is assigned to; [0..1] multiplicity
     private List<TaskDate> taskDates; // association class liked to Person; [*] multiplicity
     private List<Resource> resources; // allocated resources; [*] multiplicity
 

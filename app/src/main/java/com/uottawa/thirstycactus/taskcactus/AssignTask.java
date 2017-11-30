@@ -140,8 +140,6 @@ public class AssignTask extends AppCompatActivity
 
     // =============================================================================================
 
-
-
     /**
      * Action when clicking on the plus button.
      * Shows the form to add a new task.

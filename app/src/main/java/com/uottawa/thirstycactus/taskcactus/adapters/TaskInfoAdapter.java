@@ -75,19 +75,7 @@ public class TaskInfoAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-
-                // CHECK IF LOGGED IN AS PARENT
-                if (DataSingleton.getInstance().isLoggedAsParent())
-                {
-                    int pos = (int)view.getTag();
-                    removeItem(pos);
-                }
-                else
-                {
-                    // SHOW DIALOG 
-                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to unassign a task");
-                }
-
+                removeItem((int)view.getTag());
             }
         });
 
@@ -103,8 +91,19 @@ public class TaskInfoAdapter extends ArrayAdapter
 
     private void removeItem(int pos)
     {
-        taskDates.get(pos).removeLink();
-        remove(pos); // built in remove method
+        if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to unassign a task");
+            return ; // EXIT
+        }
+
+        TaskDate taskDate = taskDates.get(pos);
+        String taskName = taskDate.getTask().getName();
+
+        DataSingleton.getInstance().unassignTask(taskDate); // CLEAN REMOVAL
+
+        Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
 
         notifyDataSetChanged();
     }

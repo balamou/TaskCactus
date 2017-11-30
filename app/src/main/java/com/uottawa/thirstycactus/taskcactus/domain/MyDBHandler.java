@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -161,18 +162,7 @@ public class MyDBHandler extends SQLiteOpenHelper
                 String birthDate = cursor.getString(3);
                 String password = cursor.getString(4);
 
-
-                SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-                Date date = null;
-                try
-                {
-                    date = iso8601Format.parse(birthDate);
-                }
-                catch (Exception e)
-                {
-
-                }
+                Date date = toDate(birthDate);
 
                 // Load user
                 Person user;
@@ -188,6 +178,29 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.close();
         return result;
     }
+
+
+    /**
+     * Converts String date to Date
+     * Format: yyyy-MM-dd HH:mm:ss
+     */
+    public Date toDate(String date)
+    {
+        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date result = null;
+        try
+        {
+            result = iso8601Format.parse(date);
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return result;
+    }
+
 
     /**
      * Adds a new person to the database
@@ -257,6 +270,8 @@ public class MyDBHandler extends SQLiteOpenHelper
     public int deletePerson(int user_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        removeUserAssoc(user_id);
 
         return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
     }
@@ -345,7 +360,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         values.put(COLUMN_TYPE, task.getType());
 
         // Insert final query
-        long id  = db.insert(TABLE_TASKS, null, values);
+        long id = db.insert(TABLE_TASKS, null, values);
         task.setID((int)id); // Set task id
         db.close();
     }
@@ -379,6 +394,8 @@ public class MyDBHandler extends SQLiteOpenHelper
     public int deleteTask(int task_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        removeTaskAssoc(task_id);
 
         return db.delete(TABLE_TASKS, COLUMN_ID + " = " + task_id, null);
     }
@@ -414,4 +431,92 @@ public class MyDBHandler extends SQLiteOpenHelper
         taskDate.setID((int)id);
     }
 
+
+    public void loadAssociations(List<Person> people, List<Task> tasks)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_TASK_DATES;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                int id = cursor.getInt(0);
+                int task_id = cursor.getInt(1);
+                int user_id = cursor.getInt(2);
+                String note = cursor.getString(3);
+                int completed = cursor.getInt(4);
+                String date = cursor.getString(5);
+
+
+                Person p = null;
+                Task t = null;
+
+                // find person by id
+                for (Person person : people)
+                {
+                    if (person.getID() == user_id)
+                    {
+                        p = person;
+                        break;
+                    }
+                }
+
+                // find task by id
+                for (Task task : tasks)
+                {
+                    if (task.getID() == task_id)
+                    {
+                        t = task;
+                        break;
+                    }
+                }
+
+                // Create association between Person and Task
+                if (p!=null && t!=null)
+                    p.assignTask(t, toDate(date), completed == 1 ? true : false, note).setID(id);
+                else
+                    Log.wtf("DATABASE", "Both task and person are null? line 477 in database handler.");
+
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+    }
+
+
+    /**
+     * Removes all the tasks associates with a user at user_id
+     */
+    public int removeUserAssoc(int user_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_TASK_DATES, COLUMN_USER_ID + " = " + user_id, null);
+    }
+
+
+    /**
+     * Removes all the tasks associates with a task at task_id
+     */
+    public int removeTaskAssoc(int task_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_TASK_DATES, COLUMN_TASK_ID + " = " + task_id, null);
+    }
+
+
+
+    /**
+     * @param taskDate
+     */
+    public int unassignTask(TaskDate taskDate)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_TASK_DATES, COLUMN_ID + " = " + taskDate.getID(), null);
+    }
 }

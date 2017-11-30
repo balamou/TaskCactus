@@ -13,6 +13,7 @@ import java.util.List;
  * Created by Peter Nguyen on 11/20/17.
  *
  * Singleton class to sync in all data throughout the app.
+ * Communicates with the database.
  */
 
 public class DataSingleton
@@ -132,6 +133,8 @@ public class DataSingleton
                 //dbHandler.clean();
                 people = dbHandler.getAllUsers();
                 tasks = dbHandler.getAllTasks();
+
+                dbHandler.loadAssociations(people, tasks);
             }
         }
 
@@ -209,6 +212,8 @@ public class DataSingleton
      */
     public List<TaskDate> getAllAssociations()
     {
+        loadData();
+
         List<TaskDate> taskDates = new LinkedList<>();
         for (Person p: people)
         {
@@ -223,6 +228,8 @@ public class DataSingleton
      */
     public List<TaskDate> getTasksFromDay(Date date)
     {
+        loadData();
+
         List<TaskDate> taskDates = new LinkedList<>();
         for (Person p: people)
         {
@@ -235,8 +242,28 @@ public class DataSingleton
         return taskDates;
     }
 
+    /**
+     * Returns a list of people who have a task on that day
+     */
+    public List<Person> getUsers(Date date)
+    {
+        loadData();
+        List<Person> result = new LinkedList<>();
 
+        for (Person p : people)
+        {
+            if (!p.getTaskDates(date).isEmpty())
+                result.add(p);
+        }
 
+        return result;
+    }
+
+    // =============================================================================================
+
+    // LOGIN
+
+    // =============================================================================================
 
     /**
      * Returns the currently logged in person
@@ -288,24 +315,6 @@ public class DataSingleton
 
 
     /**
-     * Returns a list of people who have a task on that day
-     */
-    public List<Person> getUsers(Date date)
-    {
-        loadData();
-        List<Person> result = new LinkedList<>();
-
-        for (Person p : people)
-        {
-            if (!p.getTaskDates(date).isEmpty())
-                result.add(p);
-        }
-
-        return result;
-    }
-
-
-    /**
      * Checked if the currently logged in person is a parent
      */
     public boolean isLoggedAsParent()
@@ -314,10 +323,9 @@ public class DataSingleton
     }
 
 
-
     // =============================================================================================
 
-    // DATABASE RELATED METHODS
+    // DATABASE RELATED METHODS: PERSON
 
     // =============================================================================================
 
@@ -442,6 +450,7 @@ public class DataSingleton
     public void deleteUser(int index)
     {
         Person person = people.get(index);
+
         dbHandler.deletePerson(person.getID()); // DB~
 
         people.get(index).prepareToDelete();
@@ -520,7 +529,6 @@ public class DataSingleton
      */
     public int updateTask(int task_id, String name, String desc, String points, boolean[] initState, boolean[] res)
     {
-
         if (name.isEmpty()) return 1; // Please enter a task name
 
         int p;
@@ -566,6 +574,7 @@ public class DataSingleton
     public void deleteTask(int index)
     {
         Task task = tasks.get(index);
+
         dbHandler.deleteTask(task.getID()); // DB~
 
         task.prepareToDelete();
@@ -590,6 +599,7 @@ public class DataSingleton
      * @param desc (optional) can be empty
      * @param points has to be a strict integer in a string format
      * @param note (optional) can be empty
+     *
      *
      * @return Exit Codes 0, 1, 2, 3, 4
      * 0 - success
@@ -638,8 +648,16 @@ public class DataSingleton
             task = tasks.get(task_id); // USE SELECTED TASK
         }
 
-        person.assignTask(task, date, false, note);
+        TaskDate taskDate = person.assignTask(task, date, false, note);
+        dbHandler.assignTask(taskDate); // DB~
         return 0; // SUCCESS
+    }
+
+    public void unassignTask(TaskDate taskDate)
+    {
+        taskDate.removeLink();
+
+        dbHandler.unassignTask(taskDate);
     }
 
 }
