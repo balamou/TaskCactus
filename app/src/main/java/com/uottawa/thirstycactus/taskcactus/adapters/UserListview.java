@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Parent;
 import com.uottawa.thirstycactus.taskcactus.domain.Person;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -79,6 +79,11 @@ public class UserListview extends ArrayAdapter
         viewHolder.tasksLeftText.setText("Tasks to do: " + tasksLeft);
         viewHolder.nextTaskText.setText(status);
 
+        if (person instanceof Parent)
+            viewHolder.userImage.setImageResource(R.drawable.pic1); // parent logo
+        else
+            viewHolder.userImage.setImageResource(R.drawable.pic2); // child logo
+
         // SET UP OUTPUT INFORMATION ------------------
 
         return convertView;
@@ -96,12 +101,14 @@ public class UserListview extends ArrayAdapter
         TextView fullnameText;
         TextView tasksLeftText;
         TextView nextTaskText;
+        ImageView userImage;
 
         ViewHolder(View v)
         {
             fullnameText = v.findViewById(R.id.fullnameText);
             tasksLeftText =  v.findViewById(R.id.tasksLeftText);
             nextTaskText = v.findViewById(R.id.nextTaskText);
+            userImage = v.findViewById(R.id.userImage);
         }
     }
 }

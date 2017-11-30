@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,7 +18,6 @@ import com.uottawa.thirstycactus.taskcactus.domain.Person;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -43,6 +43,8 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
     private LinearLayout parentLayout;
     private LinearLayout accountLayout;
 
+    private ImageView userImage;
+
     // =============================================================================================
 
     // METHODS
@@ -63,6 +65,9 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
 
         parentLayout = (LinearLayout) findViewById(R.id.parentLayout);
         accountLayout = (LinearLayout) findViewById(R.id.accountLayout);
+
+
+        userImage = (ImageView) findViewById(R.id.userImage);
 
         // SET UP SPINNER
         accountSpinner = (Spinner) findViewById(R.id.accountSpinner);
@@ -108,6 +113,8 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
                 accountSpinner.setSelection(1);
                 parentLayout.setVisibility(View.VISIBLE);
                 passwordText.setText(((Parent) user).getHashedPIN());
+
+                userImage.setImageResource(R.drawable.pic1); // parent logo
             }
         }
     }
@@ -127,10 +134,13 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
         if (parent.getItemAtPosition(pos).equals("Child"))
         {
             parentLayout.setVisibility(View.GONE);
+
+            userImage.setImageResource(R.drawable.pic2); // child logo
         }
         else if (parent.getItemAtPosition(pos).equals("Parent"))
         {
             parentLayout.setVisibility(View.VISIBLE);
+            userImage.setImageResource(R.drawable.pic1); // parent logo
         }
     }
 

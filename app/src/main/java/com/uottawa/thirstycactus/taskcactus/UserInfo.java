@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class UserInfo extends AppCompatActivity
     private Button loginBtn;
     private Button deleteBtn;
 
+    private ImageView userImage;
 
     // =============================================================================================
 
@@ -84,6 +86,8 @@ public class UserInfo extends AppCompatActivity
         loginBtn = (Button) findViewById(R.id.loginBtn);
         deleteBtn = (Button) findViewById(R.id.deleteBtn);
 
+        userImage = (ImageView) findViewById(R.id.userImage);
+
         // FILL INFORMATION
         ViewSingleton.getInstance().setUserInfo(this);
         update();
@@ -109,6 +113,11 @@ public class UserInfo extends AppCompatActivity
         totalPoints.setText(Integer.toString(user.getPoints()));
 
         birthDayText.setText(user.getReadableBirthday());
+
+        if (user instanceof Parent)
+            userImage.setImageResource(R.drawable.pic1); // parent logo
+        else
+            userImage.setImageResource(R.drawable.pic2); // child logo
 
         userInfo.notifyDataSetChanged();
     }
