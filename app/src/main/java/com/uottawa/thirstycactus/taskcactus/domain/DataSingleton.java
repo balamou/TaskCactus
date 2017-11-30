@@ -240,6 +240,14 @@ public class DataSingleton
         return result;
     }
 
+
+    /**
+     * Number of tasks on a particular date
+     */
+    public int numTasks(Date date)
+    {
+        return dbHandler.getNumTasks(date); // DB~
+    }
     // =============================================================================================
 
     // LOGIN

@@ -351,6 +351,27 @@ public class MyDBHandler extends SQLiteOpenHelper
 
     // =============================================================================================
 
+    /**
+     * Get the number of tasks on that particular date
+     */
+    public int getNumTasks(Date date)
+    {
+        // Convert date to String
+        if (date==null) return 0;
+
+        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd");
+        String deadline = iso8601Format.format(date);
+
+        // compare only date not time
+        String countQuery = "SELECT  * FROM " + TABLE_TASK_DATES + " WHERE " + COLUMN_DATE +" >= date('"+ deadline +"') AND " + COLUMN_DATE + " <  date('" + deadline + "', '+1 day')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
     /***
      * Returns a list of all tasks from the database
      */

@@ -49,6 +49,8 @@ public class CalendarFragment extends Fragment
 
     // GRAPHICAL ITEMS
     private List<Button> buttons;
+    private List<Button> colButtons;
+
 
     private TextView monthText;
 
@@ -85,6 +87,7 @@ public class CalendarFragment extends Fragment
 
         setButtonText(currentDate);
         buttons.get(index).setTextColor(Color.parseColor("#ff0000")); // set current date as RED
+        setIndicator(); //set indicator below button
 
         // show Today's date
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("MMMM, dd");
@@ -164,6 +167,8 @@ public class CalendarFragment extends Fragment
     private void initGUI(View view)
     {
         buttons = new LinkedList<>();
+        colButtons = new LinkedList<>();
+
 
         buttons.add((Button)view.findViewById(R.id.sundayBtn));
         buttons.add((Button)view.findViewById(R.id.mondayBtn));
@@ -172,6 +177,16 @@ public class CalendarFragment extends Fragment
         buttons.add((Button)view.findViewById(R.id.thursdayBtn));
         buttons.add((Button)view.findViewById(R.id.fridayBtn));
         buttons.add((Button)view.findViewById(R.id.saturdayBrn));
+
+
+        colButtons.add((Button)view.findViewById(R.id.colBtn1));
+        colButtons.add((Button)view.findViewById(R.id.colBtn2));
+        colButtons.add((Button)view.findViewById(R.id.colBtn3));
+        colButtons.add((Button)view.findViewById(R.id.colBtn4));
+        colButtons.add((Button)view.findViewById(R.id.colBtn5));
+        colButtons.add((Button)view.findViewById(R.id.colBtn6));
+        colButtons.add((Button)view.findViewById(R.id.colBtn7));
+
 
         nextWeekBtn = view.findViewById(R.id.nextWeekBtn);
         prevWeekBtn = view.findViewById(R.id.prevWeekBtn);
@@ -231,12 +246,14 @@ public class CalendarFragment extends Fragment
      * Buttons that change the week;
      *
      * @param increment if +7 then moving to next week; if -7 then moving to previous week
+     *                  if +1 then moving to next day; if -1 then moving to previous day
      */
     public void onChangeWeek(int increment)
     {
         currentDate = addDays(currentDate, increment); // Increment/decrement date
         setButtonText(currentDate); // change Button Text
         setButtonRED(dayOfWeek(currentDate)); // change button Color
+        setIndicator(); // Refresh indicator buttons
         refreshGUI(currentDate); // refresh GUI
     }
 
@@ -248,6 +265,7 @@ public class CalendarFragment extends Fragment
         currentDate = new Date(); // change date
         setButtonText(currentDate); // change Button Text
         setButtonRED(dayOfWeek(currentDate)); // change button Color
+        setIndicator(); // Refresh indicator buttons
         refreshGUI(currentDate); // refresh GUI
     }
 
@@ -264,6 +282,23 @@ public class CalendarFragment extends Fragment
     // HELPER METHODS
 
     // =============================================================================================
+
+    /**
+     * Indicator below the day
+     */
+    public void setIndicator()
+    {
+        // Change color
+        for (int i = 0; i<selectedWeek.length; i++)
+        {
+            int col = Color.parseColor("#ffffff"); // WHITE
+
+            if (dataSingleton.numTasks(selectedWeek[i])>0)
+                col = Color.parseColor("#fe7373"); // BRIGHT RED
+
+            colButtons.get(i).setBackgroundColor(col);
+        }
+    }
 
     /**
      * Sets all buttons as black except one

@@ -165,6 +165,61 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/colBtn1"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn2"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn3"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn4"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn5"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn6"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/colBtn7"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
                 android:id="@+id/prevWeekBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
