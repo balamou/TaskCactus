@@ -4,7 +4,7 @@
 
 ## Screenshots
 
-  <img src="https://i.imgur.com/YTvUmcE.png" width="20%"/> <img src="https://i.imgur.com/uxRh8RI.png" width="20%"/> <img src="https://i.imgur.com/HCIwNgY.png" width="20%"/>
+  <img src="https://i.imgur.com/PhyULMd.png" width="20%"/> <img src="https://i.imgur.com/uxRh8RI.png" width="20%"/> <img src="https://i.imgur.com/HCIwNgY.png" width="20%"/>
 
 
 ## TODO
@@ -17,7 +17,7 @@
   - [X] Indicator if there is a task that day (Calendar)
 
 
-## Contributors:
+## Contributors
   :bowtie: Michel Balamou
 
   :cactus: Peter Nguyen
