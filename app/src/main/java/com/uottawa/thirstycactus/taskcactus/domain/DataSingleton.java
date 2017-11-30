@@ -136,6 +136,7 @@ public class DataSingleton
                 resources = dbHandler.getAllResources();
 
                 dbHandler.loadAssociations(people, tasks);
+                dbHandler.loadResAssoc(resources, tasks);
             }
         }
 
@@ -496,15 +497,22 @@ public class DataSingleton
 
         Task task = new Task(name, desc, p);
 
+
+
+        tasks.add(task);
+        dbHandler.addTask(task); // DB~
+
         // ALLOCATE RESOURCES: that have the checkboxes on
         for (int i = 0; i<res.length ; i++)
         {
             if (res[i] && i<resources.size())
+            {
                 task.allocateResource(resources.get(i));
+
+                dbHandler.allocateResource(resources.get(i), task); // DB~
+            }
         }
 
-        tasks.add(task);
-        dbHandler.addTask(task); // DB~
         return 0; // Success
     }
 
@@ -517,7 +525,7 @@ public class DataSingleton
      * @param res boolean array of resources that have been added
      *
      * Example:
-     *   resources = [res1,  res2,  res3]        <- All resources (used an array in this example, but its a LinkedList)
+     *   resources = [res1,  res2,  res3]       <- All resources (used an array in this example, but its a LinkedList)
      *   initState = [false, true,  false]      <- Resources allocated before
      *   res       = [true,  false, false]      <- Resources allocated now
      *
@@ -559,9 +567,15 @@ public class DataSingleton
             if (initState[i] != res[i]) // check if the state is different
             {
                 if (res[i]) // Allocate a resource that wasn't allocated yet
+                {
                     task.allocateResource(resources.get(i));
+                    dbHandler.allocateResource(resources.get(i), task); // DB~
+                }
                 else // Deallocate a resource that was allocated
+                {
                     task.deallocateResource(resources.get(i));
+                    dbHandler.deallocateResource(resources.get(i), task); // DB~
+                }
             }
         }
 
@@ -702,4 +716,5 @@ public class DataSingleton
         res.prepareToDelete();
         resources.remove(res);
     }
+
 }

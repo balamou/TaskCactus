@@ -635,5 +635,90 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_RESOURCES, COLUMN_ID + " = " + res_id, null);
     }
 
+    // =============================================================================================
+
+    // RESOURCES - TASK ASSOCIATION
+
+    // =============================================================================================
+
+    /**
+     * @param res
+     * @param task
+     */
+    public void allocateResource(Resource res, Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RESOURCE_ID, res.getID());
+        values.put(COLUMN_TASK_ID, task.getID());
+
+        db.insert(TABLE_RES_TASK, null, values);
+        db.close();
+    }
+
+    public void deallocateResource(Resource res, Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = COLUMN_RESOURCE_ID + " = ? AND " + COLUMN_TASK_ID + " = ? ";
+
+        String[] args = new String[] {
+                Integer.toString(res.getID()),
+                Integer.toString(task.getID())};
+
+        db.delete(TABLE_RES_TASK, query, args);
+        db.close();
+    }
+
+    public void loadResAssoc(List<Resource> resources, List<Task> tasks)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_RES_TASK;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                int res_id = cursor.getInt(1);
+                int task_id = cursor.getInt(2);
+
+                Resource r = null;
+                Task t = null;
+
+                // find resource by id
+                for (Resource res : resources)
+                {
+                    if (res.getID() == res_id)
+                    {
+                        r = res;
+                        break;
+                    }
+                }
+
+                // find task by id
+                for (Task task : tasks)
+                {
+                    if (task.getID() == task_id)
+                    {
+                        t = task;
+                        break;
+                    }
+                }
+
+                // Create association between Person and Task
+                if (r!=null && t!=null)
+                    t.allocateResource(r);
+                else
+                    Log.wtf("DATABASE", "Both task and resource are null? line 685 in database handler.");
+
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+    }
+
 
 }
