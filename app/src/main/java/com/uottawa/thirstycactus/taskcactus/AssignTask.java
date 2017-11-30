@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.R.attr.name;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 
@@ -188,81 +189,32 @@ public class AssignTask extends AppCompatActivity
      */
     public void onSave(View view)
     {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        int user_id = usersSpinner.getSelectedItemPosition() - 1;
+        int task_id = tasksSpinner.getSelectedItemPosition() - 1;
 
-        try
-        {
-            int user_id = usersSpinner.getSelectedItemPosition() - 1;
-            int task_id = tasksSpinner.getSelectedItemPosition() - 1;
-
-            // STOP IF USER NOT SELECTED
-            if (user_id == -1)
-            {
-                Toast.makeText(getApplicationContext(), "Please select user", Toast.LENGTH_SHORT).show();
-                return ;
-            }
-
-            // STOP IF TASK NOT SELECTED
-            if (task_id == -1 && !newTask)
-            {
-                Toast.makeText(getApplicationContext(), "Please select task", Toast.LENGTH_SHORT).show();
-                return ;
-            }
-
-            // ASSIGN TASK TO USER
-            Person p = dataSingleton.getUsers().get(user_id);
-            Task t;
+        String name = nameEdit.getText().toString();
+        String points = pointsEdit.getText().toString();
+        String desc = descEdit.getText().toString();
+        String date = dateEdit.getText().toString();
+        String note = notesEdit.getText().toString();
 
 
-            if (newTask) // CREATE NEW TASK
-            {
-                String name = nameEdit.getText().toString();
-                String points = pointsEdit.getText().toString();
-                String desc = descEdit.getText().toString();
+        int exit_code = dataSingleton.assignTask(user_id, task_id, newTask, date, name, desc, points, note);
+        String[] warning = {"Task successfully assigned", "Please select user", "Please select task", "Invalid date format. Try MM/dd/yyyy", "Task name empty", "Points is not a valid number"};
 
-                int tmp;
+        Toast.makeText(getApplicationContext(), warning[exit_code], Toast.LENGTH_SHORT).show();
 
-                try
-                {
-                    tmp = Integer.parseInt(points);
-                }
-                catch (Exception e)
-                {
-                    Toast.makeText(getApplicationContext(), "Points must be an integer number", Toast.LENGTH_SHORT).show();
-                    return ;
-                }
+        if (exit_code!=0) return ; //EXIT on failure
 
-                t = new Task(name, desc, tmp);
-                dataSingleton.getTasks().add(t);
-            }
-            else
-            {
-                t = dataSingleton.getTasks().get(task_id); // USE SELECTED TASK
-            }
+         // Check which activity opened the current activity; then update the corresponding fields
+        if (fromUserInfo)
+            ViewSingleton.getInstance().updateUserInfo();
 
-            Date date = simpleDateFormat.parse(dateEdit.getText().toString());
-            String note = notesEdit.getText().toString();
-
-            p.assignTask(t, date, false, note);
-
-            Toast.makeText(getApplicationContext(), t.getName() + " assigned to " + p.getFullName(), Toast.LENGTH_SHORT).show();
-
-            // CHECK which activity opened this activity
-            // then update the corresponding fields
-            if (fromUserInfo)
-                ViewSingleton.getInstance().updateUserInfo();
-
-            if (fromTaskInfo)
-                ViewSingleton.getInstance().updateTaskInfo();
+        if (fromTaskInfo)
+            ViewSingleton.getInstance().updateTaskInfo();
 
 
-            this.finish();
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(getApplicationContext(), "Invalid date format. Try MM/dd/yyyy.", Toast.LENGTH_SHORT).show();
-        }
-
+        this.finish();
     }
 
 }

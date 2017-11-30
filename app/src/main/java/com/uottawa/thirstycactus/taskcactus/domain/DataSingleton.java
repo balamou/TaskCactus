@@ -15,9 +15,13 @@ import static android.R.attr.name;
 import static android.R.attr.password;
 import static android.media.CamcorderProfile.get;
 import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
+import static com.uottawa.thirstycactus.taskcactus.R.id.dateEdit;
 import static com.uottawa.thirstycactus.taskcactus.R.id.descEdit;
 import static com.uottawa.thirstycactus.taskcactus.R.id.nameEdit;
+import static com.uottawa.thirstycactus.taskcactus.R.id.notesEdit;
 import static com.uottawa.thirstycactus.taskcactus.R.id.pointsEdit;
+import static com.uottawa.thirstycactus.taskcactus.R.id.tasksSpinner;
+import static com.uottawa.thirstycactus.taskcactus.R.id.usersSpinner;
 
 /**
  * Created by Peter Nguyen on 11/20/17.
@@ -588,5 +592,66 @@ public class DataSingleton
 
     // =============================================================================================
 
+    /**
+     *
+     * @param user_id
+     * @param task_id
+     * @param newTask
+     * @param deadline
+     * @param name
+     * @param desc
+     * @param points
+     * @param note
+     *
+     * @return Exit Codes 0, 1, 2, 3, 4
+     * 0 - success
+     * 1 - user not selected
+     * 2 - task not selected
+     * 3 - Invalid date format; try MM/dd/yyyy
+     *
+     * 4 - (1) task name empty (exit code 1 from addTask)
+     * 5 - (2) points is not a valid number (exit code 2 from addTask)
+     */
+    public int assignTask(int user_id, int task_id, boolean newTask, String deadline, String name, String desc, String points, String note)
+    {
+        // CHECK VALIDITY OF DATA: returns exit code other than 0 on failure
+        if (user_id == -1) return 1; // Please select user
+        if (task_id == -1 && !newTask) return 2; // Please select task
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        Date date;
+        try
+        {
+            date = simpleDateFormat.parse(deadline);
+        }
+        catch(Exception e)
+        {
+            return 3; // Invalid date format. Try MM/dd/yyyy.
+        }
+
+
+        // ASSIGN TASK TO USER
+        Person person = people.get(user_id);
+        Task task;
+
+        if (newTask) // CREATE NEW TASK
+        {
+            int exit_code = addTask(name, desc, points, new boolean[0]);
+
+            if (exit_code!=0)
+                return 3 + exit_code; // EXIT on failure; Shift by 3 (largest exit code in assignTask)
+            else
+                task = tasks.get(tasks.size()-1); // get task that was just added
+
+        }
+        else
+        {
+            task = tasks.get(task_id); // USE SELECTED TASK
+        }
+
+        person.assignTask(task, date, false, note);
+        return 0; // SUCCESS
+    }
 
 }
