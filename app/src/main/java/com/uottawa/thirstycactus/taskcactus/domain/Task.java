@@ -14,6 +14,8 @@ public class Task {
 
     // ATTRIBUTES
 
+    private int id; // database id of the task (DB~)
+
     private String name;   // Name of the task
     private String desc;   // Task description
     private int points;    // Points received for the task
@@ -29,8 +31,10 @@ public class Task {
 
     //CONSTRUCTORS
 
-    public Task(String name, String desc, int points, String type)
+    public Task(int id, String name, String desc, int points, String type)
     {
+        this.id = id;
+
         this.name = name;
         this.desc = desc;
         this.points = points;
@@ -38,6 +42,11 @@ public class Task {
 
         taskDates = new LinkedList<>();
         resources = new LinkedList<>();
+    }
+
+    public Task(String name, String desc, int points, String type)
+    {
+        this(0, name, desc, points, type);
     }
 
 
@@ -127,6 +136,7 @@ public class Task {
         return taskDates;
     }
 
+
     public void setName(String name)
     {
         this.name = name;
@@ -160,5 +170,15 @@ public class Task {
     public String getType()
     {
         return type;
+    }
+
+    public void setID(int id)
+    {
+        this.id = id;
+    }
+
+    public int getID()
+    {
+        return id;
     }
 }

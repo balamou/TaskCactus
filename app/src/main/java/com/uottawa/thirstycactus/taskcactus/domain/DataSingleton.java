@@ -141,6 +141,7 @@ public class DataSingleton
             {
                 //dbHandler.clean();
                 people = dbHandler.getAllUsers();
+                tasks = dbHandler.getAllTasks();
             }
         }
 
@@ -244,14 +245,6 @@ public class DataSingleton
         return taskDates;
     }
 
-    /**
-     * Delete a task from the list at index
-     */
-    public void deleteTask(int index)
-    {
-        tasks.get(index).prepareToDelete();
-        tasks.remove(index);
-    }
 
 
 
@@ -395,8 +388,6 @@ public class DataSingleton
             if (birth!=null) newUser.setBirthDate(birth); // CHANGE BIRTHDAY IF NOT EMPTY
         }
 
-        newUser.setID(people.size()); // id of the new user is one plus the current number of people DB~
-
         people.add(newUser);
         dbHandler.addPerson(newUser); // DB~
         return 0; // Successfully added new user
@@ -482,6 +473,9 @@ public class DataSingleton
      * @param res boolean array of resources that have been added
      *
      * @return Exit Codes 0, 1, 2
+     * 0 - success
+     * 1 - task name empty
+     * 2 - points is not a valid number
      */
     public int addTask(String name, String desc, String points, boolean[] res)
     {
@@ -510,6 +504,7 @@ public class DataSingleton
         }
 
         tasks.add(task);
+        dbHandler.addTask(task); // DB~
         return 0; // Success
     }
 
@@ -529,6 +524,9 @@ public class DataSingleton
      *   ^ this means task with ID 'task_id' has to allocate res1 and deallocate tes2
      *
      * @return Exit Codes 0, 1, 2
+     * 0 - success
+     * 1 - task name empty
+     * 2 - points is not a valid number
      */
     public int updateTask(int task_id, String name, String desc, String points, boolean[] initState, boolean[] res)
     {
@@ -568,6 +566,27 @@ public class DataSingleton
             }
         }
 
+        dbHandler.updateTask(task); // DB~
         return 0; // Success
     }
+
+    /**
+     * Delete a task from the list at index
+     */
+    public void deleteTask(int index)
+    {
+        Task task = tasks.get(index);
+        dbHandler.deleteTask(task.getID()); // DB~
+
+        task.prepareToDelete();
+        tasks.remove(index);
+    }
+
+    // =============================================================================================
+
+    // DATABASE RELATED METHODS: TASK-PERSON ASSOCIATION
+
+    // =============================================================================================
+
+
 }

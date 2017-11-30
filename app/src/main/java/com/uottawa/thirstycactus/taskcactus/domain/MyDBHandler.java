@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.attr.password;
+
 
 /**
  * Created by michelbalamou on 10/31/17.
@@ -216,7 +218,8 @@ public class MyDBHandler extends SQLiteOpenHelper
         if (person instanceof Parent) values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
 
         // Insert final query
-        db.insert(TABLE_USERS, null, values);
+        long id = db.insert(TABLE_USERS, null, values);
+        person.setID((int)id); // set person id
         db.close();
     }
 
@@ -261,6 +264,13 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
     }
 
+
+    // =============================================================================================
+
+    // OTHER
+
+    // =============================================================================================
+
     /**
      * UPDATE ALL TABLES
      */
@@ -290,5 +300,121 @@ public class MyDBHandler extends SQLiteOpenHelper
 
     // =============================================================================================
 
+    /***
+     * Returns a list of all tasks from the database
+     */
+    public List<Task> getAllTasks()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_TASKS;
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<Task> result = new LinkedList<>();
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String desc = cursor.getString(2);
+                int points = cursor.getInt(3);
+                String type = cursor.getString(4);
+
+                Task task = new Task(id, name, desc, points, type);
+
+                result.add(task);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return result;
+    }
+
+    /**
+     * Adds a new task to the database
+     *
+     * @param task information about the person
+     */
+    public void addTask(Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Add values to query
+        values.put(COLUMN_NAME, task.getName());
+        values.put(COLUMN_DESC, task.getDesc());
+        values.put(COLUMN_POINTS, task.getPoints());
+        values.put(COLUMN_TYPE, task.getType());
+
+        // Insert final query
+        long id  = db.insert(TABLE_TASKS, null, values);
+        task.setID((int)id); // Set task id
+        db.close();
+    }
+
+
+    /**
+     * Updates a record of a task in the database
+     *
+     * @param task
+     */
+    public int updateTask(Task task)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // INSERT NEW DATA
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, task.getName());
+        values.put(COLUMN_DESC, task.getDesc());
+        values.put(COLUMN_POINTS, task.getPoints());
+        values.put(COLUMN_TYPE, task.getType());
+
+
+        // updating row
+        return db.update(TABLE_TASKS, values, COLUMN_ID + " = " + task.getID(), null);
+    }
+
+
+    /**
+     * @param task_id
+     */
+    public int deleteTask(int task_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(TABLE_TASKS, COLUMN_ID + " = " + task_id, null);
+    }
+
+    // =============================================================================================
+
+    // AUX
+
+    // =============================================================================================
+
+    /**
+     * @param taskDate
+     */
+    public void assignTask(TaskDate taskDate)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TASK_ID, taskDate.getTask().getID());
+        values.put(COLUMN_USER_ID, taskDate.getPerson().getID());
+        values.put(COLUMN_NOTE, taskDate.getNotes());
+        values.put(COLUMN_COMPLETED, taskDate.getCompleted() ? 1 : 0);
+
+        if (taskDate.getDate()!=null)
+        {
+            // Convert date to String
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = iso8601Format.format(taskDate.getDate());
+            values.put(COLUMN_DATE, date);
+        }
+
+        long id = db.insert(TABLE_TASK_DATES, null, values);
+        taskDate.setID((int)id);
+    }
 
 }

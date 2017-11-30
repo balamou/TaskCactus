@@ -13,6 +13,8 @@ import java.util.Date;
 public class TaskDate
 {
     // ATTRIBUTES
+    private int id; // database id (DB~)
+
     private Date date;
     private boolean completed;
     private String notes;
@@ -23,8 +25,10 @@ public class TaskDate
 
 
     // CONSTRUCTOR
-    public TaskDate(Person person, Task task, Date date, boolean completed, String notes) throws IllegalArgumentException
+    public TaskDate(int id, Person person, Task task, Date date, boolean completed, String notes) throws IllegalArgumentException
     {
+        this.id = id;
+
         this.person = person;
         this.task = task;
         this.date = date;
@@ -36,6 +40,11 @@ public class TaskDate
 
         task.linkTaskDate(this); // makes a link back to the task
         person.linkTaskDate(this); // makes a link back to the person
+    }
+
+    public TaskDate(Person person, Task task, Date date, boolean completed, String notes) throws IllegalArgumentException
+    {
+        this(0, person, task, date, completed, notes);
     }
 
     public TaskDate(Person person, Task task, Date date) throws IllegalArgumentException
@@ -152,5 +161,15 @@ public class TaskDate
     public void setNotes(String notes)
     {
         this.notes = notes;
+    }
+
+    public int getID()
+    {
+        return id;
+    }
+
+    public void setID(int id)
+    {
+        this.id = id;
     }
 }
