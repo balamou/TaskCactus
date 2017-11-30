@@ -1,7 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -12,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.R.attr.password;
 
 
 /**

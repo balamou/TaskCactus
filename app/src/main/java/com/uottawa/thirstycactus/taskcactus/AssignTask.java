@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,9 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static android.R.attr.name;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 
 public class AssignTask extends AppCompatActivity
@@ -192,17 +188,17 @@ public class AssignTask extends AppCompatActivity
         int user_id = usersSpinner.getSelectedItemPosition() - 1;
         int task_id = tasksSpinner.getSelectedItemPosition() - 1;
 
-        String name = nameEdit.getText().toString();
-        String points = pointsEdit.getText().toString();
-        String desc = descEdit.getText().toString();
         String date = dateEdit.getText().toString();
+        String name = nameEdit.getText().toString();
+        String desc = descEdit.getText().toString();
+        String points = pointsEdit.getText().toString();
         String note = notesEdit.getText().toString();
 
 
         int exit_code = dataSingleton.assignTask(user_id, task_id, newTask, date, name, desc, points, note);
         String[] warning = {"Task successfully assigned", "Please select user", "Please select task", "Invalid date format. Try MM/dd/yyyy", "Task name empty", "Points is not a valid number"};
-
         Toast.makeText(getApplicationContext(), warning[exit_code], Toast.LENGTH_SHORT).show();
+
 
         if (exit_code!=0) return ; //EXIT on failure
 

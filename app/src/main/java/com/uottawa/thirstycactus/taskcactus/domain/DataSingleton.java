@@ -1,9 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.domain;
 
 import android.content.Context;
-import android.widget.Toast;
-
-import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,17 +8,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.R.attr.name;
-import static android.R.attr.password;
-import static android.media.CamcorderProfile.get;
-import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
-import static com.uottawa.thirstycactus.taskcactus.R.id.dateEdit;
-import static com.uottawa.thirstycactus.taskcactus.R.id.descEdit;
-import static com.uottawa.thirstycactus.taskcactus.R.id.nameEdit;
-import static com.uottawa.thirstycactus.taskcactus.R.id.notesEdit;
-import static com.uottawa.thirstycactus.taskcactus.R.id.pointsEdit;
-import static com.uottawa.thirstycactus.taskcactus.R.id.tasksSpinner;
-import static com.uottawa.thirstycactus.taskcactus.R.id.usersSpinner;
 
 /**
  * Created by Peter Nguyen on 11/20/17.
@@ -594,14 +580,16 @@ public class DataSingleton
 
     /**
      *
-     * @param user_id
-     * @param task_id
-     * @param newTask
-     * @param deadline
-     * @param name
-     * @param desc
-     * @param points
-     * @param note
+     * @param user_id ID of the user in 'users' list
+     * @param task_id ID of the task in 'tasks' list
+     * @param newTask true means create a new task, false means task_id is the assigned task
+     *
+     * @param deadline date in the format of MM/dd/yyyy
+     *
+     * @param name cannot be an empty string
+     * @param desc (optional) can be empty
+     * @param points has to be a strict integer in a string format
+     * @param note (optional) can be empty
      *
      * @return Exit Codes 0, 1, 2, 3, 4
      * 0 - success
