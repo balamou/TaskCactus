@@ -137,6 +137,19 @@ public class DataSingleton
 
                 dbHandler.loadAssociations(people, tasks);
                 dbHandler.loadResAssoc(resources, tasks);
+
+                dbHandler.display(); // Just for debugging
+
+                // FIND PERSON LOGGED IN
+                int log_id = dbHandler.getLogged();
+                for (Person person : people)
+                {
+                    if (person.getID() == log_id)
+                    {
+                        loggedPerson = person;
+                        break;
+                    }
+                }
             }
         }
 
@@ -289,6 +302,7 @@ public class DataSingleton
         if (parent.getHashedPIN().equals(PIN))
         {
             loggedPerson = parent;
+            dbHandler.setLogged(parent.getID()); // DB~
         }
         else
         {
@@ -308,6 +322,7 @@ public class DataSingleton
         if (!(person instanceof Parent))
         {
             loggedPerson = person;
+            dbHandler.setLogged(person.getID()); // DB~
         }
         else
         {

@@ -13,7 +13,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.attr.id;
+import static android.R.attr.name;
+import static android.R.attr.password;
 import static android.R.attr.type;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static java.lang.Integer.parseInt;
 
 
 /**
@@ -171,7 +176,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         if (cursor.moveToFirst())
         {
             do {
-                int id = Integer.parseInt(cursor.getString(0));
+                int id = parseInt(cursor.getString(0));
                 String firstName = cursor.getString(1);
                 String lastName = cursor.getString(2);
                 String birthDate = cursor.getString(3);
@@ -317,8 +322,36 @@ public class MyDBHandler extends SQLiteOpenHelper
         ContentValues valuesZero = new ContentValues();
         valuesZero.put(COLUMN_LOGGED, 0);
 
-        db.update(TABLE_USERS, values, COLUMN_ID + "=" + user_id, null);
         db.update(TABLE_USERS, valuesZero, null, null);
+        db.update(TABLE_USERS, values, COLUMN_ID + " = " + user_id, null);
+    }
+
+
+    /**
+     * Returns ID of the user logged in
+     * Returns -1 if nobody is logged
+     */
+    public int getLogged()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_USERS + " WHERE " + COLUMN_LOGGED + " = 1";
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.wtf("ROW", "--");
+        Log.wtf("ROW", "-- USERS --");
+        Log.wtf("ROW", "--");
+
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                return cursor.getInt(0);
+            }
+            while (cursor.moveToNext());
+        }
+
+        return -1;
     }
 
     // =============================================================================================
@@ -749,4 +782,76 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_RES_TASK, COLUMN_RESOURCE_ID + " = " + res_id, null);
     }
 
+
+    // TMP
+    // Just for debugging
+    public void display()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_USERS;
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.wtf("ROW", "--");
+        Log.wtf("ROW", "-- USERS --");
+        Log.wtf("ROW", "--");
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                String id = cursor.getString(0);
+                String firstName = cursor.getString(1);
+                String lastName = cursor.getString(2);
+                String birthDate = cursor.getString(3);
+                String password = cursor.getString(4);
+                String log = cursor.getString(5);
+
+
+                Log.wtf("ROW", id + "   " + firstName + "   " + lastName + "   " + birthDate + "   " + password + "   " + log);
+            } while (cursor.moveToNext());
+        }
+
+        Log.wtf("ROW", "--");
+        Log.wtf("ROW", "-- TASKS --");
+        Log.wtf("ROW", "--");
+
+
+        query = "Select * FROM " + TABLE_TASKS;
+        cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                String id = cursor.getString(0);
+                String name = cursor.getString(1);
+                String desc = cursor.getString(2);
+                String points = cursor.getString(3);
+                String type = cursor.getString(4);
+
+                Log.wtf("ROW", id + "   " + name + "   " + desc + "   " + points + "   " + type);
+            } while (cursor.moveToNext());
+        }
+
+        Log.wtf("ROW", "--");
+        Log.wtf("ROW", "-- RES --");
+        Log.wtf("ROW", "--");
+
+
+        query = "Select * FROM " + TABLE_RESOURCES;
+        cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                String id = cursor.getString(0);
+                String name = cursor.getString(1);
+                String desc = cursor.getString(2);
+
+                Log.wtf("ROW", id + "   " + name + "   " + desc);
+            } while (cursor.moveToNext());
+        }
+
+
+        db.close();
+    }
 }
