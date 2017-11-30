@@ -135,14 +135,40 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView21"
+                <!-- Resources allocated -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Resources allocated:"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="RESOURCES"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+
+                </LinearLayout>
+                <!--  Resources allocated -->
 
                 <ListView
                     android:id="@+id/resourcesListView"
@@ -156,14 +182,40 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView2"
+                <!-- Resources allocated -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Task assigned to:"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="ASSIGNED TO"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+
+                </LinearLayout>
+                <!--  Resources allocated -->
 
                 <ListView
                     android:id="@+id/usersListView"
