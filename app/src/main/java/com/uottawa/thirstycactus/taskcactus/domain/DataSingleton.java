@@ -138,7 +138,7 @@ public class DataSingleton
                 dbHandler.loadAssociations(people, tasks);
                 dbHandler.loadResAssoc(resources, tasks);
 
-                dbHandler.display(); // Just for debugging
+                dbHandler.display(); // Display database content for debugging
 
                 // FIND PERSON LOGGED IN
                 int log_id = dbHandler.getLogged();

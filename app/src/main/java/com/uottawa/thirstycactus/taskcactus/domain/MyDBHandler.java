@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.attr.format;
 import static android.R.attr.id;
 import static android.R.attr.name;
 import static android.R.attr.password;
@@ -792,28 +793,33 @@ public class MyDBHandler extends SQLiteOpenHelper
         String query = "Select * FROM " + TABLE_USERS;
         Cursor cursor = db.rawQuery(query, null);
 
-        Log.wtf("ROW", "--");
-        Log.wtf("ROW", "-- USERS --");
-        Log.wtf("ROW", "--");
+
+        int w = 15;
+
+        Log.wtf("ROW", fill("-", 71));
+        Log.wtf("ROW", center("USERS", 71));
+        Log.wtf("ROW", fill("-", 71));
+
+        Log.wtf("ROW", format("ID", 5) + format("Firstname", w) + format("Lastname", w) + format("BirthDate", w) + format("Password", w) + format("Logged", w));
+        Log.wtf("ROW", fill("-", 71));
 
         if (cursor.moveToFirst())
         {
             do {
-                String id = cursor.getString(0);
-                String firstName = cursor.getString(1);
-                String lastName = cursor.getString(2);
-                String birthDate = cursor.getString(3);
-                String password = cursor.getString(4);
-                String log = cursor.getString(5);
-
-
-                Log.wtf("ROW", id + "   " + firstName + "   " + lastName + "   " + birthDate + "   " + password + "   " + log);
+                String output = "";
+                for (int i=0; i<6; i++)
+                {
+                    String s = cursor.getString(i);
+                    output += format(s == null ? "---" : s, i==0 ? 5 : w);
+                }
+                Log.wtf("ROW", output);
+                //Log.wtf("ROW", format(id, 5) + format(firstName, w) + format(lastName, w) + format(birthDate==null ? "---" : birthDate, w) + format(password==null ? "---" : password, w) + format(log, w));
             } while (cursor.moveToNext());
         }
 
-        Log.wtf("ROW", "--");
-        Log.wtf("ROW", "-- TASKS --");
-        Log.wtf("ROW", "--");
+        Log.wtf("ROW", fill("-", 71));
+        Log.wtf("ROW", center("TASKS", 71));
+        Log.wtf("ROW", fill("-", 71));
 
 
         query = "Select * FROM " + TABLE_TASKS;
@@ -828,13 +834,15 @@ public class MyDBHandler extends SQLiteOpenHelper
                 String points = cursor.getString(3);
                 String type = cursor.getString(4);
 
-                Log.wtf("ROW", id + "   " + name + "   " + desc + "   " + points + "   " + type);
+                w = 10;
+
+                Log.wtf("ROW", format(id, 5) + format(name, 20) + format(desc.isEmpty() ? "---" : desc, 20) + format(points, 4) + format(type, w));
             } while (cursor.moveToNext());
         }
 
-        Log.wtf("ROW", "--");
-        Log.wtf("ROW", "-- RES --");
-        Log.wtf("ROW", "--");
+        Log.wtf("ROW", fill("-", 71));
+        Log.wtf("ROW", center("RES", 71));
+        Log.wtf("ROW", fill("-", 71));
 
 
         query = "Select * FROM " + TABLE_RESOURCES;
@@ -847,11 +855,85 @@ public class MyDBHandler extends SQLiteOpenHelper
                 String name = cursor.getString(1);
                 String desc = cursor.getString(2);
 
-                Log.wtf("ROW", id + "   " + name + "   " + desc);
+                Log.wtf("ROW", format(id, 5) + format(name, 20) + format(desc.isEmpty() ? "---" : desc, w));
             } while (cursor.moveToNext());
         }
 
 
         db.close();
+    }
+
+
+    /**
+     * Contains a string within a finite amount of space to display in a table cell.
+     * Adds spaces to the string if its less than 'width'.
+     * Removes any character of a string whose index is over 'width'.
+     * THIS METHOD IS PURELY FOR VISUAL ENHANCEMENT
+     *
+     *  Example: format("45.6345690", 8)  returns "45.6..  "
+     *  Example: format("Hello", 8)  returns "Hello   "
+     *  Example: format("My name is Bond", 14)  returns "My name is..  "
+     *
+     * @param s string to be resized
+     * @param width width of the table column
+     * @return a resized string
+     */
+    public String format(String s, int width)
+    {
+        int len = (s!=null) ? s.length() : 4;
+
+        if (len<width)
+        {
+            for (int i=0; i<(width-len); i++)
+                s+=" ";
+        }
+        else
+        {
+            s=s.substring(0, width-4);
+            s+="..  ";
+        }
+
+        return s;
+    }
+
+    /**
+     * Creates a string of size 'size' and fills it with the character
+     * in string 's'
+     *
+     * Example: fill("-", 10) returns "----------"
+     * Example: fill("~", 5) returns "~~~~~"
+     *
+     * @param s character to be filled
+     * @param size size of the resutling string
+     * @return a string with a repeating character
+     */
+    public String fill(String s, int size)
+    {
+        String filler="";
+        for (int i=0; i<size; i++)
+            filler+=s;
+
+        return filler;
+    }
+
+
+    /**
+     * Centers the string 's'.
+     * This method adds enough spaces to the beginning of the string to
+     * make it appear centred over 'size' number of spaces.
+     * THIS METHOD IS PURELY FOR VISUAL ENHANCMENT
+     *
+     *  Example: center("Pasta", 20)  returns "       Pasta        "
+     *  Example: center("Home", 30)  returns "             Home             "
+     *
+     * Precondition: size.length()<s
+     *
+     * @param s string to center
+     * @param size length of the final string
+     * @return a centered string
+     */
+    public String center(String s, int size){
+        String spaces=fill(" ", size/2-s.length()/2);
+        return spaces + s + spaces;
     }
 }
