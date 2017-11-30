@@ -78,16 +78,7 @@ public class ResAdapter extends ArrayAdapter
             public void onClick(View view)
             {
 
-                // CHECK IF LOGGED IN AS PARENT
-                if (!DataSingleton.getInstance().isLoggedAsParent())
-                {
-                    // SHOW DIALOG 
-                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove a resource");
-                    return ; // EXIT
-                }
-
-                int pos = (int)view.getTag();
-                removeItem(pos);
+                removeItem((int)view.getTag());
             }
         });
 
@@ -161,9 +152,17 @@ public class ResAdapter extends ArrayAdapter
      */
     public void editResource(int pos, String name, String desc)
     {
+        if (name.isEmpty())
+        {
+            Toast.makeText(getContext(), "Please enter resource name", Toast.LENGTH_SHORT).show();
+            return ; // EXIT;
+        }
+
         Resource res = DataSingleton.getInstance().getResources().get(pos);
         res.setName(name);
         res.setDesc(desc);
+
+        DataSingleton.getInstance().editResource(res); // DB~
         notifyDataSetChanged();
 
         Toast.makeText(getContext(), "Resource edited", Toast.LENGTH_SHORT).show();
@@ -177,17 +176,18 @@ public class ResAdapter extends ArrayAdapter
 
     private void removeItem(int pos)
     {
+        if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
+        {
+            // SHOW DIALOG 
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to remove a resource");
+            return ; // EXIT
+        }
+
         Resource res = taskResources.get(pos);
-        List<Task> tasks = res.getTasks(); // every task that allocated this resource
 
-        for (Task t : tasks)
-            t.deallocateResource(res);
+        DataSingleton.getInstance().removeResource(res);
 
-        //remove(pos); // built in remove method
-
-        taskResources.remove(pos);
-
-        Toast.makeText(getContext(),  "Removing " + res.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),  "Removed resource " + res.getName(), Toast.LENGTH_SHORT).show();
 
         notifyDataSetChanged();
     }

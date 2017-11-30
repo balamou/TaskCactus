@@ -105,16 +105,33 @@ public class Task {
         r.removeFromTask(this);
     }
 
+
+    /**
+     * Deallocate a resource.
+     * Removes the resource to the list of resources.
+     * Removes the UNIDIRECTIONAL link between Task and Resource.
+     *
+     * @param r resource deallocated
+     */
+    public void partiallyDeallocateResource(Resource r)
+    {
+        resources.remove(r);
+    }
+
     /**
      * Removes all existing association classes;
      * This allows the Task instance to be deleted without causing problems.
      */
     public void prepareToDelete()
     {
-        for (TaskDate t : taskDates)
-            t.partialRemoveTask();
+        for (TaskDate taskDate : taskDates)
+            taskDate.partialRemoveTask();
+
+        for (Resource res : resources)
+            res.removeFromTask(this);
 
         taskDates = null; // remove reference for Garbage Collector
+        resources = null; // remove reference for Garbage Collector
     }
 
 

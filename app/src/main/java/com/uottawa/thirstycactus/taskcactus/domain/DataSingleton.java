@@ -133,6 +133,7 @@ public class DataSingleton
                 //dbHandler.clean();
                 people = dbHandler.getAllUsers();
                 tasks = dbHandler.getAllTasks();
+                resources = dbHandler.getAllResources();
 
                 dbHandler.loadAssociations(people, tasks);
             }
@@ -669,5 +670,36 @@ public class DataSingleton
     public void setCompleted(TaskDate taskDate)
     {
         dbHandler.setCompleted(taskDate);
+    }
+
+    // =============================================================================================
+
+    // DATABASE RELATED METHODS: RESOURCES
+
+    // =============================================================================================
+
+
+    /**
+     * Adds resource to the common list and the database
+     *
+     * @param res new resource
+     */
+    public void addResource(Resource res)
+    {
+        dbHandler.addResource(res);
+        resources.add(res);
+    }
+
+    public void editResource(Resource res)
+    {
+        dbHandler.updateResource(res);
+    }
+
+    public void removeResource(Resource res)
+    {
+        dbHandler.deleteResource(res.getID());
+
+        res.prepareToDelete();
+        resources.remove(res);
     }
 }

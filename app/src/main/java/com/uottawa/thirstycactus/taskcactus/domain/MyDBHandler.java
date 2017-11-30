@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.attr.type;
+
 
 /**
  * Created by michelbalamou on 10/31/17.
@@ -29,7 +31,9 @@ public class MyDBHandler extends SQLiteOpenHelper
     private static final String TABLE_USERS = "users";
     private static final String TABLE_TASKS = "tasks";
     private static final String TABLE_RESOURCES = "resources";
-    private static final String TABLE_TASK_DATES = "task_dates"; // ASSOCIATION BETWEEN TASK & DATE
+
+    private static final String TABLE_TASK_DATES = "task_dates"; // ASSOCIATION BETWEEN TASK & PERSON
+    private static final String TABLE_RES_TASK = "res_task"; // ASSOCIATION BETWEEN TASK & RESOURCE
 
 
     // COMMON
@@ -50,6 +54,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
 
     // RESOURCES TABLE
+    private static final String COLUMN_RESOURCE_ID = "res_id";
 
 
     // TASKDATE TABLE
@@ -87,6 +92,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
 
 
+
     private static final String CREATE_TASKDATES_TABLE = "CREATE TABLE "
             + TABLE_TASK_DATES + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY,"
@@ -95,6 +101,14 @@ public class MyDBHandler extends SQLiteOpenHelper
             + COLUMN_NOTE + " TEXT,"
             + COLUMN_COMPLETED + " INTEGER," // 0 - false, 1 - true
             + COLUMN_DATE + " DATE" + ")";
+
+
+    private static final String CREATE_RES_TASK_TABLE = "CREATE TABLE "
+            + TABLE_RES_TASK + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_RESOURCE_ID + " INTEGER,"
+            + COLUMN_TASK_ID + " INTEGER" + ")";
+
 
     // CONSTRUCTOR
     public MyDBHandler(Context context)
@@ -117,7 +131,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.execSQL(CREATE_RESOURCES_TABLE);
 
         db.execSQL(CREATE_TASKDATES_TABLE);
-
+        db.execSQL(CREATE_RES_TASK_TABLE);
     }
 
     @Override
@@ -129,6 +143,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESOURCES);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_DATES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RES_TASK);
 
         // Create new tables
         onCreate(db);
@@ -137,7 +152,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
     // =============================================================================================
 
-    // PERSON
+    // PERSON/USER
 
     // =============================================================================================
 
@@ -195,7 +210,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         }
         catch (Exception e)
         {
-
+            // nothing
         }
 
         return result;
@@ -402,7 +417,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
     // =============================================================================================
 
-    // AUX
+    // TASK DATE
 
     // =============================================================================================
 
@@ -532,4 +547,93 @@ public class MyDBHandler extends SQLiteOpenHelper
         // updating row
         return db.update(TABLE_TASK_DATES, values, COLUMN_ID + " = " + taskDate.getID(), null);
     }
+
+    // =============================================================================================
+
+    // RESOURCES
+
+    // =============================================================================================
+    /***
+     * Returns a list of all resources from the database
+     */
+    public List<Resource> getAllResources()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "Select * FROM " + TABLE_RESOURCES;
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<Resource> result = new LinkedList<>();
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String desc = cursor.getString(2);
+
+                Resource res = new Resource(id, name, desc);
+
+                result.add(res);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return result;
+    }
+
+    /**
+     * Adds a new resource to the database
+     *
+     * @param resource information about the resource
+     */
+    public void addResource(Resource resource)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Add values to query
+        values.put(COLUMN_NAME, resource.getName());
+        values.put(COLUMN_DESC, resource.getDesc());
+
+        // Insert final query
+        long id = db.insert(TABLE_RESOURCES, null, values);
+        resource.setID((int)id); // Set task id
+        db.close();
+    }
+
+
+    /**
+     * Updates a record of a resource in the database
+     *
+     * @param resource
+     */
+    public int updateResource(Resource resource)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // INSERT NEW DATA
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, resource.getName());
+        values.put(COLUMN_DESC, resource.getDesc());
+
+
+        // updating row
+        return db.update(TABLE_RESOURCES, values, COLUMN_ID + " = " + resource.getID(), null);
+    }
+
+
+    /**
+     * @param res_id
+     */
+    public int deleteResource(int res_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        removeTaskAssoc(res_id);
+
+        return db.delete(TABLE_RESOURCES, COLUMN_ID + " = " + res_id, null);
+    }
+
+
 }

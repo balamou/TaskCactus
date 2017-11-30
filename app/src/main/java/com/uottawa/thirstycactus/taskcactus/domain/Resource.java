@@ -12,6 +12,9 @@ import java.util.List;
 public class Resource {
 
     // ATTRIBUTES
+
+    private int id; // resource ID in the database (DB~)
+
     private String name;      // name of the resource
     private String desc;      // description of the resource
 
@@ -22,13 +25,19 @@ public class Resource {
 
 
     // CONSTRUCTOR
-    public Resource(String name, String desc)
+    public Resource(int id, String name, String desc)
     {
+        this.id = id;
         this.name = name;
         this.desc = desc;
 
         tasks = new LinkedList<>();
         parents = new LinkedList<>();
+    }
+
+    public Resource(String name, String desc)
+    {
+        this(0, name, desc);
     }
 
 
@@ -93,6 +102,15 @@ public class Resource {
 
 
 
+    /**
+     * Unlink this class from all its tasks
+     */
+    public void prepareToDelete()
+    {
+        for (Task task : tasks)
+            task.partiallyDeallocateResource(this);
+    }
+
     // =============================================================================================
 
     // GETTERS/SETTERS (comments omitted due to self explanatory nature)
@@ -122,5 +140,16 @@ public class Resource {
     public List<Task> getTasks()
     {
         return tasks;
+    }
+
+
+    public int getID()
+    {
+        return id;
+    }
+
+    public void setID(int id)
+    {
+        this.id = id;
     }
 }

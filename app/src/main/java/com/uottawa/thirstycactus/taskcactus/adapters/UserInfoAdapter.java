@@ -65,9 +65,11 @@ public class UserInfoAdapter extends ArrayAdapter
         // SET UP OUTPUT INFORMATION ++++++++++++++++++
         TaskDate taskDate = taskDates.get(position);
 
+        viewHolder.taskDateText.setText(taskDate.getReadableDate());
         viewHolder.taskCheckBox.setText(taskDate.getTask().getName());
         viewHolder.taskCheckBox.setChecked(taskDate.getCompleted());
 
+        // SET LISTENERS
         viewHolder.taskCheckBox.setTag(position);
         viewHolder.taskCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +78,6 @@ public class UserInfoAdapter extends ArrayAdapter
                 setChecked((int)view.getTag(), ((CheckBox) view).isChecked());
             }
         });
-
-        viewHolder.taskDateText.setText(taskDate.getReadableDate());
 
         viewHolder.removeButton.setTag(position);
         viewHolder.removeButton.setOnClickListener(new View.OnClickListener()
@@ -156,8 +156,8 @@ public class UserInfoAdapter extends ArrayAdapter
         ViewHolder(View v)
         {
             taskCheckBox = v.findViewById(R.id.taskCheckBox);
-            taskDateText =  v.findViewById(R.id.taskDateText);
-            removeButton =  v.findViewById(R.id.removeBtn);
+            taskDateText = v.findViewById(R.id.taskDateText);
+            removeButton = v.findViewById(R.id.removeBtn);
         }
     }
 }

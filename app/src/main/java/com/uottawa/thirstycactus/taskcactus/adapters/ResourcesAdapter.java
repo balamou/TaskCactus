@@ -77,17 +77,7 @@ public class ResourcesAdapter extends ArrayAdapter
             public void onClick(View view)
             {
 
-                // CHECK IF LOGGED IN AS PARENT
-                if (DataSingleton.getInstance().isLoggedAsParent())
-                {
-                    int pos = (int)view.getTag();
-                    removeItem(pos);
-                }
-                else
-                {
-                    // SHOW DIALOG 
-                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to deallocate a resource");
-                }
+                removeItem((int)view.getTag());
             }
         });
 
@@ -103,6 +93,12 @@ public class ResourcesAdapter extends ArrayAdapter
 
     private void removeItem(int pos)
     {
+        if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
+        {
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to deallocate a resource");
+            return ; // EXIT
+        }
+
         Resource res = taskResources.get(pos);
         Task task = DataSingleton.getInstance().getTasks().get(task_id);
         task.deallocateResource(res);

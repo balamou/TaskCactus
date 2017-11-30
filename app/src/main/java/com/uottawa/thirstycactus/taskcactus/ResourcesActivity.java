@@ -13,6 +13,8 @@ import com.uottawa.thirstycactus.taskcactus.adapters.ResAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
 
+import static android.R.attr.name;
+
 public class ResourcesActivity extends AppCompatActivity
 {
 
@@ -84,31 +86,30 @@ public class ResourcesActivity extends AppCompatActivity
      */
     public void onSave(View view)
     {
-        // CHECK IF LOGGED IN AS PARENT
-        if (!DataSingleton.getInstance().isLoggedAsParent())
+        String name = nameEdit.getText().toString();
+        String desc = descEdit.getText().toString();
+
+
+        if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
         {
             // SHOW DIALOG 
             ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to add a new resource");
             return ; // EXIT
         }
 
-        String name = nameEdit.getText().toString();
-        String desc = descEdit.getText().toString();
-
-        // MAKES SURE THE RESOURCE NAME IS NOT EMPTY
-        if (name.isEmpty())
+        if (name.isEmpty()) // MAKES SURE THE RESOURCE NAME IS NOT EMPTY
         {
             Toast.makeText(getApplicationContext(), "Please enter a resource name", Toast.LENGTH_SHORT).show();
-            return ;
+            return ; // EXIT
         }
 
-        Resource res = new Resource(name, desc);
 
-        DataSingleton.getInstance().getResources().add(res);
+        Resource res = new Resource(name, desc);
+        DataSingleton.getInstance().addResource(res); // DB~
 
         Toast.makeText(getApplicationContext(), "Resource '" + name + "' added", Toast.LENGTH_SHORT).show();
 
-        // REFRESH LISTVIEW
+        // REFRESH LIST VIEW
         resAdapter.notifyDataSetChanged();
 
         // RESET FORMS
