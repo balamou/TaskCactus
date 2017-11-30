@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
 
         // Check if there are any users in the database
-        DataSingleton.getInstance().setMainActivity(this);
+        DataSingleton.getInstance().initDatabase(this);
 
         if (DataSingleton.getInstance().getUsers().isEmpty())
         {

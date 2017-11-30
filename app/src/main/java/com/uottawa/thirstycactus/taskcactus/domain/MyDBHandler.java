@@ -13,12 +13,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.R.attr.format;
-import static android.R.attr.id;
-import static android.R.attr.name;
-import static android.R.attr.password;
-import static android.R.attr.type;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static java.lang.Integer.parseInt;
 
 
@@ -339,15 +333,11 @@ public class MyDBHandler extends SQLiteOpenHelper
         String query = "Select * FROM " + TABLE_USERS + " WHERE " + COLUMN_LOGGED + " = 1";
         Cursor cursor = db.rawQuery(query, null);
 
-        Log.wtf("ROW", "--");
-        Log.wtf("ROW", "-- USERS --");
-        Log.wtf("ROW", "--");
-
         if (cursor.moveToFirst())
         {
             do
             {
-                return cursor.getInt(0);
+                return cursor.getInt(0); // return first occurance
             }
             while (cursor.moveToNext());
         }
@@ -783,9 +773,15 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_RES_TASK, COLUMN_RESOURCE_ID + " = " + res_id, null);
     }
 
+    // =============================================================================================
 
-    // TMP
-    // Just for debugging
+    // METHODS FOR DEBUGGING THE DATABASE
+
+    // =============================================================================================
+
+    /**
+     * Displays data from the database in a table
+     */
     public void display()
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -820,7 +816,8 @@ public class MyDBHandler extends SQLiteOpenHelper
         Log.wtf("ROW", fill("-", 71));
         Log.wtf("ROW", center("TASKS", 71));
         Log.wtf("ROW", fill("-", 71));
-
+        Log.wtf("ROW", format("ID", 5) + format("Name", 20) + format("Desc", 20) + format("Points", 10) + format("Type", w));
+        Log.wtf("ROW", fill("-", 71));
 
         query = "Select * FROM " + TABLE_TASKS;
         cursor = db.rawQuery(query, null);
@@ -836,13 +833,16 @@ public class MyDBHandler extends SQLiteOpenHelper
 
                 w = 10;
 
-                Log.wtf("ROW", format(id, 5) + format(name, 20) + format(desc.isEmpty() ? "---" : desc, 20) + format(points, 4) + format(type, w));
+                Log.wtf("ROW", format(id, 5) + format(name, 20) + format(desc.isEmpty() ? "---" : desc, 20) + format(points, 10) + format(type, w));
             } while (cursor.moveToNext());
         }
 
         Log.wtf("ROW", fill("-", 71));
-        Log.wtf("ROW", center("RES", 71));
+        Log.wtf("ROW", center("RESOURCES", 71));
         Log.wtf("ROW", fill("-", 71));
+        Log.wtf("ROW", format("ID", 5) + format("Name", 20) + format("Desc", w));
+        Log.wtf("ROW", fill("-", 71));
+
 
 
         query = "Select * FROM " + TABLE_RESOURCES;

@@ -18,8 +18,10 @@ import java.util.List;
 
 public class DataSingleton
 {
+    // ATTRIBUTES
     private static DataSingleton instance;
     private boolean load = false; // flag that checks if the classes have been loaded from the database
+    private MyDBHandler dbHandler; // instance of the database handler
 
 
     // ASSOCIATIONS
@@ -28,8 +30,6 @@ public class DataSingleton
     private List<Resource> resources;
 
     private Person loggedPerson;
-
-    private MyDBHandler dbHandler;
 
 
     // CONSTRUCTOR
@@ -75,62 +75,10 @@ public class DataSingleton
         {
             if (!load_database)
             {
-                // Placeholder data +++
-                Date d = getDate(1997, 1, 6);
-                Parent michel = new Parent("Michel", "Balamou", d, "1234");
-
-                Person peter = new Person("Peter", "Nguyen", null);
-                Person nate = new Person("Nate", "Adams", null);
-
-                peter.addParent(michel);
-                nate.addParent(michel);
-
-                loggedPerson = michel;
-
-                people.add(michel);
-                people.add(peter);
-                people.add(nate);
-
-
-                tasks.add(new Task("Wash dishes", "", 2, "DEFAULT"));
-                tasks.add(new Task("Clean room", "", 4, "DEFAULT"));
-                tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
-
-
-                Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
-                Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
-
-                tasks.add(new Task("Clean basement", "", 2));
-                tasks.add(new Task("Finish app", "", 5));
-
-                tasks.add(new Task("Wash car", "", 5));
-
-
-                //RESOURCES +++
-
-                resources.add(new Resource("Sponge", "For washing dishes"));
-                resources.add(new Resource("Car", "To clean the car"));
-                resources.add(new Resource("Fork", "For forking stuff"));
-
-                tasks.get(0).allocateResource(resources.get(0));
-                tasks.get(5).allocateResource(resources.get(1));
-
-                //RESOURCES ---
-
-                michel.assignTask(peter, tasks.get(0), d1, false, "");
-
-                michel.assignTask(nate, tasks.get(3), d1, false, "");
-                michel.assignTask(nate, tasks.get(4), d2, false, "");
-                michel.assignTask(nate, tasks.get(5), d2, false, "");
-
-
-                nate.getTaskDates().get(1).setCompleted(true);
-
-                // Placeholder data ---
+                temporaryData(); // in case the database malfunctions
             }
             else
             {
-                //dbHandler.clean();
                 people = dbHandler.getAllUsers();
                 tasks = dbHandler.getAllTasks();
                 resources = dbHandler.getAllResources();
@@ -157,9 +105,67 @@ public class DataSingleton
     }
 
     /**
-     * Sets main activity and initialized the database;
+     * Fills the lists with placeholder data for demonstrative purposes.
+     * Also shows how every class interacts with each other.
      */
-    public void setMainActivity(Context mainActivity)
+    public void temporaryData()
+    {
+        // Placeholder data
+        Date d = getDate(1997, 1, 6);
+        Parent michel = new Parent("Michel", "Balamou", d, "1234");
+
+        Person peter = new Person("Peter", "Nguyen", null);
+        Person nate = new Person("Nate", "Adams", null);
+
+        peter.addParent(michel);
+        nate.addParent(michel);
+
+        loggedPerson = michel;
+
+        people.add(michel);
+        people.add(peter);
+        people.add(nate);
+
+
+        tasks.add(new Task("Wash dishes", "", 2, "DEFAULT"));
+        tasks.add(new Task("Clean room", "", 4, "DEFAULT"));
+        tasks.add(new Task("Recycle", "", 5, "DEFAULT"));
+
+
+        Date d1 = getDate(2017, 10, 24); // NOV 24, 2017
+        Date d2 = getDate(2017, 11, 2); // DEC 2, 2017
+
+        tasks.add(new Task("Clean basement", "", 2));
+        tasks.add(new Task("Finish app", "", 5));
+
+        tasks.add(new Task("Wash car", "", 5));
+
+
+        //RESOURCES +++
+
+        resources.add(new Resource("Sponge", "For washing dishes"));
+        resources.add(new Resource("Car", "To clean the car"));
+        resources.add(new Resource("Fork", "For forking stuff"));
+
+        tasks.get(0).allocateResource(resources.get(0));
+        tasks.get(5).allocateResource(resources.get(1));
+
+        //RESOURCES ---
+
+        michel.assignTask(peter, tasks.get(0), d1, false, "");
+
+        michel.assignTask(nate, tasks.get(3), d1, false, "");
+        michel.assignTask(nate, tasks.get(4), d2, false, "");
+        michel.assignTask(nate, tasks.get(5), d2, false, "");
+
+
+        nate.getTaskDates().get(1).setCompleted(true);
+    }
+
+    /**
+     * Initialize the database;
+     */
+    public void initDatabase(Context mainActivity)
     {
         dbHandler = new MyDBHandler(mainActivity);
     }
@@ -222,40 +228,6 @@ public class DataSingleton
 
     // =============================================================================================
 
-    /**
-     * Returns the list of all TaskDates
-     */
-    public List<TaskDate> getAllAssociations()
-    {
-        loadData();
-
-        List<TaskDate> taskDates = new LinkedList<>();
-        for (Person p: people)
-        {
-            if(p.getTaskDates()!=null)
-                taskDates.addAll(p.getTaskDates()); // appends all TaskDates from person to the end of the List
-        }
-        return taskDates;
-    }
-
-    /**
-     * Returns the list of all TaskDates from that date
-     */
-    public List<TaskDate> getTasksFromDay(Date date)
-    {
-        loadData();
-
-        List<TaskDate> taskDates = new LinkedList<>();
-        for (Person p: people)
-        {
-            for(TaskDate t : p.getTaskDates())
-            {
-                if (t.getDate().equals(date))
-                    taskDates.add(t);
-            }
-        }
-        return taskDates;
-    }
 
     /**
      * Returns a list of people who have a task on that day
@@ -703,16 +675,10 @@ public class DataSingleton
 
     // =============================================================================================
 
-    // DATABASE RELATED METHODS: RESOURCES
+    // DATABASE RELATED METHODS: RESOURCES (comments omitted due to self explanatory nature)
 
     // =============================================================================================
 
-
-    /**
-     * Adds resource to the common list and the database
-     *
-     * @param res new resource
-     */
     public void addResource(Resource res)
     {
         dbHandler.addResource(res); // DB~
@@ -731,7 +697,6 @@ public class DataSingleton
         res.prepareToDelete();
         resources.remove(res);
     }
-
 
     public void deallocateResource(Resource res, Task task)
     {
