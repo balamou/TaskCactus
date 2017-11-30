@@ -110,9 +110,9 @@ public class UserInfo extends AppCompatActivity
 
         allocatedTasks.setText(Integer.toString(user.totalTasks()));
         tasksCompleted.setText(Integer.toString(user.tasksCompleted()));
-        totalPoints.setText(Integer.toString(user.getPoints()));
+        totalPoints.setText("Points: " + user.getPoints());
 
-        birthDayText.setText(user.getReadableBirthday());
+        birthDayText.setText("Birthday: " + user.getReadableBirthday());
 
         if (user instanceof Parent)
             userImage.setImageResource(R.drawable.pic1); // parent logo
