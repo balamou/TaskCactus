@@ -101,11 +101,12 @@ public class ResourcesAdapter extends ArrayAdapter
 
         Resource res = taskResources.get(pos);
         Task task = DataSingleton.getInstance().getTasks().get(task_id);
-        task.deallocateResource(res);
 
-        remove(pos); // built in remove method
+        DataSingleton.getInstance().deallocateResource(res, task);
 
         notifyDataSetChanged();
+
+        Toast.makeText(getContext(), "Resource deallocated", Toast.LENGTH_SHORT).show();
     }
 
     // =============================================================================================

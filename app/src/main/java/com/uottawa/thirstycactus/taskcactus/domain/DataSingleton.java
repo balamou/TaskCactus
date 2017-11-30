@@ -700,21 +700,27 @@ public class DataSingleton
      */
     public void addResource(Resource res)
     {
-        dbHandler.addResource(res);
+        dbHandler.addResource(res); // DB~
         resources.add(res);
     }
 
     public void editResource(Resource res)
     {
-        dbHandler.updateResource(res);
+        dbHandler.updateResource(res); // DB~
     }
 
     public void removeResource(Resource res)
     {
-        dbHandler.deleteResource(res.getID());
+        dbHandler.deleteResource(res.getID()); // DB~
 
         res.prepareToDelete();
         resources.remove(res);
     }
 
+
+    public void deallocateResource(Resource res, Task task)
+    {
+        dbHandler.deallocateResource(res, task); // DB~
+        task.deallocateResource(res);
+    }
 }
