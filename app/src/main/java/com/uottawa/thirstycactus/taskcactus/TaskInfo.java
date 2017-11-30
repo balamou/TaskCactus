@@ -1,11 +1,14 @@
 package com.uottawa.thirstycactus.taskcactus;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.adapters.ResourcesAdapter;
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskInfoAdapter;
@@ -114,19 +117,32 @@ public class TaskInfo extends AppCompatActivity
     public void onDelete(View view)
     {
         // CHECK IF LOGGED IN AS PARENT
-        if (dataSingleton.isLoggedAsParent())
-        {
-            dataSingleton.deleteTask(task_id);
-
-            ViewSingleton.getInstance().refreshTasks();
-            ViewSingleton.getInstance().refresh();
-            this.finish();
-        }
-        else
+        if (!dataSingleton.isLoggedAsParent())
         {
             // SHOW DIALOG 
             ViewSingleton.getInstance().showPopup(this, "Please login as a Parent to delete a task");
+            return;
         }
+
+        // CONFIRMATION BOX ++++
+        AlertDialog.Builder b = ViewSingleton.getInstance().confirmationBox(this, "Are you sure you want to delete the task? ");
+
+        final TaskInfo taskInfo = this;
+
+        b.setPositiveButton("YES", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                Toast.makeText(getApplicationContext(), "Task deleted", Toast.LENGTH_SHORT).show();
+                dataSingleton.deleteTask(task_id);
+
+                ViewSingleton.getInstance().refreshTasks();
+                ViewSingleton.getInstance().refresh();
+                taskInfo.finish();
+            }
+        });
+
+        b.show();
     }
 
 
