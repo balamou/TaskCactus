@@ -3,6 +3,7 @@ package com.uottawa.thirstycactus.taskcactus.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ public class UsersFragment extends Fragment
     // ATTRIBUTES
 
     private ListView userList;
-    private Button addUser;
+    private FloatingActionButton addUser;
     private UserListview usr;
 
     private DataSingleton dataSingleton = DataSingleton.getInstance();
