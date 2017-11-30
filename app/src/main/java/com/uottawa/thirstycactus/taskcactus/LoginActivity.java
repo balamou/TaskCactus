@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity
     // =============================================================================================
 
 
-
     /**
      * Add/save the user to the database.
      */
@@ -87,7 +86,14 @@ public class LoginActivity extends AppCompatActivity
         String msg = warning[exit_code];
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-        if (exit_code == 0) this.finish();
+        if (exit_code == 0)
+        {
+            // Login as the user just created
+            Parent p = (Parent)dataSingleton.getUsers().get(0);
+            dataSingleton.login(p, p.getHashedPIN());
+            ViewSingleton.getInstance().refresh();
+            this.finish();
+        }
     }
 
 

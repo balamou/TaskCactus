@@ -66,49 +66,13 @@ public class AddTask extends AppCompatActivity
         {
             Task task = dataSingleton.getTasks().get(task_id);
 
-            if (task!=null)
-            {
-                nameEdit.setText(task.getName());
-                descEdit.setText(task.getDesc());
-                pointsEdit.setText(Integer.toString(task.getPoints()));
-                res_task = task.getResources(); // get resources associated to THIS task
-            }
+            nameEdit.setText(task.getName());
+            descEdit.setText(task.getDesc());
+            pointsEdit.setText(Integer.toString(task.getPoints()));
+            res_task = task.getResources(); // get resources associated to THIS task
         }
 
-
-        // ADD RESOURCES WITH CHECKBOXES
-
-        List<Resource> res = DataSingleton.getInstance().getResources(); // get ALL resources
-        List<String> resourceName = new LinkedList<>();
-
-        for (Resource r : res)
-            resourceName.add(r.getName());
-
-        checkBox = new CheckBox[resourceName.size()];
-        initState = new boolean[resourceName.size()];
-
-        for (int i = 0; i < resourceName.size(); i++)
-        {
-            TableRow row = new TableRow(this);
-            row.setId(i);
-
-            row.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT));
-            checkBox[i] = new CheckBox(this);
-            //checkBox.setId(i);
-
-            if (task_id>=0 && !res_task.isEmpty())
-            {
-                boolean isChecked = res_task.contains(res.get(i));
-                checkBox[i].setChecked(isChecked);
-                initState[i] = isChecked;
-            }
-
-            checkBox[i].setText(resourceName.get(i));
-            row.addView(checkBox[i]);
-            checkBoxLayout.addView(row);
-        }
-
-
+        populateCheckboxes(res_task);
     }
 
 
@@ -117,6 +81,44 @@ public class AddTask extends AppCompatActivity
     // METHODS
 
     // =============================================================================================
+
+    public void populateCheckboxes(List<Resource> res_task)
+    {
+        // ADD RESOURCES WITH CHECKBOXES
+
+        List<Resource> res = DataSingleton.getInstance().getResources(); // get ALL resources
+        List<String> resourceName = new LinkedList<>();
+
+        for (Resource r : res)
+            resourceName.add(r.getName()); // get name of all resources
+
+        checkBox = new CheckBox[resourceName.size()];
+        initState = new boolean[resourceName.size()];
+
+
+        // CREATE CHECKBOXES
+        for (int i = 0; i < resourceName.size(); i++)
+        {
+            TableRow row = new TableRow(this);
+            row.setId(i);
+
+            row.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)); // set layout
+            checkBox[i] = new CheckBox(this); // create checkbox
+
+            // See which checkboxes to set as checked
+            if (task_id>=0 && !res_task.isEmpty())
+            {
+                boolean isChecked = res_task.contains(res.get(i));
+
+                checkBox[i].setChecked(isChecked);
+                initState[i] = isChecked; // save initial state
+            }
+
+            checkBox[i].setText(resourceName.get(i));
+            row.addView(checkBox[i]);
+            checkBoxLayout.addView(row);
+        }
+    }
 
 
     /**
@@ -129,81 +131,42 @@ public class AddTask extends AppCompatActivity
 
     public void onSave(View view)
     {
-        List<Resource> res = dataSingleton.getResources();
-
         String name = nameEdit.getText().toString();
         String desc = descEdit.getText().toString();
         String points = pointsEdit.getText().toString();
 
 
-        if (name.isEmpty())
+        boolean[] res = new boolean[checkBox.length];
+        for (int i = 0; i<checkBox.length; i++)
         {
-            Toast.makeText(getApplicationContext(), "Please enter a task name", Toast.LENGTH_SHORT).show();
-            return ;
+            res[i] = checkBox[i].isChecked();
         }
 
-        int p;
+        String msg;
+        int exit_code;
 
-        // Check if the points is a valid number
-        try
+        if (task_id == -1) // FLAG -1 means add new task
         {
-            p = Integer.parseInt(points);
+            String[] warning = {"Task added", "Please enter a task name", "Points has to be a number"};
+            exit_code = dataSingleton.addTask(name, desc, points, res);
+            msg = warning[exit_code];
         }
-        catch (Exception e)
+        else // ANY OTHER NUMBER IS EDIT THE TASK
         {
-            Toast.makeText(getApplicationContext(), "Points has to be a number", Toast.LENGTH_SHORT).show();
-            return ;
-        }
-
-
-        if (task_id == -1) // flag -1 means add new task
-        {
-            Task task = new Task(name, desc, p);
-
-            // ALLOCATE RESOURCES
-            // that have the checkboxes on
-            for (int i = 0; i<checkBox.length ; i++)
-            {
-                if (checkBox[i].isChecked())
-                    task.allocateResource(res.get(i));
-            }
-            //--------------------
-
-            dataSingleton.getTasks().add(task);
-        }
-        else if(task_id>=0) // flag>=0 is the ID of the task to be edited
-        {
-            Task task = dataSingleton.getTasks().get(task_id);
-
-            task.setName(name);
-            task.setDesc(desc);
-            task.setPoints(p);
-
-
-            // ALLOCATE RESOURCES/ possible deallocation of resources
-            // that have the checkboxes on
-            for (int i = 0; i<checkBox.length; i++)
-            {
-                if (initState[i] != checkBox[i].isChecked()) // check if the state is different
-                {
-                    if (checkBox[i].isChecked()) // Allocate a resource that wasn't allocated yet
-                        task.allocateResource(res.get(i));
-                    else // Deallocate a resource that was allocated
-                        task.deallocateResource(res.get(i));
-                }
-
-            }
-            //--------------------
+            String[] warning = {"Task edited", "Please enter a task name", "Points has to be a number"};
+            exit_code = dataSingleton.updateTask(task_id, name, desc, points, initState, res);
+            msg = warning[exit_code];
 
             ViewSingleton.getInstance().updateTaskInfo();
         }
 
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
-
-
-        ViewSingleton.getInstance().refreshTasks();
-
-        this.finish();
+        if (exit_code == 0)
+        {
+            ViewSingleton.getInstance().refreshTasks();
+            this.finish();
+        }
     }
 
 }

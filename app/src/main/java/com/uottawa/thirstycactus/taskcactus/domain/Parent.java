@@ -24,6 +24,7 @@ public class Parent extends Person {
     /**
      * Constructor of Parent class
      *
+     * @param id id of the parent in the database
      * @param firstName
      * @param lastName
      * @param birthDate
@@ -32,9 +33,9 @@ public class Parent extends Person {
      *
      * @throws IllegalArgumentException if the hashedPIN is not a valid 4 digit PIN
      */
-    public Parent(String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
+    public Parent(int id, String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
     {
-        super(firstName, lastName, birthDate);
+        super(id, firstName, lastName, birthDate);
 
         setHashedPIN(hashedPIN); // used in setter to specify restrictions on the hashPIN
 
@@ -42,6 +43,11 @@ public class Parent extends Person {
         this.resources = new LinkedList<>();
     }
 
+
+    public Parent(String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
+    {
+        this(0, firstName, lastName, birthDate, hashedPIN);
+    }
 
     // =============================================================================================
 
@@ -166,4 +172,6 @@ public class Parent extends Person {
     {
         return hashedPIN;
     }
+
+
 }

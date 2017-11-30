@@ -24,16 +24,79 @@ public class MyDBHandler extends SQLiteOpenHelper
     private static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_NAME = "TaskCactus.db";
-    public static final String TABLE_USERS = "users";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_FIRSTNAME = "firstname";
-    public static final String COLUMN_LASTNAME = "lastname";
-    public static final String COLUMN_BIRTHDAY = "birthday";
-    public static final String COLUMN_PASSWORD = "password";
 
+    // TABLE NAMES
+    private static final String TABLE_USERS = "users";
+    private static final String TABLE_TASKS = "tasks";
+    private static final String TABLE_RESOURCES = "resources";
+    private static final String TABLE_TASK_DATES = "task_dates"; // ASSOCIATION BETWEEN TASK & DATE
+
+
+    // COMMON
+    private static final String COLUMN_ID = "_id";
+
+    // USERS TABLE
+    private static final String COLUMN_FIRSTNAME = "firstname";
+    private static final String COLUMN_LASTNAME = "lastname";
+    private static final String COLUMN_BIRTHDAY = "birthday";
+    private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_LOGGED = "logged";
+
+    // TASKS TABLE
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_DESC = "description";
+    private static final String COLUMN_POINTS = "points";
+    private static final String COLUMN_TYPE = "type"; // DEFAULT/NEW
+
+
+    // RESOURCES TABLE
+
+
+    // TASKDATE TABLE
+    private static final String COLUMN_TASK_ID = "task_id";
+    private static final String COLUMN_USER_ID = "user_id";
+    private static final String COLUMN_NOTE = "note";
+    private static final String COLUMN_COMPLETED = "completed";
+    private static final String COLUMN_DATE = "date";
+
+
+    // TABLE CREATE STATEMENTS
+    private static final String CREATE_USERS_TABLE = "CREATE TABLE "
+            + TABLE_USERS + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_FIRSTNAME  + " TEXT,"
+            + COLUMN_LASTNAME + " TEXT,"
+            + COLUMN_BIRTHDAY + " DATE,"
+            + COLUMN_PASSWORD + " TEXT,"
+            + COLUMN_LOGGED + " INTEGER  DEFAULT 0" + ")";
+
+
+    private static final String CREATE_TASKS_TABLE = "CREATE TABLE "
+            + TABLE_TASKS + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_NAME  + " TEXT,"
+            + COLUMN_DESC + " TEXT,"
+            + COLUMN_POINTS + " INTEGER,"
+            + COLUMN_TYPE + " TEXT" + ")";
+
+    private static final String CREATE_RESOURCES_TABLE = "CREATE TABLE "
+            + TABLE_RESOURCES + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_NAME  + " TEXT,"
+            + COLUMN_DESC + " TEXT" + ")";
+
+
+
+    private static final String CREATE_TASKDATES_TABLE = "CREATE TABLE "
+            + TABLE_TASK_DATES + "("
+            + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_TASK_ID + " INTEGER,"
+            + COLUMN_USER_ID + " INTEGER,"
+            + COLUMN_NOTE + " TEXT,"
+            + COLUMN_COMPLETED + " INTEGER," // 0 - false, 1 - true
+            + COLUMN_DATE + " DATE" + ")";
 
     // CONSTRUCTOR
-
     public MyDBHandler(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,23 +112,34 @@ public class MyDBHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String CREATE_USERS_TABLE =
-                "CREATE TABLE " +  TABLE_USERS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY,"
-                + COLUMN_FIRSTNAME  + " TEXT,"
-                + COLUMN_LASTNAME + " TEXT,"
-                + COLUMN_BIRTHDAY + " DATE,"
-                + COLUMN_PASSWORD + " TEXT"  +")";
-
         db.execSQL(CREATE_USERS_TABLE);
+        db.execSQL(CREATE_TASKS_TABLE);
+        db.execSQL(CREATE_RESOURCES_TABLE);
+
+        db.execSQL(CREATE_TASKDATES_TABLE);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESOURCES);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_DATES);
+
+        // Create new tables
         onCreate(db);
     }
+
+
+    // =============================================================================================
+
+    // PERSON
+
+    // =============================================================================================
 
     /***
      * Returns a list of all users from the database
@@ -101,11 +175,13 @@ public class MyDBHandler extends SQLiteOpenHelper
                 }
 
                 // Load user
+                int id = Integer.parseInt(cursor.getString(0));
+
                 Person user;
-                if (password.isEmpty())
-                    user = new Person(firstName, lastName, date); // add user
+                if (password==null || password.isEmpty())
+                    user = new Person(id, firstName, lastName, date); // add user
                 else
-                    user = new Parent(firstName, lastName, date, password); // add as parent if password not empty
+                    user = new Parent(id, firstName, lastName, date, password); // add as parent if password not empty
 
                 result.add(user);
             } while (cursor.moveToNext());
@@ -151,11 +227,9 @@ public class MyDBHandler extends SQLiteOpenHelper
      *
      * @param person
      */
-    public int updatePerson(Person person, int user_id)
+    public int updatePerson(Person person)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-
-
 
         // INSERT NEW DATA
         ContentValues values = new ContentValues();
@@ -174,7 +248,8 @@ public class MyDBHandler extends SQLiteOpenHelper
             values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
 
         // updating row
-        return db.update(TABLE_USERS, values, "id=" + Integer.toString(user_id), null );
+        //return db.update(TABLE_USERS, values, COLUMN_ID + " = ?", new String[] { String.valueOf(person.getID()) });
+        return db.update(TABLE_USERS, values, COLUMN_ID + " = " + person.getID(), null);
     }
 
 
@@ -189,11 +264,34 @@ public class MyDBHandler extends SQLiteOpenHelper
         return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
     }
 
+    /**
+     * UPDATE ALL TABLES
+     */
     public void clean()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        onCreate(db);
+        onUpgrade(db, 0, 0);
     }
+
+    public void setLogged(int user_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LOGGED, 1);
+
+        ContentValues valuesZero = new ContentValues();
+        valuesZero.put(COLUMN_LOGGED, 0);
+
+        db.update(TABLE_USERS, values, COLUMN_ID + "=" + user_id, null);
+        db.update(TABLE_USERS, valuesZero, null, null);
+    }
+
+    // =============================================================================================
+
+    // TASKS
+
+    // =============================================================================================
+
 
 }

@@ -11,8 +11,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.attr.name;
 import static android.R.attr.password;
 import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
+import static com.uottawa.thirstycactus.taskcactus.R.id.descEdit;
+import static com.uottawa.thirstycactus.taskcactus.R.id.nameEdit;
+import static com.uottawa.thirstycactus.taskcactus.R.id.pointsEdit;
 
 /**
  * Created by Peter Nguyen on 11/20/17.
@@ -77,7 +81,8 @@ public class DataSingleton
 
         if (!load)
         {
-            if (!load_database) {
+            if (!load_database)
+            {
                 // Placeholder data +++
                 Date d = getDate(1997, 1, 6);
                 Parent michel = new Parent("Michel", "Balamou", d, "1234");
@@ -340,6 +345,11 @@ public class DataSingleton
 
     // =============================================================================================
 
+    public void resetDatabse()
+    {
+        dbHandler.clean();
+    }
+
     /**
      * Adds a new person to the database
      *
@@ -392,8 +402,10 @@ public class DataSingleton
             if (birth!=null) newUser.setBirthDate(birth); // CHANGE BIRTHDAY IF NOT EMPTY
         }
 
+        newUser.setID(people.size()); // id of the new user is one plus the current number of people DB~
+
         people.add(newUser);
-        dbHandler.addPerson(newUser);
+        dbHandler.addPerson(newUser); // DB~
         return 0; // Successfully added new user
     }
 
@@ -443,7 +455,104 @@ public class DataSingleton
 
         if (person instanceof Parent) ((Parent)person).setHashedPIN(password); // Change password if account is Parent
 
-        dbHandler.updatePerson(person, user_id);
+        dbHandler.updatePerson(person); // DB~
         return 0; // Successfully updated
+    }
+
+
+    /***
+     * @param name
+     * @param desc
+     * @param points
+     * @param res boolean array of resources that have been added
+     *
+     * @return Exit Codes 0, 1, 2
+     */
+    public int addTask(String name, String desc, String points, boolean[] res)
+    {
+        if (name.isEmpty()) return 1; // Please enter a task name
+
+        int p;
+
+        // Check if the points is a valid number
+        try
+        {
+            p = Integer.parseInt(points);
+        }
+        catch (Exception e)
+        {
+            return 2; // Points has to be a number
+        }
+
+
+        Task task = new Task(name, desc, p);
+
+        // ALLOCATE RESOURCES: that have the checkboxes on
+        for (int i = 0; i<res.length ; i++)
+        {
+            if (res[i] && i<resources.size())
+                task.allocateResource(resources.get(i));
+        }
+
+        tasks.add(task);
+        return 0; // Success
+    }
+
+    /***
+     * @param task_id the position of the task in the
+     * @param name
+     * @param desc
+     * @param points
+     * @param initState intial state of resources
+     * @param res boolean array of resources that have been added
+     *
+     * Example:
+     *   resources = [res1,  res2,  res3]        <- All resources (used an array in this example, but its a LinkedList)
+     *   initState = [false, true,  false]      <- Resources allocated before
+     *   res       = [true,  false, false]      <- Resources allocated now
+     *
+     *   ^ this means task with ID 'task_id' has to allocate res1 and deallocate tes2
+     *
+     * @return Exit Codes 0, 1, 2
+     */
+    public int updateTask(int task_id, String name, String desc, String points, boolean[] initState, boolean[] res)
+    {
+
+        if (name.isEmpty()) return 1; // Please enter a task name
+
+        int p;
+
+        // Check if the points is a valid number
+        try
+        {
+            p = Integer.parseInt(points);
+        }
+        catch (Exception e)
+        {
+            return 2; // Points has to be a number
+        }
+
+
+        Task task = tasks.get(task_id);
+
+        task.setName(name);
+        task.setDesc(desc);
+        task.setPoints(p);
+
+
+        // ALLOCATE RESOURCES:
+        // possible deallocation of resources that have the checkboxes off
+        for (int i = 0; i<res.length; i++)
+        {
+            if (initState[i] != res[i]) // check if the state is different
+            {
+                if (res[i]) // Allocate a resource that wasn't allocated yet
+                    task.allocateResource(resources.get(i));
+                else // Deallocate a resource that was allocated
+                    task.deallocateResource(resources.get(i));
+            }
+        }
+
+        return 0; // Success
     }
 }

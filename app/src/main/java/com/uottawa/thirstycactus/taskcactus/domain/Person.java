@@ -19,6 +19,8 @@ public class Person {
 
     // ATTRIBUTES
 
+    private int id; // for database (DB~)
+
     private String firstName;     // first name
     private String lastName;      // last name
     private Date birthDate;       // date of birth (*optional [0..1])
@@ -32,14 +34,25 @@ public class Person {
 
     // CONSTRUCTORS
 
-    public Person(String firstName, String lastName, Date birthDate)
+
+    /**
+     * @param id ID of the person in the database
+     */
+    public Person(int id, String firstName, String lastName, Date birthDate)
     {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
 
         this.parents = new LinkedList<>();
         this.taskDates = new LinkedList<>();
+    }
+
+
+    public Person(String firstName, String lastName, Date birthDate)
+    {
+        this(0, firstName, lastName, birthDate);
     }
 
     public Person(String firstName, String lastName)
@@ -317,4 +330,13 @@ public class Person {
         return result;
     }
 
+    public void setID(int id)
+    {
+        this.id = id;
+    }
+
+    public int getID()
+    {
+        return id;
+    }
 }
