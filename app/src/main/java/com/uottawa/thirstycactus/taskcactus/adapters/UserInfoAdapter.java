@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
+import com.uottawa.thirstycactus.taskcactus.domain.Person;
 import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
 
 import java.util.List;
@@ -31,15 +32,18 @@ public class UserInfoAdapter extends ArrayAdapter
 
     private LayoutInflater mInflater;
 
+    private int user_id;
+
 
     // CONSTRUCTOR
 
-    public UserInfoAdapter(Activity context, List<TaskDate> taskDates)
+    public UserInfoAdapter(Activity context, List<TaskDate> taskDates, int user_id)
     {
         super(context, R.layout.userinfo_listview, taskDates);
         mInflater = LayoutInflater.from(context);
 
         this.taskDates = taskDates;
+        this.user_id = user_id;
     }
 
     // CONSTRUCTOR
@@ -75,7 +79,21 @@ public class UserInfoAdapter extends ArrayAdapter
             @Override
             public void onClick(View view)
             {
-                setChecked((int)view.getTag(), ((CheckBox) view).isChecked());
+                boolean isChecked = ((CheckBox) view).isChecked();
+
+                DataSingleton dataSingleton = DataSingleton.getInstance();
+
+                // Only the person himself can set it as checked
+                Person person = dataSingleton.getUsers().get(user_id);
+                if (dataSingleton.getLoggedPerson() != person)
+                {
+                    ((CheckBox) view).setChecked(!isChecked); //reserve the checkbox
+                    ViewSingleton.getInstance().showPopup(getContext(), "Please login as a " + person.getFullName() + " to change the status of the task"); // SHOW DIALOG 
+                    return ; // EXIT
+                }
+
+
+                setChecked((int)view.getTag(), isChecked);
             }
         });
 
@@ -116,10 +134,10 @@ public class UserInfoAdapter extends ArrayAdapter
 
     private void setChecked(int pos, boolean b)
     {
-        taskDates.get(pos).setCompleted(b);
+        taskDates.get(pos).setCompleted(b); // set completed in the association class
+        DataSingleton.getInstance().setCompleted(taskDates.get(pos)); // SAVE COMPLETED IN THE DATABASE DB~
 
-        DataSingleton.getInstance().setCompleted(taskDates.get(pos)); // SAVE COMPLETED IN THE DATABASE
-
+        // GUI
         ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
     }
 

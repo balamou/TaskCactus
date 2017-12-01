@@ -74,7 +74,7 @@ public class UserInfo extends AppCompatActivity
 
         // SETUP LIST VIEW
         tasksListView = (ListView)findViewById(R.id.tasksListView);
-        userInfo = new UserInfoAdapter(this, user.getTaskDates());
+        userInfo = new UserInfoAdapter(this, user.getTaskDates(), user_id);
         tasksListView.setAdapter(userInfo);
 
         // SET UP ALL GRAPHICAL OBJECTS
