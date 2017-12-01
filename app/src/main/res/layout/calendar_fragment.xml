@@ -245,13 +245,28 @@
             android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
-            <ExpandableListView
-                android:id="@+id/expandableListView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ExpandableListView
+                    android:id="@+id/expandableListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    />
+
+                <Button
+                    android:id="@+id/assignTaskBtn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:text="Assign Task" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -260,7 +275,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:duplicateParentState="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"

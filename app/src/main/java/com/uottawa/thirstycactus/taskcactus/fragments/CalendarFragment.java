@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.uottawa.thirstycactus.taskcactus.AddUser;
 import com.uottawa.thirstycactus.taskcactus.AssignTask;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.adapters.ExpandableListAdapter;
@@ -67,6 +68,7 @@ public class CalendarFragment extends Fragment
     private LinearLayout layout2;
 
     private Button assignTaskBtn;
+    private Button assignTaskBtn2;
 
     // =============================================================================================
 
@@ -123,6 +125,13 @@ public class CalendarFragment extends Fragment
                 openAssignTask();
             }
         });
+        assignTaskBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAssignTask();
+            }
+        });
+
 
         // SET THE SAME LISTENER TO ALL BUTTONS
         int i = 0;
@@ -202,6 +211,7 @@ public class CalendarFragment extends Fragment
         layout2 = view.findViewById(R.id.layout2);
 
         assignTaskBtn = view.findViewById(R.id.assignTaskBtn);
+        assignTaskBtn2 = view.findViewById(R.id.assignTaskBtn2);
     }
 
 
@@ -271,8 +281,18 @@ public class CalendarFragment extends Fragment
         refreshGUI(); // refresh GUI
     }
 
+    /**
+     * Opens the assign task activity if logged in as a parent
+     */
     public void openAssignTask()
     {
+        // CHECK IF LOGGED IN AS PARENT
+        if (!dataSingleton.isLoggedAsParent())
+        {
+            ViewSingleton.getInstance().showPopup(getContext(), "Please login as a Parent to assign a task");
+            return ; // EXIT
+        }
+
         Intent intent = new Intent(getActivity(), AssignTask.class);
         intent.putExtra("DATE", currentDate.getTime());
         startActivity(intent);
