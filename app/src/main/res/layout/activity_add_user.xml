@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
                     android:ems="10"
-                    android:hint="MM/dd/yyyy (optional)"
+                    android:hint="MM/DD/YYYY (optional)"
                     android:inputType="date" />
 
             </LinearLayout>
