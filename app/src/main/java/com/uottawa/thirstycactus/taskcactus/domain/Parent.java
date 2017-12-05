@@ -15,7 +15,6 @@ public class Parent extends Person {
 
     // ASSOCIATIONS
 
-    private List<Person> children;    // children the parent has; the parent can add/remove tasks; [*] multiplicity
     private List<Resource> resources; // parents have exclusive rights to add resources; [*] multiplicity
 
 
@@ -39,7 +38,6 @@ public class Parent extends Person {
 
         setHashedPIN(hashedPIN); // used in setter to specify restrictions on the hashPIN
 
-        this.children = new LinkedList<>();
         this.resources = new LinkedList<>();
     }
 
@@ -54,36 +52,6 @@ public class Parent extends Person {
     // BIDIRECTIONAL LINKS
 
     // =============================================================================================
-
-
-    /**
-     * Adds a child to the list of children
-     *
-     * UNIDIRECTIONAL:
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
-     *
-     * @param child
-     */
-    protected void addChild(Person child)
-    {
-        children.add(child);
-    }
-
-
-    /**
-     * Removes a child to the list of children.
-     *
-     * UNIDIRECTIONAL:
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
-     *
-     * @param child
-     */
-    protected void removeChild(Person child)
-    {
-        children.remove(child);
-    }
 
 
     /**
@@ -124,23 +92,6 @@ public class Parent extends Person {
         person.assignTask(task, date, completed, notes); // creates a bidirectional link from Task to person
     }
 
-    /**
-     * Assigns a Task to a person
-     *
-     * @param fullName name of the person to be assigned
-     * @param task task to be assigned
-     */
-    public void assignTask(String fullName, Task task, Date date, boolean completed, String notes)
-    {
-        for (Person p : children)
-        {
-            if (p.getFirstName().equals(fullName))
-            {
-                p.assignTask(task, date, completed, notes); // creates a bidirectional link from Task to person
-                return ;
-            }
-        }
-    }
 
     // =============================================================================================
 

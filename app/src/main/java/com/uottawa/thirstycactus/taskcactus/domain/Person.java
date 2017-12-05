@@ -28,7 +28,6 @@ public class Person {
     // ASSOCIATIONS
 
     private List<TaskDate> taskDates; // association class liked to Task; [*] multiplicity
-    private List<Parent> parents; // list of parents; [0..2] multiplicity
 
 
     // CONSTRUCTORS
@@ -44,7 +43,6 @@ public class Person {
         this.lastName = lastName;
         this.birthDate = birthDate;
 
-        this.parents = new LinkedList<>();
         this.taskDates = new LinkedList<>();
     }
 
@@ -112,25 +110,6 @@ public class Person {
 
     }
 
-    /**
-     * Adds parent to the list
-     * Creates a BIDIRECTIONAL link between Person and Parent.
-     */
-    public void addParent(Parent p)
-    {
-        parents.add(p);
-        p.addChild(this);
-    }
-
-    /**
-     * Removed parent from the list
-     * Removes the BIDIRECTIONAL link between Person and Parent.
-     */
-    public void removeParent(Parent p)
-    {
-        p.removeChild(this);
-        parents.remove(p);
-    }
 
     /**
      * Removes all existing association classes;
@@ -143,11 +122,6 @@ public class Person {
 
 
         taskDates = null; // remove reference for Garbage Collector
-
-        for (Parent p : parents)
-            p.removeChild(this);
-
-        parents = null; // remove reference for Garbage Collector
     }
 
     // =============================================================================================

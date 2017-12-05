@@ -117,8 +117,6 @@ public class DataSingleton
         Person peter = new Person("Peter", "Nguyen", null);
         Person nate = new Person("Nate", "Adams", null);
 
-        peter.addParent(michel);
-        nate.addParent(michel);
 
         loggedPerson = michel;
 
