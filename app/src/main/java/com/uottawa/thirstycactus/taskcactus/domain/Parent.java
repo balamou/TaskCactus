@@ -19,11 +19,11 @@ public class Parent extends Person {
      * Constructor of Parent class
      *
      * @param id id of the parent in the database
-     * @param firstName
-     * @param lastName
-     * @param birthDate
+     * @param firstName first name
+     * @param lastName last name
+     * @param birthDate date of birth
      *
-     * @param PIN
+     * @param PIN 4 digit password
      *
      * @throws IllegalArgumentException if the PIN is not a valid 4 digit PIN
      */

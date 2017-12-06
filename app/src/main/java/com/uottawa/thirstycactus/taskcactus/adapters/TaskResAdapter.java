@@ -32,15 +32,12 @@ public class TaskResAdapter extends ArrayAdapter
     private List<Resource> taskResources;
     private int task_id;
 
-    private LayoutInflater mInflater;
-
-
+    
     // CONSTRUCTOR
 
     public TaskResAdapter(Activity context, List<Resource> taskResources, int task_id)
     {
         super(context, R.layout.resources_listview, taskResources);
-        mInflater = LayoutInflater.from(context);
 
         this.taskResources = taskResources;
         this.task_id = task_id;
@@ -56,7 +53,7 @@ public class TaskResAdapter extends ArrayAdapter
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.resources_listview, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.resources_listview, null);
             viewHolder= new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
@@ -93,6 +90,12 @@ public class TaskResAdapter extends ArrayAdapter
         return taskResources.size();
     }
 
+
+    /**
+     * Removed a resource from a task (only if logged as parent)
+     *
+     * @param res_id position of the item clicked in this list (Resource list)
+     */
     private void removeItem(int res_id)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
@@ -101,14 +104,14 @@ public class TaskResAdapter extends ArrayAdapter
             return ; // EXIT
         }
 
-        Resource res = taskResources.get(res_id);
-        Task task = DataSingleton.getInstance().getTasks().get(task_id);
+        Resource res = taskResources.get(res_id); // get resource
+        Task task = DataSingleton.getInstance().getTasks().get(task_id); // get task
 
-        DataSingleton.getInstance().deallocateResource(res, task);
 
-        notifyDataSetChanged();
+        DataSingleton.getInstance().deallocateResource(res, task); // CLEAN REMOVAL
 
         Toast.makeText(getContext(), "Resource deallocated", Toast.LENGTH_SHORT).show();
+        notifyDataSetChanged(); // REFRESH
     }
 
     // =============================================================================================

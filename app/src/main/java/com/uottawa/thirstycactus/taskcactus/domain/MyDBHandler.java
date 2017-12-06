@@ -18,6 +18,8 @@ import static java.lang.Integer.parseInt;
 
 /**
  * Created by michelbalamou on 10/31/17.
+ *
+ * Handles the interaction between the DataSingleton and the database
  */
 
 public class MyDBHandler extends SQLiteOpenHelper
@@ -111,7 +113,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
 
     // CONSTRUCTOR
-    public MyDBHandler(Context context)
+    MyDBHandler(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -156,10 +158,10 @@ public class MyDBHandler extends SQLiteOpenHelper
 
     // =============================================================================================
 
-    /***
+    /**
      * Returns a list of all users from the database
      */
-    public List<Person> getAllUsers()
+    List<Person> getAllUsers()
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -190,6 +192,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         return result;
     }
@@ -199,7 +202,7 @@ public class MyDBHandler extends SQLiteOpenHelper
      * Converts String date to Date
      * Format: yyyy-MM-dd HH:mm:ss
      */
-    public Date toDate(String date)
+    private Date toDate(String date)
     {
         SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -220,9 +223,9 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Adds a new person to the database
      *
-     * @param person information about the person
+     * @param person holds information about the person
      */
-    public void addPerson(Person person)
+    void addPerson(Person person)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -252,9 +255,9 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Updates a record of a person in the database
      *
-     * @param person
+     * @param person holds information about the person
      */
-    public int updatePerson(Person person)
+    void updatePerson(Person person)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -275,20 +278,24 @@ public class MyDBHandler extends SQLiteOpenHelper
             values.put(COLUMN_PASSWORD, ((Parent)person).getPIN());
 
         // updating row
-        return db.update(TABLE_USERS, values, COLUMN_ID + " = " + person.getID(), null);
+        db.update(TABLE_USERS, values, COLUMN_ID + " = " + person.getID(), null);
+        db.close();
     }
 
 
     /**
-     * @param user_id
+     * Deleted the person from the database
+     *
+     * @param user_id id of the user to be deleted
      */
-    public int deletePerson(int user_id)
+    void deletePerson(int user_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         removeUserAssoc(user_id);
 
-        return db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
+        db.delete(TABLE_USERS, COLUMN_ID + " = " + user_id, null);
+        db.close();
     }
 
 
@@ -301,12 +308,17 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * UPDATE ALL TABLES
      */
-    public void clean()
+    void clean()
     {
         SQLiteDatabase db = this.getReadableDatabase();
         onUpgrade(db, 0, 0);
     }
 
+    /**
+     * Marks everyone as logged off and the user with user_id as logged in
+     *
+     * @param user_id id of the user in the database
+     */
     public void setLogged(int user_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -334,15 +346,10 @@ public class MyDBHandler extends SQLiteOpenHelper
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst())
-        {
-            do
-            {
-                return cursor.getInt(0); // return first occurance
-            }
-            while (cursor.moveToNext());
-        }
+            return cursor.getInt(0); // return first occurrence
 
-        return -1;
+        cursor.close();
+        return -1; // nobody logged in
     }
 
     // =============================================================================================
@@ -354,7 +361,7 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Get the number of tasks on that particular date
      */
-    public int getNumTasks(Date date)
+    int getNumTasks(Date date)
     {
         // Convert date to String
         if (date==null) return 0;
@@ -375,7 +382,7 @@ public class MyDBHandler extends SQLiteOpenHelper
     /***
      * Returns a list of all tasks from the database
      */
-    public List<Task> getAllTasks()
+    List<Task> getAllTasks()
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -399,6 +406,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         return result;
     }
@@ -408,7 +416,7 @@ public class MyDBHandler extends SQLiteOpenHelper
      *
      * @param task information about the person
      */
-    public void addTask(Task task)
+    void addTask(Task task)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -429,9 +437,9 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Updates a record of a task in the database
      *
-     * @param task
+     * @param task holds the information about the task
      */
-    public int updateTask(Task task)
+    void updateTask(Task task)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -444,21 +452,25 @@ public class MyDBHandler extends SQLiteOpenHelper
 
 
         // updating row
-        return db.update(TABLE_TASKS, values, COLUMN_ID + " = " + task.getID(), null);
+        db.update(TABLE_TASKS, values, COLUMN_ID + " = " + task.getID(), null);
+        db.close();
     }
 
 
     /**
-     * @param task_id
+     * Deletes the task from the database
+     *
+     * @param task_id id of the task to be deleted
      */
-    public int deleteTask(int task_id)
+    void deleteTask(int task_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         removeTaskAssoc(task_id);
         removeLinksToTask(task_id);
 
-        return db.delete(TABLE_TASKS, COLUMN_ID + " = " + task_id, null);
+        db.delete(TABLE_TASKS, COLUMN_ID + " = " + task_id, null);
+        db.close();
     }
 
     // =============================================================================================
@@ -468,9 +480,11 @@ public class MyDBHandler extends SQLiteOpenHelper
     // =============================================================================================
 
     /**
-     * @param taskDate
+     * Creates an association between a user and a task
+     *
+     * @param taskDate holds information about the task date
      */
-    public void assignTask(TaskDate taskDate)
+    void assignTask(TaskDate taskDate)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -492,8 +506,13 @@ public class MyDBHandler extends SQLiteOpenHelper
         taskDate.setID((int)id);
     }
 
-
-    public void loadAssociations(List<Person> people, List<Task> tasks)
+    /**
+     * Loads from the database the associations between all people and tasks
+     *
+     * @param people people preloaded from the database
+     * @param tasks tasks preloaded form the database
+     */
+    void loadAssociations(List<Person> people, List<Task> tasks)
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -536,7 +555,7 @@ public class MyDBHandler extends SQLiteOpenHelper
 
                 // Create association between Person and Task
                 if (p!=null && t!=null)
-                    p.assignTask(t, toDate(date), completed == 1 ? true : false, note).setID(id);
+                    p.assignTask(t, toDate(date), completed == 1, note).setID(id);
                 else
                     Log.wtf("DATABASE", "Both task and person are null? line 477 in database handler.");
 
@@ -544,6 +563,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
     }
 
@@ -551,38 +571,46 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Removes all the tasks associates with a user at user_id
      */
-    public int removeUserAssoc(int user_id)
+    private void removeUserAssoc(int user_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_TASK_DATES, COLUMN_USER_ID + " = " + user_id, null);
+        db.delete(TABLE_TASK_DATES, COLUMN_USER_ID + " = " + user_id, null);
+        db.close();
     }
 
 
     /**
      * Removes all the tasks associates with a task at task_id
      */
-    public int removeTaskAssoc(int task_id)
+    private void removeTaskAssoc(int task_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_TASK_DATES, COLUMN_TASK_ID + " = " + task_id, null);
+        db.delete(TABLE_TASK_DATES, COLUMN_TASK_ID + " = " + task_id, null);
+
+        db.close();
     }
 
     /**
-     * @param taskDate
+     * Removed the association in TaskDate
+     *
+     * @param taskDate holds information about the task date
      */
-    public int unassignTask(TaskDate taskDate)
+    void unassignTask(TaskDate taskDate)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_TASK_DATES, COLUMN_ID + " = " + taskDate.getID(), null);
+        db.delete(TABLE_TASK_DATES, COLUMN_ID + " = " + taskDate.getID(), null);
+        db.close();
     }
 
     /**
-     * @param taskDate
+     * Sets a particular association between Task and Person as completed
+     *
+     * @param taskDate holds information about the task date
      */
-    public int setCompleted(TaskDate taskDate)
+    void setCompleted(TaskDate taskDate)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -591,7 +619,8 @@ public class MyDBHandler extends SQLiteOpenHelper
         values.put(COLUMN_COMPLETED, taskDate.getCompleted() ? 1 : 0);
 
         // updating row
-        return db.update(TABLE_TASK_DATES, values, COLUMN_ID + " = " + taskDate.getID(), null);
+        db.update(TABLE_TASK_DATES, values, COLUMN_ID + " = " + taskDate.getID(), null);
+        db.close();
     }
 
     // =============================================================================================
@@ -602,7 +631,7 @@ public class MyDBHandler extends SQLiteOpenHelper
     /***
      * Returns a list of all resources from the database
      */
-    public List<Resource> getAllResources()
+    List<Resource> getAllResources()
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -624,6 +653,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         return result;
     }
@@ -633,7 +663,7 @@ public class MyDBHandler extends SQLiteOpenHelper
      *
      * @param resource information about the resource
      */
-    public void addResource(Resource resource)
+    void addResource(Resource resource)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -652,9 +682,9 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Updates a record of a resource in the database
      *
-     * @param resource
+     * @param resource holds information about the resource
      */
-    public int updateResource(Resource resource)
+    void updateResource(Resource resource)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -665,21 +695,24 @@ public class MyDBHandler extends SQLiteOpenHelper
 
 
         // updating row
-        return db.update(TABLE_RESOURCES, values, COLUMN_ID + " = " + resource.getID(), null);
+        db.update(TABLE_RESOURCES, values, COLUMN_ID + " = " + resource.getID(), null);
+        db.close();
     }
 
 
     /**
-     * @param res_id
+     * Deletes a resource from the database by ID
+     * @param res_id id of the resource
      */
-    public int deleteResource(int res_id)
+    void deleteResource(int res_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         removeTaskAssoc(res_id);
         removeLinksToRes(res_id);
 
-        return db.delete(TABLE_RESOURCES, COLUMN_ID + " = " + res_id, null);
+        db.delete(TABLE_RESOURCES, COLUMN_ID + " = " + res_id, null);
+        db.close();
     }
 
     // =============================================================================================
@@ -689,10 +722,12 @@ public class MyDBHandler extends SQLiteOpenHelper
     // =============================================================================================
 
     /**
-     * @param res
-     * @param task
+     * Creates an association between resource and task in the RES_TASK table
+     *
+     * @param res holds the resource
+     * @param task holds the task
      */
-    public void allocateResource(Resource res, Task task)
+    void allocateResource(Resource res, Task task)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -704,7 +739,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.close();
     }
 
-    public void deallocateResource(Resource res, Task task)
+    void deallocateResource(Resource res, Task task)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -718,7 +753,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         db.close();
     }
 
-    public void loadResAssoc(List<Resource> resources, List<Task> tasks)
+    void loadResAssoc(List<Resource> resources, List<Task> tasks)
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -764,6 +799,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
     }
 
@@ -774,11 +810,12 @@ public class MyDBHandler extends SQLiteOpenHelper
      *
      * About to delete a Task
      */
-    public int removeLinksToTask(int task_id)
+    private void removeLinksToTask(int task_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_RES_TASK, COLUMN_TASK_ID + " = " + task_id, null);
+        db.delete(TABLE_RES_TASK, COLUMN_TASK_ID + " = " + task_id, null);
+        db.close();
     }
 
 
@@ -786,12 +823,15 @@ public class MyDBHandler extends SQLiteOpenHelper
      * Removes all the resources associates with a resource at res_id
      *
      * About to delete a Resource
+     *
+     * @param res_id id of the resource
      */
-    public int removeLinksToRes(int res_id)
+    private void removeLinksToRes(int res_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_RES_TASK, COLUMN_RESOURCE_ID + " = " + res_id, null);
+        db.delete(TABLE_RES_TASK, COLUMN_RESOURCE_ID + " = " + res_id, null);
+        db.close();
     }
 
     // =============================================================================================
@@ -803,7 +843,7 @@ public class MyDBHandler extends SQLiteOpenHelper
     /**
      * Displays data from the database in a table
      */
-    public void display()
+    void display()
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -880,7 +920,7 @@ public class MyDBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
 
-
+        cursor.close();
         db.close();
     }
 
@@ -899,22 +939,25 @@ public class MyDBHandler extends SQLiteOpenHelper
      * @param width width of the table column
      * @return a resized string
      */
-    public String format(String s, int width)
+    private String format(String s, int width)
     {
         int len = (s!=null) ? s.length() : 4;
+        StringBuilder stringBuilder = new StringBuilder();
 
         if (len<width)
         {
+            stringBuilder.append(s);
+
             for (int i=0; i<(width-len); i++)
-                s+=" ";
+                stringBuilder.append(" ");
         }
         else
         {
-            s=s.substring(0, width-4);
-            s+="..  ";
+            stringBuilder.append(s.substring(0, width-4));
+            stringBuilder.append("..  ");
         }
 
-        return s;
+        return stringBuilder.toString();
     }
 
     /**
@@ -928,13 +971,14 @@ public class MyDBHandler extends SQLiteOpenHelper
      * @param size size of the resutling string
      * @return a string with a repeating character
      */
-    public String fill(String s, int size)
+    private String fill(String s, int size)
     {
-        String filler="";
-        for (int i=0; i<size; i++)
-            filler+=s;
+        StringBuilder stringBuilder = new StringBuilder();
 
-        return filler;
+        for (int i=0; i<size; i++)
+            stringBuilder.append(s);
+
+        return stringBuilder.toString();
     }
 
 

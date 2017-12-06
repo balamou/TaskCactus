@@ -18,13 +18,13 @@ import java.util.List;
 
 /**
  * Created by michelbalamou on 11/11/17.
+ *
+ * Main list of all tasks displayed in the Task fragment
  */
 
-public class TaskListview extends ArrayAdapter
+public class TaskListview extends ArrayAdapter<Task>
 {
     // ATTRIBUTES
-
-    private LayoutInflater mInflater;
 
     private List<Task> tasks;
 
@@ -33,7 +33,6 @@ public class TaskListview extends ArrayAdapter
     public TaskListview(Activity context, List<Task> tasks)
     {
         super(context, R.layout.task_listview, tasks);
-        mInflater = LayoutInflater.from(context);
 
         this.tasks = tasks;
     }
@@ -47,7 +46,7 @@ public class TaskListview extends ArrayAdapter
 
         if (convertView == null)
         {
-            convertView = mInflater.inflate(R.layout.task_listview, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.task_listview, null);
             viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);

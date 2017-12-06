@@ -22,9 +22,11 @@ import java.util.List;
 
 /**
  * Created by michelbalamou on 11/11/17.
+ *
+ * Main list of all tasks displayed in the Users fragment
  */
 
-public class UserListview extends ArrayAdapter
+public class UserListview extends ArrayAdapter<Person>
 {
     // ATTRIBUTES
 

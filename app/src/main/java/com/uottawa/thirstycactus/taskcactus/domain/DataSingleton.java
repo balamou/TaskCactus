@@ -23,7 +23,7 @@ public class DataSingleton
     private boolean load = false; // flag that checks if the classes have been loaded from the database
 
 
-    // ASSOCIATIONS
+    // UNIDIRECTIONAL ASSOCIATIONS
     private MyDBHandler dbHandler; // instance of the database handler
 
     private List<Task> tasks;
@@ -64,9 +64,6 @@ public class DataSingleton
 
     /**
      * Loads data from the database.
-     *
-     *      ** Temporarily filled with Random data
-     *
      */
     private void loadData()
     {
@@ -175,6 +172,10 @@ public class DataSingleton
      *
      * The reason for using this is because the Date constructor has been depreciated and
      * this is the new accepted way of making a date due to Internalization issues.
+     *
+     * @param year year
+     * @param month month between 1 and 12
+     * @param day day between 1 and 31
      */
     private Date getDate(int year, int month, int day)
     {
@@ -194,7 +195,7 @@ public class DataSingleton
     // =============================================================================================
 
     /**
-     * Returns the list of default/premade tasks
+     * Returns the list of default/pre-made tasks
      */
     public List<Task> getTasks()
     {
@@ -225,6 +226,8 @@ public class DataSingleton
 
     /**
      * Returns a list of people who have a task on that day
+     *
+     * @param date date to look for users and tasks
      */
     public List<Person> getUsers(Date date)
     {
@@ -325,6 +328,9 @@ public class DataSingleton
         dbHandler.clean();
     }
 
+    /**
+     * If the database is empty then fill it with default tasks and resources
+     */
     public void setDefaults()
     {
         List<Task> tasks = new LinkedList<>();
@@ -337,7 +343,7 @@ public class DataSingleton
 
 
         for (Task task : tasks)
-            dbHandler.addTask(task);
+            dbHandler.addTask(task); // DB~
 
         load = false;
         loadData();
@@ -347,8 +353,8 @@ public class DataSingleton
      * Adds a new person to the database
      *
      * @param userType type of account - Parent/Child
-     * @param firstName
-     * @param lastName
+     * @param firstName first name of the person
+     * @param lastName last name of the person
      * @param birthDay birth date (optional)
      * @param password 4 digit PIN (not required if child account)
      *
@@ -403,8 +409,8 @@ public class DataSingleton
     /**
      * Updates the person in the database
      *
-     * @param firstName
-     * @param lastName
+     * @param firstName new first name of the person
+     * @param lastName new last name of the person
      * @param birthDay birth date (optional)
      * @param password 4 digit PIN (not required if child account)
      *
@@ -475,9 +481,11 @@ public class DataSingleton
 
 
     /***
-     * @param name
-     * @param desc
-     * @param points
+     * Verify & Add a new task to the database and the Task list
+     *
+     * @param name name of the task
+     * @param desc description
+     * @param points points received for completion
      * @param res boolean array of resources that have been added
      *
      * @return Exit Codes 0, 1, 2
@@ -524,11 +532,13 @@ public class DataSingleton
     }
 
     /***
+     * Verify & Update the task information in the database
+     *
      * @param task_id the position of the task in the
-     * @param name
-     * @param desc
-     * @param points
-     * @param initState intial state of resources
+     * @param name new name of the task
+     * @param desc new description of the task
+     * @param points new points received for completion
+     * @param initState initial state of resources
      * @param res boolean array of resources that have been added
      *
      * Example:
@@ -592,6 +602,8 @@ public class DataSingleton
 
     /**
      * Delete a task from the list at index
+     *
+     * @param index position of the task in the global Task List
      */
     public void deleteTask(int index)
     {
@@ -610,6 +622,7 @@ public class DataSingleton
     // =============================================================================================
 
     /**
+     * Assigns a Task to a user
      *
      * @param user_id ID of the user in 'users' list
      * @param task_id ID of the task in 'tasks' list
@@ -688,9 +701,10 @@ public class DataSingleton
     /**
      * Set taskDate as completed
      */
-    public void setCompleted(TaskDate taskDate)
+    public void setCompleted(TaskDate taskDate, boolean completion)
     {
-        dbHandler.setCompleted(taskDate);
+        taskDate.setCompleted(completion); // set completed in the association class
+        dbHandler.setCompleted(taskDate); // DB~
     }
 
     // =============================================================================================

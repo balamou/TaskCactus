@@ -1,5 +1,6 @@
 package com.uottawa.thirstycactus.taskcactus.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,7 +28,7 @@ import java.util.List;
  * This adapter is responsible for displaying every item in the resource list.
  */
 
-public class ResAdapter extends ArrayAdapter
+public class ResAdapter extends ArrayAdapter<Resource>
 {
     // ATTRIBUTES
 
@@ -114,6 +115,7 @@ public class ResAdapter extends ArrayAdapter
      *
      * @param pos position of the resource in the List in DataSingleton
      */
+    @SuppressLint("InflateParams")
     public void showPopup(final int pos)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

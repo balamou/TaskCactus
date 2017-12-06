@@ -120,24 +120,20 @@ public class TaskInfo extends AppCompatActivity
         }
 
         // CONFIRMATION BOX ++++
-        AlertDialog.Builder b = ViewSingleton.getInstance().confirmationBox(this, "Are you sure you want to delete the task? ");
+        AlertDialog.Builder box = ViewSingleton.getInstance().confirmationBox(this, "Are you sure you want to delete the task? ");
 
-        final TaskInfo taskInfo = this;
-
-        b.setPositiveButton("YES", new DialogInterface.OnClickListener()
+        box.setPositiveButton("YES", new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int whichButton)
             {
-                Toast.makeText(getApplicationContext(), "Task deleted", Toast.LENGTH_SHORT).show();
                 dataSingleton.deleteTask(task_id);
 
+                Toast.makeText(getApplicationContext(), "Task deleted", Toast.LENGTH_SHORT).show();
                 ViewSingleton.getInstance().refreshTasks();
                 ViewSingleton.getInstance().refresh();
-                taskInfo.finish();
+                TaskInfo.this.finish();
             }
-        });
-
-        b.show();
+        }).show();
     }
 
 

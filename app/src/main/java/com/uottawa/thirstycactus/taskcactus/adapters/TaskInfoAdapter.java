@@ -22,23 +22,21 @@ import java.util.List;
 
 /**
  * Created by michelbalamou on 11/23/17.
+ *
+ * Displays the list of users that have been assigned to a Particular task.
  */
 
-public class TaskInfoAdapter extends ArrayAdapter
+public class TaskInfoAdapter extends ArrayAdapter<TaskDate>
 {
     // ATTRIBUTES
 
     private List<TaskDate> taskDates;
-
-    private LayoutInflater mInflater;
-
 
     // CONSTRUCTOR
 
     public TaskInfoAdapter(Activity context, List<TaskDate> taskDates)
     {
         super(context, R.layout.taskinfo_listview, taskDates);
-        mInflater = LayoutInflater.from(context);
 
         this.taskDates = taskDates;
     }
@@ -53,8 +51,8 @@ public class TaskInfoAdapter extends ArrayAdapter
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.taskinfo_listview, null);
-            viewHolder= new ViewHolder(convertView);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.taskinfo_listview, null);
+            viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
         }
@@ -89,6 +87,12 @@ public class TaskInfoAdapter extends ArrayAdapter
         return taskDates.size();
     }
 
+
+    /**
+     * Unassigns a user from a task
+     *
+     * @param pos position of the item that has been clicked
+     */
     private void removeItem(int pos)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
@@ -99,13 +103,12 @@ public class TaskInfoAdapter extends ArrayAdapter
         }
 
         TaskDate taskDate = taskDates.get(pos);
-        String taskName = taskDate.getTask().getName();
+        String taskName = taskDate.getTask().getName(); // get name of the task
 
         DataSingleton.getInstance().unassignTask(taskDate); // CLEAN REMOVAL
 
         Toast.makeText(getContext(), "Task '" + taskName + "' unasigned", Toast.LENGTH_SHORT).show();
-
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // REFRESH
     }
 
     // =============================================================================================

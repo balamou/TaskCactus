@@ -22,16 +22,15 @@ import java.util.List;
 
 /**
  * Created by michelbalamou on 11/22/17.
+ *
+ * Shows a list of all tasks assigned to one user (in UserInfo activity)
  */
 
-public class UserInfoAdapter extends ArrayAdapter
+public class UserInfoAdapter extends ArrayAdapter<TaskDate>
 {
     // ATTRIBUTES
 
     private List<TaskDate> taskDates;
-
-    private LayoutInflater mInflater;
-
     private int user_id;
 
 
@@ -40,7 +39,6 @@ public class UserInfoAdapter extends ArrayAdapter
     public UserInfoAdapter(Activity context, List<TaskDate> taskDates, int user_id)
     {
         super(context, R.layout.userinfo_listview, taskDates);
-        mInflater = LayoutInflater.from(context);
 
         this.taskDates = taskDates;
         this.user_id = user_id;
@@ -56,7 +54,7 @@ public class UserInfoAdapter extends ArrayAdapter
 
         if (convertView==null)
         {
-            convertView=mInflater.inflate(R.layout.userinfo_listview, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.userinfo_listview, null);
             viewHolder= new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
@@ -120,7 +118,7 @@ public class UserInfoAdapter extends ArrayAdapter
     }
 
     @Override
-    public Object getItem(int pos)
+    public TaskDate getItem(int pos)
     {
         return taskDates.get(pos);
     }
@@ -132,15 +130,24 @@ public class UserInfoAdapter extends ArrayAdapter
     }
 
 
-    private void setChecked(int pos, boolean b)
+    /**
+     * Sets a task as completed or not completed
+     *
+     * @param pos position of the item clicked in the task list
+     * @param completion true - set as completed; false - set as not completed
+     */
+    private void setChecked(int pos, boolean completion)
     {
-        taskDates.get(pos).setCompleted(b); // set completed in the association class
-        DataSingleton.getInstance().setCompleted(taskDates.get(pos)); // SAVE COMPLETED IN THE DATABASE DB~
+        DataSingleton.getInstance().setCompleted(taskDates.get(pos), completion); // SAVE COMPLETED IN THE DATABASE DB~
 
-        // GUI
-        ViewSingleton.getInstance().updateUserInfo(); // UPDATE THE VIEW
+        ViewSingleton.getInstance().updateUserInfo(); // REFRESH
     }
 
+    /**
+     * Removes association between current user and clicked task
+     *
+     * @param pos position of the item clicked in the task list
+     */
     private void removeItem(int pos)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
