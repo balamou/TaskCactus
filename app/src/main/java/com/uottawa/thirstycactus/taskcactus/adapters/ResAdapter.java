@@ -70,7 +70,9 @@ public class ResAdapter extends ArrayAdapter<Resource>
         Resource res = taskResources.get(position);
 
         viewHolder.resourceNameText.setText(res.getName());
-        viewHolder.descText.setText(res.getDesc());
+
+        String desc = res.getDesc();
+        viewHolder.descText.setText(desc.isEmpty() ? "Desc: ----" : "Desc: " + desc);
 
         viewHolder.removeBtn.setTag(position);
         viewHolder.removeBtn.setOnClickListener(new View.OnClickListener()

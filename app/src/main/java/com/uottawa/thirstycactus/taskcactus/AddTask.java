@@ -10,11 +10,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,9 +28,13 @@ public class AddTask extends AppCompatActivity
 {
 
     // GRAPHICAL ELEMENTS
+    private TextView statusText; // displays "Add a task" or "Edit task"
+
+
     private EditText nameEdit;
     private EditText descEdit;
     private EditText pointsEdit;
+
 
     private LinearLayout checkBoxLayout;
 
@@ -54,6 +61,9 @@ public class AddTask extends AppCompatActivity
         pointsEdit = (EditText) findViewById(R.id.pointsEdit);
         checkBoxLayout = (LinearLayout) findViewById(R.id.checkBoxLayout);
 
+        statusText = (TextView) findViewById(R.id.statusText);
+
+
 
         // POPULATE FIELDS
 
@@ -62,8 +72,9 @@ public class AddTask extends AppCompatActivity
         List<Resource> res_task = new LinkedList<>();
 
 
-        if (task_id>=0)
+        if (task_id>=0) // EDIT TASK FLAG
         {
+            statusText.setText("Edit task");
             Task task = dataSingleton.getTasks().get(task_id);
 
             nameEdit.setText(task.getName());
@@ -82,6 +93,19 @@ public class AddTask extends AppCompatActivity
 
     // =============================================================================================
 
+    /**
+     * Creates a row of multiple checkboxes with the resource name beside it:
+     *
+     *  --- Resources ---
+     *
+     *      [ ] Res1
+     *      [X] Res2
+     *      [ ] Res3
+     *      [ ] Res4
+     *      etc...
+     *
+     * @param res_task all resources associated to this particular task (if we are editing a task)
+     */
     public void populateCheckboxes(List<Resource> res_task)
     {
         // ADD RESOURCES WITH CHECKBOXES
@@ -129,6 +153,11 @@ public class AddTask extends AppCompatActivity
         this.finish();
     }
 
+
+    /**
+     * The buttons either adds a new tasks or edits an existing task.
+     * The flag to EDIT or ADD a task is sent through an intent from the previous activity.
+     */
     public void onSave(View view)
     {
         String name = nameEdit.getText().toString();

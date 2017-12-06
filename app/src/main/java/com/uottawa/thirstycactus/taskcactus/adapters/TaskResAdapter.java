@@ -67,7 +67,8 @@ public class TaskResAdapter extends ArrayAdapter
         Resource res = taskResources.get(position);
 
         viewHolder.resourceNameText.setText(res.getName());
-        viewHolder.descText.setText(res.getDesc());
+        String desc = res.getDesc();
+        viewHolder.descText.setText(desc.isEmpty() ? "Desc: ----" : "Desc: " + desc);
 
         viewHolder.deallocateBtn.setTag(position);
         viewHolder.deallocateBtn.setOnClickListener(new View.OnClickListener()

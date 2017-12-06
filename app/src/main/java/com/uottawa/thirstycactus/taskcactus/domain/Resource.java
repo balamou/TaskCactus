@@ -52,7 +52,7 @@ public class Resource {
      *  - set as protected to allow only the package access it
      *  - so the user doesn't accidentally use this method
      *
-     * @param task
+     * @param task task to be added
      */
     protected void useInTask(Task task)
     {
@@ -66,7 +66,7 @@ public class Resource {
      *  - set as protected to allow only the package access it
      *  - so the user doesn't accidentally use this method
      *
-     * @param task
+     * @param task task to be removed
      */
     protected void removeFromTask(Task task)
     {
