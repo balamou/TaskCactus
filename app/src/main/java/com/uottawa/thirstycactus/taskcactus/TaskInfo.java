@@ -10,15 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uottawa.thirstycactus.taskcactus.adapters.ResourcesAdapter;
+import com.uottawa.thirstycactus.taskcactus.adapters.TaskResAdapter;
 import com.uottawa.thirstycactus.taskcactus.adapters.TaskInfoAdapter;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Task;
-import com.uottawa.thirstycactus.taskcactus.domain.TaskDate;
-
-import org.w3c.dom.Text;
-
-import static android.R.attr.id;
 
 public class TaskInfo extends AppCompatActivity
 {
@@ -77,7 +72,7 @@ public class TaskInfo extends AppCompatActivity
             usersListView.setAdapter(taskInfoAdapter);
 
             // INITIALIZE RESOURCES LISTVIEW
-            ResourcesAdapter resAdapter = new ResourcesAdapter(this, task.getResources(), task_id);
+            TaskResAdapter resAdapter = new TaskResAdapter(this, task.getResources(), task_id);
             resourcesListView.setAdapter(resAdapter);
 
 

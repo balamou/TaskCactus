@@ -21,10 +21,11 @@ public class DataSingleton
     // ATTRIBUTES
     private static DataSingleton instance;
     private boolean load = false; // flag that checks if the classes have been loaded from the database
-    private MyDBHandler dbHandler; // instance of the database handler
 
 
     // ASSOCIATIONS
+    private MyDBHandler dbHandler; // instance of the database handler
+
     private List<Task> tasks;
     private List<Person> people;
     private List<Resource> resources;

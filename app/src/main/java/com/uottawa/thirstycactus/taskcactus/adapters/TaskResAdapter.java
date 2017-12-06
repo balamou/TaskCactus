@@ -21,9 +21,11 @@ import java.util.List;
 
 /**
  * Created by Julie on 11/27/17.
+ *
+ * Shows all resources allocated by a particular task
  */
 
-public class ResourcesAdapter extends ArrayAdapter
+public class TaskResAdapter extends ArrayAdapter
 {
     // ATTRIBUTES
 
@@ -35,7 +37,7 @@ public class ResourcesAdapter extends ArrayAdapter
 
     // CONSTRUCTOR
 
-    public ResourcesAdapter(Activity context, List<Resource> taskResources, int task_id)
+    public TaskResAdapter(Activity context, List<Resource> taskResources, int task_id)
     {
         super(context, R.layout.resources_listview, taskResources);
         mInflater = LayoutInflater.from(context);

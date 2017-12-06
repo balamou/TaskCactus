@@ -17,6 +17,15 @@ import java.util.List;
 
 /**
  * Created by Julie on 11/24/17.
+ *
+ * This class displays all the users that have a task on a specific day in this format:
+ *
+ *     v user1:
+ *         task1
+ *         task2
+ *     v user3:
+ *         task 4
+ *
  */
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter
@@ -25,7 +34,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
     private Context context;
     private List<Person> people;
-
     private Date date;
 
 
@@ -49,11 +57,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon)
+    public Object getChild(int groupPosition, int childPosition)
     {
         List<TaskDate> taskDates = people.get(groupPosition).getTaskDates(date);
 
-        return taskDates.get(childPosititon);
+        return taskDates.get(childPosition);
     }
 
     @Override
@@ -112,8 +120,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 
         if (view == null)
         {
-            LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.list_group, null);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.list_group, null);
         }
 
         TextView textHeader = view.findViewById(R.id.textHeader);

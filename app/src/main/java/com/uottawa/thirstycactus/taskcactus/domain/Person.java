@@ -15,8 +15,8 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
  * Created by Peter Nguyen on 11/20/17.
  */
 
-public class Person {
-
+public class Person
+{
     // ATTRIBUTES
 
     private int id; // for database (DB~)

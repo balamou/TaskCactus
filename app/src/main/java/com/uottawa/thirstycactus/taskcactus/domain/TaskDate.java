@@ -20,8 +20,8 @@ public class TaskDate
     private String notes;
 
     // ASSOCIATIONS
-    private Person person;
-    private Task task;
+    private Person person; // 1 to * association
+    private Task task;     // 1 to * association
 
 
     // CONSTRUCTOR

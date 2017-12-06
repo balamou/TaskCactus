@@ -13,11 +13,6 @@ public class Parent extends Person {
 
     private String PIN;         // 4 digit PIN password
 
-    // ASSOCIATIONS
-
-    private List<Resource> resources; // parents have exclusive rights to add resources; [*] multiplicity
-
-
     // CONSTRUCTOR
 
     /**
@@ -37,8 +32,6 @@ public class Parent extends Person {
         super(id, firstName, lastName, birthDate);
 
         setPIN(PIN); // used in setter to specify restrictions on the hashPIN
-
-        this.resources = new LinkedList<>();
     }
 
 

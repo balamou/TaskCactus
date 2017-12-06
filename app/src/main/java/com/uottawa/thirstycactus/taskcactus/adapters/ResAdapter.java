@@ -18,12 +18,13 @@ import com.uottawa.thirstycactus.taskcactus.R;
 import com.uottawa.thirstycactus.taskcactus.ViewSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Resource;
-import com.uottawa.thirstycactus.taskcactus.domain.Task;
 
 import java.util.List;
 
 /**
  * Created by Peter on 11/27/17.
+ *
+ * This adapter is responsible for displaying every item in the resource list.
  */
 
 public class ResAdapter extends ArrayAdapter
@@ -31,7 +32,6 @@ public class ResAdapter extends ArrayAdapter
     // ATTRIBUTES
 
     private List<Resource> taskResources;
-
     private LayoutInflater mInflater;
 
 
@@ -111,6 +111,8 @@ public class ResAdapter extends ArrayAdapter
 
     /**
      * Shows a dialog with two EditTexts to edit the name and the description of the resource
+     *
+     * @param pos position of the resource in the List in DataSingleton
      */
     public void showPopup(final int pos)
     {
@@ -148,9 +150,13 @@ public class ResAdapter extends ArrayAdapter
 
 
     /**
-     * Edit the resource
+     * Edit the resource (only if logged as Parent)
+     *
+     * @param pos position of the resource in the List in the DataSingleton
+     * @param name the new name of the Resource
+     * @param desc the new description of the resource
      */
-    public void editResource(int pos, String name, String desc)
+    private void editResource(int pos, String name, String desc)
     {
         if (name.isEmpty())
         {
@@ -169,11 +175,11 @@ public class ResAdapter extends ArrayAdapter
     }
 
 
-    public int getCount()
-    {
-        return taskResources.size();
-    }
-
+    /**
+     * Removes a resource (only if logged as Parent)
+     *
+     * @param pos position of the resource in the ResourceList of the DataSingleton
+     */
     private void removeItem(int pos)
     {
         if (!DataSingleton.getInstance().isLoggedAsParent()) // CHECK IF LOGGED IN AS PARENT
@@ -190,6 +196,11 @@ public class ResAdapter extends ArrayAdapter
         Toast.makeText(getContext(),  "Removed resource " + res.getName(), Toast.LENGTH_SHORT).show();
 
         notifyDataSetChanged();
+    }
+
+    public int getCount()
+    {
+        return taskResources.size();
     }
 
     // =============================================================================================
