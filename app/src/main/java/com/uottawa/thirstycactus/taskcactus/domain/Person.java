@@ -273,7 +273,7 @@ public class Person {
 
 
     /**
-     * Returns date of birth in a human readible format
+     * Returns date of birth in a human readable format
      * Ex: November 10, 2001
      */
     public String getReadableBirthday()

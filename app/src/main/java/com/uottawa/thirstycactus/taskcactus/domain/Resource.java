@@ -21,7 +21,6 @@ public class Resource {
     // ASSOCIATIONS
 
     private List<Task> tasks; // tasks that allocate the current resource; [*] multiplicity
-    private List<Parent> parents; // tasks that allocate the current resource; [*] multiplicity
 
 
     // CONSTRUCTOR
@@ -32,7 +31,6 @@ public class Resource {
         this.desc = desc;
 
         tasks = new LinkedList<>();
-        parents = new LinkedList<>();
     }
 
     public Resource(String name, String desc)
@@ -74,32 +72,6 @@ public class Resource {
     {
         tasks.remove(task);
     }
-
-
-    /**
-     * Adds a parent to the list of parents.
-     * Creates a BIDIRECTIONAL link between Resource and Parent.
-     *
-     * @param parent
-     */
-    public void assignParent(Parent parent)
-    {
-        parents.add(parent);
-        parent.linkResource(this);
-    }
-
-    /**
-     * Removes a parent to the list of parents.
-     * Removes the BIDIRECTIONAL link between Resource and Parent.
-     *
-     * @param parent
-     */
-    public void removeParent(Parent parent)
-    {
-        parents.remove(parent);
-        parent.unlinkResource(this);
-    }
-
 
 
     /**
