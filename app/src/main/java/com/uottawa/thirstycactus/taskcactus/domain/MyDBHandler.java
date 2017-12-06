@@ -240,7 +240,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         }
 
         // Add password
-        if (person instanceof Parent) values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
+        if (person instanceof Parent) values.put(COLUMN_PASSWORD, ((Parent)person).getPIN());
 
         // Insert final query
         long id = db.insert(TABLE_USERS, null, values);
@@ -272,7 +272,7 @@ public class MyDBHandler extends SQLiteOpenHelper
         }
 
         if (person instanceof Parent)
-            values.put(COLUMN_PASSWORD, ((Parent)person).getHashedPIN());
+            values.put(COLUMN_PASSWORD, ((Parent)person).getPIN());
 
         // updating row
         return db.update(TABLE_USERS, values, COLUMN_ID + " = " + person.getID(), null);

@@ -112,7 +112,7 @@ public class AddUser extends AppCompatActivity implements AdapterView.OnItemSele
             {
                 accountSpinner.setSelection(1);
                 parentLayout.setVisibility(View.VISIBLE);
-                passwordText.setText(((Parent) user).getHashedPIN());
+                passwordText.setText(((Parent) user).getPIN());
 
                 userImage.setImageResource(R.drawable.pic1); // parent logo
             }

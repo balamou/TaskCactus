@@ -272,7 +272,7 @@ public class DataSingleton
     public void login(Parent parent, String PIN) throws IllegalArgumentException
     {
         loadData();
-        if (parent.getHashedPIN().equals(PIN))
+        if (parent.getPIN().equals(PIN))
         {
             loggedPerson = parent;
             dbHandler.setLogged(parent.getID()); // DB~
@@ -443,7 +443,7 @@ public class DataSingleton
 
         if (birth!=null) person.setBirthDate(birth); // Change birthday if not empty
 
-        if (person instanceof Parent) ((Parent)person).setHashedPIN(password); // Change password if account is Parent
+        if (person instanceof Parent) ((Parent)person).setPIN(password); // Change password if account is Parent
 
         dbHandler.updatePerson(person); // DB~
         return 0; // Successfully updated

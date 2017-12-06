@@ -11,7 +11,7 @@ public class Parent extends Person {
 
     // ATTRIBUTES
 
-    private String hashedPIN;         // 4 digit PIN password
+    private String PIN;         // 4 digit PIN password
 
     // ASSOCIATIONS
 
@@ -28,23 +28,23 @@ public class Parent extends Person {
      * @param lastName
      * @param birthDate
      *
-     * @param hashedPIN
+     * @param PIN
      *
-     * @throws IllegalArgumentException if the hashedPIN is not a valid 4 digit PIN
+     * @throws IllegalArgumentException if the PIN is not a valid 4 digit PIN
      */
-    public Parent(int id, String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
+    public Parent(int id, String firstName, String lastName, Date birthDate, String PIN) throws IllegalArgumentException
     {
         super(id, firstName, lastName, birthDate);
 
-        setHashedPIN(hashedPIN); // used in setter to specify restrictions on the hashPIN
+        setPIN(PIN); // used in setter to specify restrictions on the hashPIN
 
         this.resources = new LinkedList<>();
     }
 
 
-    public Parent(String firstName, String lastName, Date birthDate, String hashedPIN) throws IllegalArgumentException
+    public Parent(String firstName, String lastName, Date birthDate, String PIN) throws IllegalArgumentException
     {
-        this(0, firstName, lastName, birthDate, hashedPIN);
+        this(0, firstName, lastName, birthDate, PIN);
     }
 
     // =============================================================================================
@@ -52,34 +52,6 @@ public class Parent extends Person {
     // BIDIRECTIONAL LINKS
 
     // =============================================================================================
-
-
-    /**
-     * Adds a resource to the list of resources
-     *
-     * UNIDIRECTIONAL:
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
-     * @param resource
-     */
-    protected void linkResource(Resource resource)
-    {
-        resources.add(resource);
-    }
-
-    /**
-     * Removes a resource to the list of resources
-     *
-     * UNIDIRECTIONAL:
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
-     * @param resource
-     */
-    protected void unlinkResource(Resource resource)
-    {
-        resources.remove(resource);
-    }
-
 
     /**
      * Assigns a Task to a person
@@ -104,14 +76,14 @@ public class Parent extends Person {
      * Currently stored as PLAIN TEXT.
      * ** Might implement hashing and salting later.
      *
-     * @param hashedPIN 4 digit password
+     * @param PIN 4 digit password
      * @throws IllegalArgumentException if the PIN is not 4 characters long
      */
-    public void setHashedPIN(String hashedPIN) throws IllegalArgumentException
+    public void setPIN(String PIN) throws IllegalArgumentException
     {
-        if (hashedPIN.length() == 4) // check if the PIN is 4 characters long
+        if (PIN.length() == 4) // check if the PIN is 4 characters long
         {
-            this.hashedPIN = hashedPIN;
+            this.PIN = PIN;
         }
         else
         {
@@ -119,9 +91,9 @@ public class Parent extends Person {
         }
     }
 
-    public String getHashedPIN()
+    public String getPIN()
     {
-        return hashedPIN;
+        return PIN;
     }
 
 

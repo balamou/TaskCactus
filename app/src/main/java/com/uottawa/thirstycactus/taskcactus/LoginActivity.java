@@ -1,28 +1,13 @@
 package com.uottawa.thirstycactus.taskcactus;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.uottawa.thirstycactus.taskcactus.domain.DataSingleton;
 import com.uottawa.thirstycactus.taskcactus.domain.Parent;
-import com.uottawa.thirstycactus.taskcactus.domain.Person;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import static android.R.attr.password;
-import static com.uottawa.thirstycactus.taskcactus.R.id.accountLayout;
-import static com.uottawa.thirstycactus.taskcactus.R.id.accountSpinner;
-import static com.uottawa.thirstycactus.taskcactus.R.id.parentLayout;
 
 
 /**
@@ -92,7 +77,7 @@ public class LoginActivity extends AppCompatActivity
         {
             // Login as the user just created
             Parent p = (Parent)dataSingleton.getUsers().get(0);
-            dataSingleton.login(p, p.getHashedPIN());
+            dataSingleton.login(p, p.getPIN());
             ViewSingleton.getInstance().refresh();
             this.finish();
         }

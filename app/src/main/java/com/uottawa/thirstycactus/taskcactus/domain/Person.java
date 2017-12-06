@@ -90,26 +90,6 @@ public class Person {
         taskDates.remove(taskDate);
     }
 
-    /**
-     * Removes the taskDate associated to Task from the user
-     *
-     *  - set as protected to allow only the package access it
-     *  - so the user doesn't accidentally use this method
-     */
-    protected void removeTask(Task task)
-    {
-        for (TaskDate t : taskDates)
-        {
-            if (t.getTask() == task)
-            {
-                task.unlinkTaskDate(t);
-                taskDates.remove(t);
-                break;
-            }
-        }
-
-    }
-
 
     /**
      * Removes all existing association classes;

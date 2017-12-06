@@ -47,11 +47,6 @@ public class TaskDate
         this(0, person, task, date, completed, notes);
     }
 
-    public TaskDate(Person person, Task task, Date date) throws IllegalArgumentException
-    {
-        this(person, task, date, false, "");
-    }
-
 
     // =============================================================================================
 
