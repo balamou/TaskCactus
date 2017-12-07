@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     private SectionsStatePagerAdapter adapter;
     private ViewPager mViewPager;
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
 
     // =============================================================================================
@@ -38,21 +39,22 @@ public class MainActivity extends AppCompatActivity
 
 
         // Check if there are any users in the database
-        DataSingleton.getInstance().initDatabase(this);
-
-        if (DataSingleton.getInstance().getUsers().isEmpty())
-        {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-        //------
-
+        dataSingleton.initDatabase(this);
+        //dataSingleton.resetDatabase();
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+
+        if (dataSingleton.getUsers().isEmpty()) // If database is empty startup the Login Activity with welcome screen
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        //------
 
         getSupportActionBar().setElevation(0); // Remove shadow under action bar
     }

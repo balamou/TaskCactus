@@ -21,7 +21,7 @@ public class DataSingleton
     // ATTRIBUTES
     private static DataSingleton instance;
     private boolean load = false; // flag that checks if the classes have been loaded from the database
-
+    private boolean defaultSettings = false;
 
     // UNIDIRECTIONAL ASSOCIATIONS
     private MyDBHandler dbHandler; // instance of the database handler
@@ -31,6 +31,7 @@ public class DataSingleton
     private List<Resource> resources;
 
     private Person loggedPerson;
+
 
 
     // CONSTRUCTOR
@@ -165,6 +166,45 @@ public class DataSingleton
     public void initDatabase(Context mainActivity)
     {
         dbHandler = new MyDBHandler(mainActivity);
+    }
+
+    public void resetDatabase()
+    {
+        dbHandler.clean();
+    }
+
+    /**
+     * If the database is empty then fill it with default tasks and resources
+     */
+    public void setDefaults()
+    {
+        if (!defaultSettings)
+        {
+            List<Task> defaultTasks = new LinkedList<>();
+
+            // Add default tasks to the database
+            defaultTasks.add(new Task("Wash dishes", "All the dishes", 5, "DEFAULT"));
+            defaultTasks.add(new Task("Clean room", "Get all your clothes off the chair", 5, "DEFAULT"));
+            defaultTasks.add(new Task("Recycle", "Good for environment", 5, "DEFAULT"));
+            defaultTasks.add(new Task("Clean basement", "", 5, "DEFAULT"));
+
+            List<Resource> defaultRes = new LinkedList<>();
+
+            defaultRes.add(new Resource("Sponge", "For washing dishes"));
+            defaultRes.add(new Resource("Recycle bin", "To recycle"));
+            defaultRes.add(new Resource("Vacuum cleaner", "To clean the basement"));
+
+            for (Task task : defaultTasks)
+                dbHandler.addTask(task); // DB~
+
+
+            for (Resource res : defaultRes)
+                dbHandler.addResource(res); // DB~
+
+            load = false;
+            defaultSettings = true;
+            loadData();
+        }
     }
 
     /**
@@ -322,32 +362,6 @@ public class DataSingleton
     // DATABASE RELATED METHODS: PERSON
 
     // =============================================================================================
-
-    public void resetDatabase()
-    {
-        dbHandler.clean();
-    }
-
-    /**
-     * If the database is empty then fill it with default tasks and resources
-     */
-    public void setDefaults()
-    {
-        List<Task> tasks = new LinkedList<>();
-
-        // Add default tasks to the database
-        tasks.add(new Task("Wash dishes", "All the dishes", 5, "DEFAULT"));
-        tasks.add(new Task("Clean room", "Get all your clothes off the chair", 5, "DEFAULT"));
-        tasks.add(new Task("Recycle", "Good for environment", 5, "DEFAULT"));
-        tasks.add(new Task("Clean basement", "", 5, "DEFAULT"));
-
-
-        for (Task task : tasks)
-            dbHandler.addTask(task); // DB~
-
-        load = false;
-        loadData();
-    }
 
     /**
      * Adds a new person to the database
